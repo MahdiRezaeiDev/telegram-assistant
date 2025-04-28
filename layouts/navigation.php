@@ -20,7 +20,7 @@ $fileName = basename($_SERVER['PHP_SELF']);
     <div class="hidden sm:flex items-center">
 
         <?php
-        $profile = '../public/icons/avatar.svg';
+        $profile = '../../public/icons/avatar.svg';
         if (file_exists("../../public/userimg/" . $_SESSION['id'] . ".jpg")) {
             $profile = "../../public/userimg/" . $_SESSION['id'] . ".jpg";
         }

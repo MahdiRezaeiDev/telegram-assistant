@@ -2,54 +2,25 @@
 if (!isset($DB_NAME)) {
     header("Location: ../../../views/auth/403.php");
 }
+
 function isLogin()
 {
-    if (isset($_SESSION["isLogin"]) && $_SESSION["isLogin"] != true) {
-        return false; // retune false if the successful login is not set
+    if (!isset($_SESSION["isLogin"]) || $_SESSION["isLogin"] !== true) {
+        return false; // Return false if not set or not true
     }
 
     if (isLoginSessionExpired()) {
-        return false;
+        return false; // Return false if session expired
     }
 
-    if (isset($_SESSION["isLogin"]) && authModified($_SESSION["id"])) {
-        return false;
-    }
-
-    if (isAccessLevelSet()) {
-        return false;
-    }
-
-    return true;
+    return true; // Otherwise, logged in
 }
+
 
 function isLoginSessionExpired()
 {
     // Check if the session has expired (current time > expiration time)
     if (isset($_SESSION["expiration_time"]) && time() > $_SESSION["expiration_time"]) {
-        return true;
-    }
-    return false;
-}
-
-function authModified($id)
-{
-    $stmt = DB->prepare("SELECT modified FROM yadakshop.authorities WHERE user_id = :id");
-    $stmt->bindParam(':id', $id);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // Check if result is not empty to avoid errors
-    if ($result) {
-        return $result['modified'];
-    } else {
-        return false; // or handle the case where no data is found for the given user ID
-    }
-}
-
-function isAccessLevelSet()
-{
-    if (!isset($_SESSION["not_allowed"])) {
         return true;
     }
     return false;

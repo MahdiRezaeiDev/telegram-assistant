@@ -4,8 +4,7 @@ $iconUrl = 'telegram.svg';
 require_once './components/header.php';
 require_once '../../app/controller/dashboard/DashboardController.php';
 require_once "../../layouts/navigation.php";
-require_once '../../layouts/sidebar.php';
-?>
+require_once '../../layouts/sidebar.php'; ?>
 <style>
     body {
         background-color: #F3F4F6 !important;
@@ -26,7 +25,6 @@ require_once '../../layouts/sidebar.php';
                     <span class="text-xs text-gray-700 font-semibold">
                         درحال ارسال پیام
                     </span>
-                    <?= print_r(json_encode($_SESSION)) ?>
                 </div>
                 <img onclick="toggleStatus(0)" title="توقف ارسال پیام خودکار" class="cursor-pointer" src="../../public/icons/power_on.svg" alt="power off icon">
             </div>

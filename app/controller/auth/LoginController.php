@@ -2,8 +2,6 @@
 if (!isset($DB_NAME)) {
     header("Location: ../../../views/auth/403.php");
 }
-require_once '../../config/constants.php';
-require_once '../../database/DB_connect.php';
 
 if (isLogin()) {
     header("Location: ../dashboard/dashboard.php");
