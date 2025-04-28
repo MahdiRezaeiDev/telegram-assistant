@@ -20,7 +20,6 @@ require_once '../../utilities/assets/jdf.php'; ?>
     <link href="../../public/css/output.css" rel="stylesheet">
 
     <script src="../../public/js/assets/axios.js"></script>
-    <script src="./assets/js/jalaliMoment.js"></script>
 </head>
 
 <body class="min-h-screen bg-gray-50 pt-14">
