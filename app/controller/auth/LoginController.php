@@ -3,11 +3,11 @@ if (!isset($DB_NAME)) {
     header("Location: ../../../views/auth/403.php");
 }
 require_once '../../config/constants.php';
-require_once '../../database/db_connect.php';
+require_once '../../database/DB_connect.php';
 
 
-if (isLogin()) {
-    header("Location: ../inventory/index.php");
+if (!isLogin()) {
+    header("Location: ../dashboard.php");
     exit;
 }
 
@@ -30,12 +30,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $password = sanitizeInput($_POST["password"]);
     }
 
-    $financialYear = $_POST['financialYear'];
     // Validate credentials
     if (empty($username_err) && empty($password_err)) {
         try {
             // Prepare a select statement
-            $sql = "SELECT id, username, name, family, password, roll, profile FROM users WHERE username = :username";
+            $sql = "SELECT accounts.*, users.name, users.last_name, users.phone
+                    FROM accounts
+                    INNER JOIN users ON accounts.user_id = users.id
+                    WHERE accounts.username = :username";
 
             // Prepare the SQL statement
             $stmt = DB->prepare($sql);
@@ -53,12 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     // Extract data from the user
                     $id = $user['id'];
                     $hashed_password = $user['password'];
-                    $roll = $user['roll'];
+                    $role = $user['role'];
 
                     // Verify password
                     if (password_verify($password, $hashed_password)) {
-                        // Regenerate the session ID after a successful login
-                        session_regenerate_id(true);
                         // Calculate the expiration timestamp for 6 AM the next day
                         $expiration_time = strtotime("6AM tomorrow");
 
@@ -66,33 +66,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $_SESSION["user"] = $user;
                         $_SESSION["id"] = $id;
                         $_SESSION["username"] = $username;
-                        $_SESSION["roll"] = $roll;
-                        $_SESSION["financialYear"] = $financialYear;
+                        $_SESSION["role"] = $role;
                         $_SESSION["expiration_time"] = $expiration_time;
 
-                        $notAllowed = array();
-                        $auth = json_decode(getUserAuthority($id), true);
-
-                        foreach ($auth as $key => $value) {
-                            if (!$value) {
-                                array_push($notAllowed, $key);
-                            }
-                        }
-
-                        $_SESSION['not_allowed'] = $notAllowed;
-
-                        clearModifiedAuth($id);
-
-                        sendAjaxRequest($id, $username, $financialYear);
+                        header("Location: ../../views/dashboard.php");
                     } else {
+
                         // Password is not valid, display a generic error message
                         $login_err = "رمز عبور یا اسم کاربری اشتباه است.";
-                        sendLoginAttemptAlert($username, $password);
                     }
                 } else {
                     // Username doesn't exist, display a generic error message
                     $login_err = "رمز عبور یا اسم کاربری اشتباه است.";
-                    sendLoginAttemptAlert($username, $password);
                 }
             } else {
                 echo "Oops! Something went wrong. Please try again later.";
@@ -173,35 +158,4 @@ function sendLoginAttemptAlert($username, $password)
 
     // Close cURL session
     curl_close($ch);
-}
-
-function getUserAuthority($id)
-{
-    try {
-        $users_sql = "SELECT user_authorities AS auth FROM yadakshop.authorities WHERE user_id = :id";
-        $stmt = DB->prepare($users_sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['auth'];
-    } catch (PDOException $e) {
-        // Handle PDO exception
-        echo "Error: " . $e->getMessage();
-        return false;
-    }
-}
-
-function clearModifiedAuth($id)
-{
-    try {
-        $sql = "UPDATE yadakshop.authorities SET modified = 0 WHERE user_id = :id";
-        $stmt = DB->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        return true;
-    } catch (PDOException $e) {
-        // Handle PDO exception
-        echo "Error: " . $e->getMessage();
-        return false;
-    }
 }
