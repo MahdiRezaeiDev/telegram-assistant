@@ -7,7 +7,7 @@ $fileName = basename($_SERVER['PHP_SELF']);
 <aside id="side_bar">
     <ul>
         <li style="display: flex; justify-content: end;">
-            <img src="../../public/icons/close.svg" class="cursor-pointer ml-3 mt-4" alt="close menu icon" onclick="toggleSidebar()">
+            <img src="../../public/icons/close.svg" class="cursor-pointer w-5 h-5 ml-3 mt-4" alt="close menu icon" onclick="toggleSidebar()">
         </li>
         <li class="block sm:hidden">
             <div class="dropdown">

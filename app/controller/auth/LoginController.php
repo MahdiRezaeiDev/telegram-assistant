@@ -5,8 +5,7 @@ if (!isset($DB_NAME)) {
 require_once '../../config/constants.php';
 require_once '../../database/DB_connect.php';
 
-
-if (!isLogin()) {
+if (isLogin()) {
     header("Location: ../dashboard/dashboard.php");
     exit;
 }

@@ -1,4 +1,4 @@
-<script src="../../public/js/helper.js"></script>
+<script src="../../public/js/helpers.js"></script>
 </body>
 
 </html>

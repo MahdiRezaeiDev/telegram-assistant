@@ -23,22 +23,12 @@ require_once '../../layouts/sidebar.php';
             <div class="flex items-start justify-between">
                 <div class="flex flex-col space-y-2">
                     <span class="text-gray-800 font-semibold">ارسال پیام خودکار</span>
-                    <?php if ($status) : ?>
-                        <span class="text-xs text-gray-700 font-semibold">
-                            درحال ارسال پیام
-                        </span>
-                    <?php else : ?>
-                        <span class="text-xs text-gray-700 font-semibold">
-                            ارسال پیام متوقف شده
-                        </span>
-                    <?php endif; ?>
-
+                    <span class="text-xs text-gray-700 font-semibold">
+                        درحال ارسال پیام
+                    </span>
+                    <?= print_r(json_encode($_SESSION)) ?>
                 </div>
-                <?php if ($status) : ?>
-                    <img onclick="toggleStatus(0)" title="توقف ارسال پیام خودکار" class="cursor-pointer" src="./assets/img/powerOff.svg" alt="power off icon">
-                <?php else : ?>
-                    <img onclick="toggleStatus(1)" title="شروع ارسال پیام خودکار" class="cursor-pointer" src="./assets/img/powerOn.svg" alt="power On icon">
-                <?php endif; ?>
+                <img onclick="toggleStatus(0)" title="توقف ارسال پیام خودکار" class="cursor-pointer" src="../../public/icons/power_on.svg" alt="power off icon">
             </div>
             <div>
                 <span class="text-xs text-gray-600">برای توقف و از سر گیری ارسال پیام خودکار
@@ -49,9 +39,9 @@ require_once '../../layouts/sidebar.php';
             <div class="flex items-start justify-between">
                 <div class="flex flex-col space-y-2">
                     <span class="text-gray-800 font-semibold">مجموع کد های ثبت شده</span>
-                    <span class="text-lg font-semibold"><?= $totalRegisteredGoods ?></span>
+                    <span class="text-lg font-semibold">30</span>
                 </div>
-                <img class="rounded-md w-16 h-16" src="<?= ('./assets/icons/qrCode.svg') ?>" alt="">
+                <img class="rounded-md w-16 h-16" src="../../public/icons/contacts.svg" alt="">
             </div>
             <div>
                 <span class="inline-block px-2 text-sm text-white bg-green-500 ml-1 rounded"><?= rand(1, 100) ?>%</span>
@@ -62,9 +52,9 @@ require_once '../../layouts/sidebar.php';
             <div class="flex items-start justify-between">
                 <div class="flex flex-col space-y-2">
                     <span class="text-gray-800 font-semibold">مخاطبین</span>
-                    <span class="text-lg font-semibold"><?= $totalContacts ?></span>
+                    <span class="text-lg font-semibold"><?= 100 ?></span>
                 </div>
-                <img class="rounded-md w-16 h-16" src="<?= ('./assets/icons/contact.svg') ?>" alt="">
+                <img class="rounded-md w-16 h-16" src="../../public/icons/items.svg" alt="">
             </div>
             <div>
                 <span class="inline-block px-2 text-sm text-white bg-green-500 ml-1 rounded"><?= rand(1, 100) ?>%</span>
@@ -75,9 +65,9 @@ require_once '../../layouts/sidebar.php';
             <div class="flex items-start justify-between">
                 <div class="flex flex-col space-y-2">
                     <span class="text-gray-800 font-semibold">اقلام درخواستی امروز</span>
-                    <span class="text-lg font-semibold"><?= $totalRequests ?></span>
+                    <span class="text-lg font-semibold"> 100</span>
                 </div>
-                <img class="rounded-md w-16 h-16" src="<?= ('./assets/icons/alert.svg') ?>" alt="">
+                <img class="rounded-md w-16 h-16" src="../../public/icons/checked.svg" alt="">
             </div>
             <div>
                 <span class="inline-block px-2 text-sm text-white bg-green-500 ml-1 rounded"><?= rand(1, 100) ?>%</span>
