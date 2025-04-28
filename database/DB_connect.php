@@ -1,11 +1,14 @@
 <?php
 // Establish PDO database connection
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $pdo = new PDO("mysql:host=$HOST;dbname=$DB_NAME;charset=utf8mb4", $USERNAME, $PASSWORD, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES => false,
+    ]);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    define('PDO_CONNECTION', $pdo);
+    define('DB', $pdo);
 } catch (PDOException $e) {
 
     echo "Connection failed: " . $e->getMessage();

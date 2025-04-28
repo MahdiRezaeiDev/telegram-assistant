@@ -1,6 +1,6 @@
 <?php
 require_once './config/constants.php';
-require_once "./database/db_connect.php";
+require_once "./database/DB_connect.php";
 require_once "./app/middleware/Authentication.php";
 
 if (!isLogin()) {
