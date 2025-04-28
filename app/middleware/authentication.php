@@ -1,5 +1,5 @@
 <?php
-if (!isset($dbname)) {
+if (!isset($DB_NAME)) {
     header("Location: ../../../views/auth/403.php");
 }
 function isLogin()
@@ -12,7 +12,7 @@ function isLogin()
         return false;
     }
 
-    if(isset($_SESSION["isLogin"]) && authModified($_SESSION["id"])) {
+    if (isset($_SESSION["isLogin"]) && authModified($_SESSION["id"])) {
         return false;
     }
 
@@ -34,7 +34,7 @@ function isLoginSessionExpired()
 
 function authModified($id)
 {
-    $stmt = PDO_CONNECTION->prepare("SELECT modified FROM yadakshop.authorities WHERE user_id = :id");
+    $stmt = DB->prepare("SELECT modified FROM yadakshop.authorities WHERE user_id = :id");
     $stmt->bindParam(':id', $id);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);

@@ -1,5 +1,5 @@
 <?php
-if (!isset($dbname)) {
+if (!isset($DB_NAME)) {
     header("Location: ../../../views/auth/403.php");
 }
 require_once '../../config/constants.php';
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $sql = "SELECT id, username, name, family, password, roll, profile FROM users WHERE username = :username";
 
             // Prepare the SQL statement
-            $stmt = PDO_CONNECTION->prepare($sql);
+            $stmt = DB->prepare($sql);
 
             // Bind parameters
             $stmt->bindParam(':username', $username, PDO::PARAM_STR);
@@ -179,7 +179,7 @@ function getUserAuthority($id)
 {
     try {
         $users_sql = "SELECT user_authorities AS auth FROM yadakshop.authorities WHERE user_id = :id";
-        $stmt = PDO_CONNECTION->prepare($users_sql);
+        $stmt = DB->prepare($users_sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -195,7 +195,7 @@ function clearModifiedAuth($id)
 {
     try {
         $sql = "UPDATE yadakshop.authorities SET modified = 0 WHERE user_id = :id";
-        $stmt = PDO_CONNECTION->prepare($sql);
+        $stmt = DB->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return true;
