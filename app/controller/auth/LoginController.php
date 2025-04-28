@@ -7,7 +7,7 @@ require_once '../../database/DB_connect.php';
 
 
 if (!isLogin()) {
-    header("Location: ../dashboard.php");
+    header("Location: ../dashboard/dashboard.php");
     exit;
 }
 
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $_SESSION["role"] = $role;
                         $_SESSION["expiration_time"] = $expiration_time;
 
-                        header("Location: ../../views/dashboard.php");
+                        header("Location: ../../views/dashboard/dashboard.php");
                     } else {
 
                         // Password is not valid, display a generic error message

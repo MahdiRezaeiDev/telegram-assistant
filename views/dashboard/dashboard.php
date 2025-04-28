@@ -2,9 +2,9 @@
 $pageTitle = "مدیریت تلگرام";
 $iconUrl = 'telegram.svg';
 require_once './components/header.php';
-require_once '../../app/controller/telegram/DashboardController.php';
-require_once '../../layouts/callcenter/nav.php';
-require_once '../../layouts/callcenter/sidebar.php';
+require_once '../../app/controller/dashboard/DashboardController.php';
+require_once "../../layouts/navigation.php";
+require_once '../../layouts/sidebar.php';
 ?>
 <style>
     body {
