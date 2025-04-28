@@ -18,7 +18,6 @@ require_once '../../utilities/assets/jdf.php'; ?>
 
 
     <link href="../../public/css/output.css" rel="stylesheet">
-    <link href="../../public/css/material_icons.css" rel="stylesheet">
 
     <script src="../../public/js/assets/axios.js"></script>
     <script src="./assets/js/jalaliMoment.js"></script>
