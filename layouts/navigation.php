@@ -2,8 +2,6 @@
 if (!isset($DB_NAME)) {
     header("Location: ../../../views/auth/403.php");
 }
-
-$fileName = basename($_SERVER['PHP_SELF']);
 ?>
 <nav id="main_nav" class="fixed top-0 left-0 right-0 z-50 p-2 flex justify-between bg-white shadow-md">
     <ul class="flex">
@@ -28,7 +26,7 @@ $fileName = basename($_SERVER['PHP_SELF']);
                 لیست کد های فنی
             </a>
         </li>
-        <li class="mx-1 <?= $fileName == 'purchase.php' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
+        <li class="mx-1 <?= $$category = "telegram" ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
             <a class="p-2 menu_item flex items-center gap-2" href="../telegram/index.php">
                 <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
                 اتصال به تلگرام
