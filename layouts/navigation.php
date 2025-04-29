@@ -13,13 +13,25 @@ $fileName = basename($_SERVER['PHP_SELF']);
         <li class="mx-1 <?= $fileName == 'purchase.php' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
             <a class="p-2 menu_item flex items-center gap-2" href="./purchase.php">
                 <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
-                 پروفایل کاربری
+                پروفایل کاربری
             </a>
         </li>
         <li class="mx-1 <?= $fileName == 'purchase.php' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
             <a class="p-2 menu_item flex items-center gap-2" href="./purchase.php">
                 <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
-                 لیست مخاطبین
+                لیست مخاطبین
+            </a>
+        </li>
+        <li class="mx-1 <?= $fileName == 'purchase.php' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
+            <a class="p-2 menu_item flex items-center gap-2" href="./purchase.php">
+                <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
+                لیست کد های فنی
+            </a>
+        </li>
+        <li class="mx-1 <?= $fileName == 'purchase.php' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
+            <a class="p-2 menu_item flex items-center gap-2" href="../telegram/index.php">
+                <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
+                اتصال به تلگرام
             </a>
         </li>
     </ul>
