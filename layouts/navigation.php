@@ -13,7 +13,13 @@ $fileName = basename($_SERVER['PHP_SELF']);
         <li class="mx-1 <?= $fileName == 'purchase.php' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
             <a class="p-2 menu_item flex items-center gap-2" href="./purchase.php">
                 <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
-                ورود کالا
+                 پروفایل کاربری
+            </a>
+        </li>
+        <li class="mx-1 <?= $fileName == 'purchase.php' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
+            <a class="p-2 menu_item flex items-center gap-2" href="./purchase.php">
+                <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
+                 لیست مخاطبین
             </a>
         </li>
     </ul>

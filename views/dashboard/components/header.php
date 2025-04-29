@@ -22,4 +22,4 @@ require_once '../../utilities/assets/jdf.php'; ?>
     <script src="../../public/js/assets/axios.js"></script>
 </head>
 
-<body class="min-h-screen bg-gray-50 pt-14">
+<body class="min-h-screen bg-gray-100 pt-14">
