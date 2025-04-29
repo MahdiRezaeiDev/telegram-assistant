@@ -1,5 +1,6 @@
 <?php
-if (!isset($dbname)) {
+if (!isset($DB_NAME)) {
+    // If the constant is not defined, it means this file is being accessed directly.
     header("Location: ../../../views/auth/403.php");
 }
 
@@ -37,14 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $MadelineProto->phoneLogin($phone);
 
             // Redirect to the code verification page
-            header('Location: verify_code.php');
+            header('Location: ./verify_code.php');
             exit();
         } catch (Exception $e) {
             print_r($_SESSION);
             echo 'Error: ' . $e->getMessage();
         }
-    } else {
-        echo 'Please provide all required information.';
     }
 }
 
