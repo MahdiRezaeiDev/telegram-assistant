@@ -2,7 +2,7 @@
 
 function isConnectedToTelegram()
 {
-    $sql = "SELECT * FROM telegram WHERE user_id = :user_id";
+    $sql = "SELECT * FROM telegram_credentials WHERE user_id = :user_id";
     $stmt = DB->prepare($sql);
     $stmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
     $stmt->execute();

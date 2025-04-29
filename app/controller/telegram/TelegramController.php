@@ -13,6 +13,12 @@ if (!is_dir($sessionDir)) {
     mkdir($sessionDir, 0777, true);
 }
 
+// Check if the user is logged in (based on session)
+if (isConnectedToTelegram()) {
+    header('Location: send_Message.php');
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $apiId = $_POST['api_id'];
     $apiHash = $_POST['api_hash'];
@@ -45,10 +51,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo 'Error: ' . $e->getMessage();
         }
     }
-}
-
-// Check if the user is logged in (based on session)
-if (isset($_SESSION['api_hash'])) {
-    header('Location: send_Message.php');
-    exit();
 }
