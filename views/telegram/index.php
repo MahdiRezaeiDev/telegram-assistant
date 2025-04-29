@@ -57,7 +57,7 @@ if (isset($_SESSION['api_hash'])) {
     exit();
 }
 ?>
-<main class="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+<main class="flex flex-col items-center justify-center  bg-gray-100 p-4">
     <section class="bg-white shadow-md rounded-lg p-6 max-w-md w-full">
         <h1 class="text-2xl font-bold text-gray-800 mb-4">وارد کردن اطلاعات</h1>
         <form method="post" action="" class="space-y-4">
