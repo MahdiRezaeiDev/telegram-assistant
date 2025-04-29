@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once './vendor/autoload.php';
+require_once '../../vendor/autoload.php';
 
 use danog\MadelineProto\API;
 
@@ -41,12 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['password'])) {
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ورود به تلگرام - رمز عبور</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
     <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-xl">
         <h1 class="text-2xl font-bold text-gray-800 mb-4">وارد کردن رمز عبور</h1>
@@ -56,4 +58,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['password'])) {
         </form>
     </div>
 </body>
+
 </html>

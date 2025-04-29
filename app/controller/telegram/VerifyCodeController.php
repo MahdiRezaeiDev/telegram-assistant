@@ -3,7 +3,6 @@
 use danog\MadelineProto\API;
 use danog\MadelineProto\Exception;
 use danog\MadelineProto\Settings\AppInfo;
-use PhpParser\Node\Stmt\Else_;
 
 if (!isset($DB_NAME)) {
     // If the constant is not defined, it means this file is being accessed directly.
@@ -67,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['code'])) {
         header('Location: send_message.php');
         exit();
     } catch (Exception $e) {
+        echo "here is the error";
         echo 'Error: ' . $e->getMessage();
     }
 } else {
