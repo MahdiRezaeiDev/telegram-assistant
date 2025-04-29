@@ -17,6 +17,12 @@ require_once "../../layouts/navigation.php";
         </form>
     </section>
 </main>
+<script>
+    function isLoading() {
+        const loading = document.getElementById('loading');
+        loading.classList.toggle('hidden');
+    }
+</script>
 <?php
 require_once '../components/footer.php';
 ?>
