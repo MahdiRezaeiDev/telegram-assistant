@@ -1,11 +1,12 @@
 <?php
+
+use danog\MadelineProto\API;
+use danog\MadelineProto\Settings\AppInfo;
+
 if (!isset($DB_NAME)) {
     // If the constant is not defined, it means this file is being accessed directly.
     header("Location: ../../../views/auth/403.php");
 }
-
-use danog\MadelineProto\API;
-use danog\MadelineProto\Settings\AppInfo;
 
 // Ensure the sessions directory exists
 $sessionDir = 'sessions';
