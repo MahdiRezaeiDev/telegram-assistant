@@ -69,15 +69,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 function saveTelegramCredentials($apiId, $apiHash, $sessionName, $phone)
 {
     try {
-        $sql = "INSERT INTO telegram_credentials (user_id, api_id, api_hash, session_name, phone_number) VALUES (:user_id, :api_id, :api_hash, :session_name, :phone_number)";
+        $sql = "INSERT INTO telegram_credentials (user_id, api_id, api_hash, session_name, phone) VALUES (:user_id, :api_id, :api_hash, :session_name, :phone_number)";
         $stmt = DB->prepare($sql);
-        $stmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $userId = USER_ID;
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
         $stmt->bindParam(':api_id', $apiId, PDO::PARAM_INT);
         $stmt->bindParam(':api_hash', $apiHash, PDO::PARAM_STR);
         $stmt->bindParam(':session_name', $sessionName, PDO::PARAM_STR);
         $stmt->bindParam(':phone_number', $phone, PDO::PARAM_STR);
         return $stmt->execute();
     } catch (PDOException $e) {
+        print_r($e->getMessage());
         return false;
     }
 }
@@ -87,7 +89,8 @@ function updateTelegramCredentials($apiId, $apiHash, $sessionName, $phone)
     try {
         $sql = "UPDATE telegram_credentials SET api_id = :api_id, api_hash = :api_hash, session_name = :session_name, phone_number = :phone_number WHERE user_id = :user_id";
         $stmt = DB->prepare($sql);
-        $stmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $userId = USER_ID;
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
         $stmt->bindParam(':api_id', $apiId, PDO::PARAM_INT);
         $stmt->bindParam(':api_hash', $apiHash, PDO::PARAM_STR);
         $stmt->bindParam(':session_name', $sessionName, PDO::PARAM_STR);

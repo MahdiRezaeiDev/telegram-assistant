@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['password'])) {
         markAccountAsConnected(USER_ID);
 
         // Redirect to send message page
-        header('Location: send_message.php');
+        header('Location: ../dashboard/dashboard.php');
         exit();
     } catch (Exception $e) {
         echo 'Error: ' . $e->getMessage();
