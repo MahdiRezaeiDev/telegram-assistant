@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         try {
             $MadelineProto = new API($sessionName, $settings);
             $MadelineProto->phoneLogin($phone);
-            saveTelegramCredentials($apiId, $apiHash, $phone);
+            saveTelegramCredentials($apiId, $apiHash, $sessionName, $phone);
 
             // Redirect to the code verification page
             header('Location: ./verify_code.php');
@@ -56,13 +56,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 
-function saveTelegramCredentials($apiId, $apiHash, $phone)
+function saveTelegramCredentials($apiId, $apiHash, $sessionName, $phone)
 {
-    $sql = "INSERT INTO telegram_credentials (user_id, api_id, api_hash, phone) VALUES (:user_id, :api_id, :api_hash, :phone)";
+    $sql = "INSERT INTO telegram_credentials (user_id, api_id, api_hash, session_name, phone) VALUES (:user_id, :api_id, :api_hash, :session_name, :phone)";
     $stmt = DB->prepare($sql);
     $stmt->bindParam(':user_id', $_SESSION['id'], PDO::PARAM_INT);
     $stmt->bindParam(':api_id', $apiId, PDO::PARAM_STR);
     $stmt->bindParam(':api_hash', $apiHash, PDO::PARAM_STR);
+    $stmt->bindParam(':session_name', $sessionName, PDO::PARAM_STR);
     $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
     return $stmt->execute();
 }
