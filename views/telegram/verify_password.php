@@ -4,7 +4,7 @@ $category = "telegram";
 $iconUrl = 'telegram.svg';
 require_once '../components/header.php';
 require_once '../../vendor/autoload.php';
-require_once '../../app/controller/telegram/TelegramController.php';
+require_once '../../app/controller/telegram/VerifyPasswordController.php';
 require_once "../../layouts/navigation.php";
 ?>
 <main class="flex flex-col items-center justify-center  bg-gray-100 pt-20">
