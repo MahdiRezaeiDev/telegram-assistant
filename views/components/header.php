@@ -17,8 +17,6 @@ require_once '../../utilities/helper.php';
     <meta name="author" content="Mahdi Rezaei">
     <title id="customer_factor"><?= $pageTitle ?></title>
     <link rel="icon" href="../../public/img/<?= $iconUrl ?>" sizes="32x32">
-
-
     <link href="../../public/css/output.css" rel="stylesheet">
 
     <script src="../../public/js/assets/axios.js"></script>
