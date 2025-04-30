@@ -14,6 +14,9 @@ require_once "../../layouts/navigation.php";
             <input type="text" name="api_id" placeholder="API ID" class="w-full p-2 border border-gray-300 rounded-md" required>
             <input type="text" name="api_hash" placeholder="API Hash" class="w-full p-2 border border-gray-300 rounded-md" required>
             <input type="text" name="phone" placeholder="شماره تلفن خود را وارد کنید" class="w-full p-2 border border-gray-300 rounded-md" required>
+            <?php if (isset($error)) : ?>
+                <div class="text-red-500 text-sm mt-2"><?= $error ?></div>
+            <?php endif; ?>
             <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md">ورود</button>
         </form>
     </section>
