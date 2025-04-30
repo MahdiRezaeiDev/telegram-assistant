@@ -9,10 +9,13 @@ require_once "../../layouts/navigation.php";
 ?>
 <main class="flex flex-col items-center justify-center  bg-gray-100 pt-20">
     <section class="bg-white shadow-md rounded-lg p-6 max-w-md w-full">
-        <h1 class="text-2xl font-bold text-gray-800 mb-4">وارد کردن کد تایید</h1>
+        <div class="mb-4">
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">وارد کردن کد تایید</h1>
+            <span class="text-sm text-gray-600 pb-4">لطفا کد تایید را که به حساب تلگرام شما ارسال شده است، وارد کنید.</span>
+        </div>
         <form method="post" action="<?= htmlentities($_SERVER['PHP_SELF']) ?>" class="space-y-4">
-            <input type="text" name="code" placeholder="کد تایید را وارد کنید" class="w-full p-2 border border-gray-300 rounded-md" required>
-            <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md">ورود</button>
+            <input type="text" name="code" placeholder="کد تایید را وارد کنید" class="w-full p-2 border border-gray-300 rounded" required>
+            <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded">ورود</button>
         </form>
     </section>
 </main>
