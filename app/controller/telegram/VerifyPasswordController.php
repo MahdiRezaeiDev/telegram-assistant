@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['password'])) {
 
         // Save session info
         $_SESSION['user_id'] = $user['id'];
+        markAccountAsConnected(USER_ID);
 
         // Redirect to send message page
         header('Location: send_message.php');

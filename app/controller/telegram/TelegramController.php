@@ -44,9 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         try {
             $MadelineProto = new API($sessionName, $settings);
             $MadelineProto->phoneLogin($phone);
-
-            print_r(var_dump(isAccountExists($_SESSION['user_id'])));
-            if (isAccountExists($_SESSION['id']) && !isAccountConnected($_SESSION['id'])) {
+            if (isAccountExists(USER_ID) && !isAccountConnected(USER_ID)) {
                 $error = 'کاربری با این شماره تلفن وجود دارد. لطفا شماره تلفن دیگری وارد کنید.';
                 // If the user already exists, update their credentials
                 updateTelegramCredentials($apiId, $apiHash, $sessionName, $phone);
