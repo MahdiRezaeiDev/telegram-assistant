@@ -49,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: ./verify_code.php');
             exit();
         } catch (Exception $e) {
-            print_r($_SESSION);
             echo 'Error: ' . $e->getMessage();
         }
     }

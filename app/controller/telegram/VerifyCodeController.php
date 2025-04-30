@@ -69,6 +69,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['code'])) {
         echo "here is the error";
         echo 'Error: ' . $e->getMessage();
     }
-} else {
-    echo 'Please enter the verification code sent to your phone.';
 }
