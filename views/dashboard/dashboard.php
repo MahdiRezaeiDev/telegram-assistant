@@ -4,6 +4,8 @@ $iconUrl = 'telegram.svg';
 require_once '../components/header.php';
 require_once '../../app/controller/dashboard/DashboardController.php';
 require_once "../../layouts/navigation.php";
+
+var_dump(isDirExists(USER_ID));
 ?>
 <section class="mx-auto rtl bg-gray-100">
     <div class="flex items-center justify-between px-5 py-3 bg-green-600 text-xs text-white shadow-md">

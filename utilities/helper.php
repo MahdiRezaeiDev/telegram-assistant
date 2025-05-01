@@ -8,7 +8,21 @@ function isConnectedToTelegram()
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
     return $result;
+}
+
+function isDirExists($userId)
+{
+    $sql = "SELECT session_name FROM telegram_credentials WHERE user_id = :user_id";
+    $stmt = DB->prepare($sql);
+    $userId = USER_ID;
+    $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $sessionName = $result['session_name'];
+    $sessionDir = __DIR__ . "/../sessions/" . $sessionName;
+    return is_dir($sessionDir) && file_exists($sessionDir . "/.madeline-proto.session");
 }
 
 function isAccountExists($userId)
