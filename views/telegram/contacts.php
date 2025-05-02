@@ -38,31 +38,24 @@ require_once "../../layouts/navigation.php";
             </tr>
         </thead>
         <tbody id="initial_data" class="border border-dashed border-gray-600">
-            <tr class="even:bg-gray-100" data-operation="update" data-chat="43416835" data-name=" Morteza" data-username="@mortezaforoghi1" data-profile="http://tel.yadak.center/img/telegram/43416835_x_4.jpg">
-                <td class="p-2 text-center">1 </td>
-                <td class="p-2 text-center">Morteza</td>
-                <td class="p-2 text-center" style="text-decoration:ltr">@mortezaforoghi1</td>
-                <td class="p-2 text-center"> <img class="w-8 h-8 rounded-full mx-auto d-block" src="http://tel.yadak.center/img/telegram/43416835_x_4.jpg"> </td>
-                <td class="p-2 text-center">
-                    <input checked="" data-section="exist" class="cursor-pointer 
-                      exist user-43416835" data-user="43416835" type="checkbox" name="1" onclick="addPartner(this)">
-                </td>
-
-                <td class="p-2 text-center">
-                    <input checked="" data-section="exist" class="cursor-pointer 
-                      exist user-43416835" data-user="43416835" type="checkbox" name="2" onclick="addPartner(this)">
-                </td>
-
-                <td class="p-2 text-center">
-                    <input data-section="exist" class="cursor-pointer 
-                      exist user-43416835" data-user="43416835" type="checkbox" name="5" onclick="addPartner(this)">
-                </td>
-
-                <td class="p-2 text-center">
-                    <input data-section="exist" class="cursor-pointer 
-                      exist user-43416835" data-user="43416835" type="checkbox" name="14" onclick="addPartner(this)">
-                </td>
-            </tr>
+            <?php
+            if (empty($contacts)) {
+                echo '<tr><td colspan="8" class="text-center text-gray-500 p-4 ">هیچ مخاطبی برای نمایش وجود ندارد</td></tr>';
+            } else {
+                foreach ($contacts as $contact) {
+                    echo '<tr class="border-b border-gray-600 hover:bg-gray-700">';
+                    echo '<td class="p-3 text-center">' . htmlspecialchars($contact['phone_number']) . '</td>';
+                    echo '<td class="p-3 text-center">' . htmlspecialchars($contact['first_name']) . '</td>';
+                    echo '<td class="p-3 text-center">' . htmlspecialchars($contact['username']) . '</td>';
+                    echo '<td class="p-3 text-center"><a href="' . htmlspecialchars($contact['profile_url']) . '" target="_blank">مشاهده</a></td>';
+                    echo '<td class="p-3 text-center">' . htmlspecialchars($contact['hyundai']) . '</td>';
+                    echo '<td class="p-3 text-center">' . htmlspecialchars($contact['kia']) . '</td>';
+                    echo '<td class="p-3 text-center">' . htmlspecialchars($contact['chinese']) . '</td>';
+                    echo '<td class="p-3 text-center">' . htmlspecialchars($contact['i20']) . '</td>';
+                    echo '</tr>';
+                }
+            }
+            ?>
         </tbody>
     </table>
 </section>
