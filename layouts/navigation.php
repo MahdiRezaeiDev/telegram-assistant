@@ -8,13 +8,13 @@ if (!isset($DB_NAME)) {
         <!-- <li onclick="toggleSidebar()" class="mx-1 px-3 bg-gray-200 hover:bg-gray-400 text-sm font-bold cursor-pointer flex items-center gap-2">
             <img id="open_aside_icon" class="w-6 h-6" src="../../public/icons/menu.svg" alt="menu icon">
         </li> -->
-        <li class="mx-1 <?= $category == 'purchase.php' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
-            <a class="p-2 menu_item flex items-center gap-2" href="./purchase.php">
+        <li class="mx-1 <?= $category == 'profile' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
+            <a class="p-2 menu_item flex items-center gap-2" href="../profile/index.php">
                 <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
                 پروفایل کاربری
             </a>
         </li>
-        <li class="mx-1 <?= $category == 'purchase.php' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
+        <li class="mx-1 <?= $category == 'contacts' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
             <a class="p-2 menu_item flex items-center gap-2" href="../telegram/contacts.php">
                 <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
                 لیست مخاطبین
@@ -26,7 +26,7 @@ if (!isset($DB_NAME)) {
                 لیست کد های فنی
             </a>
         </li>
-        <li class="mx-1 <?= $category = "telegram" ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
+        <li class="mx-1 <?= $category == "telegram" ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
             <a class="p-2 menu_item flex items-center gap-2" href="../telegram/connect.php">
                 <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
                 اتصال به تلگرام

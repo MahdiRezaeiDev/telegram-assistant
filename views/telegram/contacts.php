@@ -1,6 +1,6 @@
 <?php
 $pageTitle = "اتصال به تلگرام";
-$category = "telegram";
+$category = "contacts";
 $iconUrl = 'telegram.svg';
 require_once '../components/header.php';
 require_once '../../vendor/autoload.php';
