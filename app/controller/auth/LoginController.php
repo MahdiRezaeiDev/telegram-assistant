@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($username_err) && empty($password_err)) {
         try {
             // Prepare a select statement
-            $sql = "SELECT accounts.*, users.name, users.last_name, users.phone
+            $sql = "SELECT accounts.*, users.name, users.last_name, users.phone, users.company, accounts.role, users.address
                     FROM accounts
                     INNER JOIN users ON accounts.user_id = users.id
                     WHERE accounts.username = :username";

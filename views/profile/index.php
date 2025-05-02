@@ -10,23 +10,23 @@ require_once "../../layouts/navigation.php";
 <div class="min-h-screen bg-gray-100 p-6 flex items-center justify-center">
     <div class="bg-white shadow-2xl rounded-2xl p-8 max-w-md w-full">
         <div class="flex flex-col items-center">
-            <img class="w-28 h-28 rounded-full object-cover border-4 border-indigo-500 shadow-md" src="/path/to/avatar.jpg" alt="User Avatar">
+            <img class="w-28 h-28 rounded-full object-cover border-4 border-indigo-500 shadow-md" src="../../public/icons/avatar.svg" alt="User Avatar">
             <h2 class="mt-4 text-2xl font-bold text-gray-800"><?= USER['name'] . ' ' . USER['last_name'] ?></h2>
             <p class="text-sm text-gray-500 mt-1"><?= USER['username'] ?></p>
         </div>
 
         <div class="mt-6 space-y-4">
             <div class="flex items-center justify-between border-b pb-2">
-                <span class="text-gray-600 font-medium">ایمیل</span>
-                <span class="text-gray-800">user@example.com</span>
+                <span class="text-gray-600 font-medium">شرکت</span>
+                <span class="text-gray-800"><?= USER['company'] ?></span>
             </div>
             <div class="flex items-center justify-between border-b pb-2">
                 <span class="text-gray-600 font-medium">شماره تماس</span>
-                <span class="text-gray-800">09123456789</span>
+                <span class="text-gray-800" style="direction: ltr !important;"><?= USER['phone'] ?></span>
             </div>
             <div class="flex items-center justify-between border-b pb-2">
                 <span class="text-gray-600 font-medium">تاریخ عضویت</span>
-                <span class="text-gray-800">1402/01/15</span>
+                <span class="text-gray-800" style="direction: ltr !important;"><?= date('Y-m-d', strtotime(USER['created_at'])) ?></span>
             </div>
         </div>
 
