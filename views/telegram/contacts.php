@@ -33,33 +33,39 @@ require_once "../../layouts/navigation.php";
                 <th scope="col" class="text-white font-semibold p-3 text-center">
                     شناسه یکتا
                 </th>
+                <th scope="col" class="text-white font-semibold p-3 text-center">
+                    انسداد شماره
+                </th>
             </tr>
         </thead>
         <tbody id="initial_data" class="border border-dashed border-gray-600">
-            <?php
-            if (empty($contacts)) : ?>
+            <?php if (empty($contacts)) : ?>
                 <tr>
                     <td colspan="8" class="text-center text-gray-500 p-4 ">هیچ مخاطبی برای نمایش وجود ندارد</td>
                 </tr>
                 <?php
             else:
-                foreach ($contacts as $index => $contact):
-                ?>
+                foreach ($contacts as $index => $contact): ?>
                     <tr class="even:bg-gray-100 odd:bg-white hover:bg-gray-200 transition duration-300">
                         <td class="p-3 text-center"><?= $index + 1 ?></td>
                         <td class="p-3 text-center"><?= htmlspecialchars($contact['name']) ?></td>
                         <td class="p-3 text-center"><?= htmlspecialchars($contact['phone']) ?></td>
                         <td class="p-3 text-center"><?= htmlspecialchars($contact['username']) ?></td>
                         <td class="p-3 text-center"><?= htmlspecialchars($contact['api_bot_id']) ?></td>
+                        <td class="p-3 text-center">
+                            <input
+                                onclick="updateContactStatus(<?= $contact['id'] ?>, this.checked)"
+                                type="checkbox" name="blocked" id="blocked"
+                                class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
+                                <?= $contact['is_blocked'] ? 'checked' : '' ?>>
+                        </td>
                     </tr>
             <?php
                 endforeach;
-            endif;
-            ?>
+            endif; ?>
         </tbody>
     </table>
 </section>
-
 <?php if (isset($_GET['success'])) : ?>
     <script>
         Swal.fire({
@@ -68,6 +74,19 @@ require_once "../../layouts/navigation.php";
             text: 'مخاطبین تلگرام با موفقیت بارگیری شدند.',
             confirmButtonText: 'باشه'
         });
+
+        function updateContactStatus(contactId, isBlocked) {
+            axios.post('<?= $baseUrl ?>/app/controller/telegram/ContactsController.php', {
+                    contactId: contactId,
+                    isBlocked: isBlocked
+                })
+                .then(function(response) {
+                    console.log(response.data);
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        }
     </script>
 <?php endif; ?>
 
