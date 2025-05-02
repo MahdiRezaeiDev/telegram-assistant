@@ -17,8 +17,8 @@ $MadelineProto->start();
 
 try {
     $contacts = $MadelineProto->contacts->getContacts(['hash' => '0']);
-
     saveContacts($contacts['users'], USER_ID);
+    header("Location: contacts.php?success=1");
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();
     exit;
@@ -53,6 +53,4 @@ function saveContacts($contacts, $userId)
 
     $checkStmt->closeCursor();
     $insertStmt->closeCursor();
-    echo '<script>alert("Contacts saved successfully!");</script>';
 }
-

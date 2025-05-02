@@ -20,6 +20,7 @@ require_once '../../utilities/helper.php';
     <link href="../../public/css/output.css" rel="stylesheet">
 
     <script src="../../public/js/assets/axios.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="min-h-screen bg-gray-100 pt-14">

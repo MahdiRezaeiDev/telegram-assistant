@@ -60,4 +60,15 @@ require_once "../../layouts/navigation.php";
     </table>
 </section>
 
+<?php if (isset($_GET['success'])) : ?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'عملیات موفقیت آمیز بود',
+            text: 'مخاطبین تلگرام با موفقیت بارگیری شدند.',
+            confirmButtonText: 'باشه'
+        });
+    </script>
+<?php endif; ?>
+
 <?php require_once '../components/footer.php'; ?>
