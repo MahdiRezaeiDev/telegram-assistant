@@ -14,7 +14,7 @@ if (isConnectedToTelegram()):
     <div class="flex items-center justify-between px-5 py-3 bg-red-600 text-xs text-white shadow-md">
         <span>
             حساب کاربری و حساب تلگرام شما به همه متصل نشده است.
-            <a class="underline text-blue-800" href="../telegram/connect.php">برای اتصال حساب تلگرام خود اینجا کلیک نمایید.</a>
+            <a class="underline" href="../telegram/connect.php">برای اتصال حساب تلگرام خود اینجا کلیک نمایید.</a>
         </span>
 
     </div>
