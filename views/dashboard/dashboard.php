@@ -5,13 +5,20 @@ require_once '../components/header.php';
 require_once '../../app/controller/dashboard/DashboardController.php';
 require_once "../../layouts/navigation.php";
 
-var_dump(isDirExists(USER_ID));
-?>
-<section class="mx-auto rtl bg-gray-100">
+if (isConnectedToTelegram()):
+?> nbk
     <div class="flex items-center justify-between px-5 py-3 bg-green-600 text-xs text-white shadow-md">
         <span>حساب کاربری و حساب تلگرام شما به همه متصل شده است</span>
     </div>
-</section>
+<?php else: ?>
+    <div class="flex items-center justify-between px-5 py-3 bg-red-600 text-xs text-white shadow-md">
+        <span>
+            حساب کاربری و حساب تلگرام شما به همه متصل نشده است.
+            <a class="underline text-blue-800" href="../telegram/connect.php">برای اتصال حساب تلگرام خود اینجا کلیک نمایید.</a>
+        </span>
+
+    </div>
+<?php endif; ?>
 <!-- ------------------------------------------------ Dashboard card section ---------------------------------------------------- -->
 <section class="mx-auto px-5 pb-5 bg-gray-100">
     <div class="grid grid-cols-1 gap-5 mt-6 sm:grid-cols-2 lg:grid-cols-4">

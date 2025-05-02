@@ -8,7 +8,6 @@ function isConnectedToTelegram()
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
     return $result;
 }
 
@@ -20,6 +19,10 @@ function isDirExists($userId)
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$result) {
+        return false;
+    }
+
     $sessionName = $result['session_name'];
     $sessionDir = __DIR__ . "/../sessions/" . $sessionName;
     return is_dir($sessionDir) && file_exists($sessionDir . "/.madeline-proto.session");
