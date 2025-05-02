@@ -74,20 +74,35 @@ require_once "../../layouts/navigation.php";
             text: 'مخاطبین تلگرام با موفقیت بارگیری شدند.',
             confirmButtonText: 'باشه'
         });
-
-        function updateContactStatus(contactId, isBlocked) {
-            axios.post('<?= $baseUrl ?>/app/controller/telegram/ContactsController.php', {
-                    contactId: contactId,
-                    isBlocked: isBlocked
-                })
-                .then(function(response) {
-                    console.log(response.data);
-                })
-                .catch(function(error) {
-                    console.error(error);
-                });
-        }
     </script>
 <?php endif; ?>
+<script>
+    function updateContactStatus(contactId, isBlocked) {
+        const params = new URLSearchParams();
+        params.append('action', 'updateContactStatus');
+        params.append('contactId', contactId);
+        params.append('isBlocked', isBlocked ? 1 : 0);
+
+        axios.post('../../app/api/telegram/ContactsApi.php', params)
+            .then(function(response) {
+                console.log(response.data);
+                if (response.data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'عملیات موفقیت آمیز بود',
+                        text: 'وضعیت مخاطب با موفقیت به روز شد.',
+                        confirmButtonText: 'باشه'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'خطا در به روز رسانی',
+                        text: response.data.message,
+                        confirmButtonText: 'باشه'
+                    });
+                }
+            })
+    }
+</script>
 
 <?php require_once '../components/footer.php'; ?>
