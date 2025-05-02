@@ -8,9 +8,12 @@ require_once '../../app/controller/telegram/ContactsController.php';
 require_once "../../layouts/navigation.php";
 ?>
 <section class="shadow-md rounded-lg p-6 w-full">
-    <div class="mb-4">
-        <h1 class="text-2xl font-bold text-gray-800">لیست مخاطبین</h1>
-        <span class="text-sm text-gray-600 pb-4">در اینجا لیست مخاطبین شما نمایش داده می‌شود.</span>
+    <div class="mb-4 flex justify-between items-center">
+        <div class="">
+            <h1 class="text-2xl font-bold text-gray-800">لیست مخاطبین</h1>
+            <span class="text-sm text-gray-600 pb-4">در اینجا لیست مخاطبین شما نمایش داده می‌شود.</span>
+        </div>
+        <a class="rounded bg-sky-600 text-white text-xs p-3" href="../telegram/telegramContacts.php">بارگیری مخاطبین تلگرام</a>
     </div>
     <table class="table-fixed w-full">
         <thead class="sticky_nav sticky bg-gray-800 border border-gray-600">
