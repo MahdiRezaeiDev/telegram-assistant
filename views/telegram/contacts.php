@@ -13,6 +13,9 @@ require_once "../../layouts/navigation.php";
             <h1 class="text-2xl font-bold text-gray-800">لیست مخاطبین</h1>
             <span class="text-sm text-gray-600 pb-4">در اینجا لیست مخاطبین شما نمایش داده می‌شود.</span>
         </div>
+        <input type="search" name="search" id="search" placeholder="جستجو..."
+            onkeyup="searchContacts(this.value)"
+            class="rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         <a class="rounded bg-sky-600 text-white text-xs p-3" href="../telegram/telegramContacts.php">بارگیری مخاطبین تلگرام</a>
     </div>
     <table class="table-fixed w-full">
@@ -41,7 +44,7 @@ require_once "../../layouts/navigation.php";
         <tbody id="initial_data" class="border border-dashed border-gray-600">
             <?php if (empty($contacts)) : ?>
                 <tr>
-                    <td colspan="8" class="text-center text-gray-500 p-4 ">هیچ مخاطبی برای نمایش وجود ندارد</td>
+                    <td colspan="6" class="text-center text-gray-500 p-4 ">هیچ مخاطبی برای نمایش وجود ندارد</td>
                 </tr>
                 <?php
             else:
@@ -102,6 +105,22 @@ require_once "../../layouts/navigation.php";
                     });
                 }
             })
+    }
+
+    function searchContacts(query) {
+        const initialData = document.getElementById('initial_data');
+        const rows = initialData.getElementsByTagName('tr');
+        for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            let found = false;
+            for (let j = 1; j < cells.length; j++) { // Start from 1 to skip the first cell
+                if (cells[j].innerText.toLowerCase().includes(query.toLowerCase())) {
+                    found = true;
+                    break;
+                }
+            }
+            rows[i].style.display = found ? '' : 'none';
+        }
     }
 </script>
 
