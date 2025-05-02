@@ -18,46 +18,43 @@ require_once "../../layouts/navigation.php";
     <table class="table-fixed w-full">
         <thead class="sticky_nav sticky bg-gray-800 border border-gray-600">
             <tr>
-                <th scope="col" class="text-white font-semibold p-3 text-center">
-                    شماره
+                <th scope="col" class="text-white font-semibold p-3 text-center w-8">
+                    #
                 </th>
                 <th scope="col" class="text-white font-semibold p-3 text-center">
-                    نام
+                    نام نام خانوادگی
                 </th>
                 <th scope="col" class="text-white font-semibold p-3 text-center">
                     نام کاربری
                 </th>
                 <th scope="col" class="text-white font-semibold p-3 text-center">
-                    پروفایل
+                    شماره تماس
                 </th>
                 <th scope="col" class="text-white font-semibold p-3 text-center">
-                    هیوندای </th>
-                <th scope="col" class="text-white font-semibold p-3 text-center">
-                    کیا </th>
-                <th scope="col" class="text-white font-semibold p-3 text-center">
-                    چینی </th>
-                <th scope="col" class="text-white font-semibold p-3 text-center">
-                    i20 </th>
+                    شناسه یکتا
+                </th>
             </tr>
         </thead>
         <tbody id="initial_data" class="border border-dashed border-gray-600">
             <?php
-            if (empty($contacts)) {
-                echo '<tr><td colspan="8" class="text-center text-gray-500 p-4 ">هیچ مخاطبی برای نمایش وجود ندارد</td></tr>';
-            } else {
-                foreach ($contacts as $contact) {
-                    echo '<tr class="border-b border-gray-600 hover:bg-gray-700">';
-                    echo '<td class="p-3 text-center">' . htmlspecialchars($contact['phone_number']) . '</td>';
-                    echo '<td class="p-3 text-center">' . htmlspecialchars($contact['first_name']) . '</td>';
-                    echo '<td class="p-3 text-center">' . htmlspecialchars($contact['username']) . '</td>';
-                    echo '<td class="p-3 text-center"><a href="' . htmlspecialchars($contact['profile_url']) . '" target="_blank">مشاهده</a></td>';
-                    echo '<td class="p-3 text-center">' . htmlspecialchars($contact['hyundai']) . '</td>';
-                    echo '<td class="p-3 text-center">' . htmlspecialchars($contact['kia']) . '</td>';
-                    echo '<td class="p-3 text-center">' . htmlspecialchars($contact['chinese']) . '</td>';
-                    echo '<td class="p-3 text-center">' . htmlspecialchars($contact['i20']) . '</td>';
-                    echo '</tr>';
-                }
-            }
+            if (empty($contacts)) : ?>
+                <tr>
+                    <td colspan="8" class="text-center text-gray-500 p-4 ">هیچ مخاطبی برای نمایش وجود ندارد</td>
+                </tr>
+                <?php
+            else:
+                foreach ($contacts as $index => $contact):
+                ?>
+                    <tr class="">
+                        <td class="p-3 text-center"><?= $index + 1 ?></td>
+                        <td class="p-3 text-center"><?= htmlspecialchars($contact['name']) ?></td>
+                        <td class="p-3 text-center"><?= htmlspecialchars($contact['phone']) ?></td>
+                        <td class="p-3 text-center"><?= htmlspecialchars($contact['username']) ?></td>
+                        <td class="p-3 text-center"><?= htmlspecialchars($contact['api_bot_id']) ?></td>
+                    </tr>
+            <?php
+                endforeach;
+            endif;
             ?>
         </tbody>
     </table>
