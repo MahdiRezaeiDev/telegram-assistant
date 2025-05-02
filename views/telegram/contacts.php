@@ -45,7 +45,7 @@ require_once "../../layouts/navigation.php";
             else:
                 foreach ($contacts as $index => $contact):
                 ?>
-                    <tr class="">
+                    <tr class="even:bg-gray-100 odd:bg-white hover:bg-gray-200 transition duration-300">
                         <td class="p-3 text-center"><?= $index + 1 ?></td>
                         <td class="p-3 text-center"><?= htmlspecialchars($contact['name']) ?></td>
                         <td class="p-3 text-center"><?= htmlspecialchars($contact['phone']) ?></td>
