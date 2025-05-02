@@ -68,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['code'])) {
         exit();
     } catch (Exception $e) {
         echo "here is the error";
+        $MadelineProto->phoneLogin($phone);
         echo 'Error: ' . $e->getMessage();
     }
 }

@@ -6,7 +6,7 @@ require_once '../../app/controller/dashboard/DashboardController.php';
 require_once "../../layouts/navigation.php";
 
 if (isConnectedToTelegram()):
-?> nbk
+?>
     <div class="flex items-center justify-between px-5 py-3 bg-green-600 text-xs text-white shadow-md">
         <span>حساب کاربری و حساب تلگرام شما به همه متصل شده است</span>
     </div>
