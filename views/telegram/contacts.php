@@ -1,7 +1,7 @@
 <?php
-$pageTitle = "اتصال به تلگرام";
+$pageTitle = "مدیریت مخاطبین تلگرام";
 $category = "contacts";
-$iconUrl = 'telegram.svg';
+$iconUrl = 'contacts.svg';
 require_once '../components/header.php';
 require_once '../../vendor/autoload.php';
 require_once '../../app/controller/telegram/ContactsController.php';
