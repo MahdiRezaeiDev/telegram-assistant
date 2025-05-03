@@ -8,6 +8,14 @@ if (!isset($DB_NAME)) {
         <!-- <li onclick="toggleSidebar()" class="mx-1 px-3 bg-gray-200 hover:bg-gray-400 text-sm font-bold cursor-pointer flex items-center gap-2">
             <img id="open_aside_icon" class="w-6 h-6" src="../../public/icons/menu.svg" alt="menu icon">
         </li> -->
+        <?php if (USER['role'] == 'admin'): ?>
+            <li class="mx-1 <?= $category == 'users' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
+                <a class="p-2 menu_item flex items-center gap-2" href="../profile/list.php">
+                    <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
+                    مدیریت کاربران
+                </a>
+            </li>
+        <?php endif; ?>
         <li class="mx-1 <?= $category == 'profile' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
             <a class="p-2 menu_item flex items-center gap-2" href="../profile/index.php">
                 <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
