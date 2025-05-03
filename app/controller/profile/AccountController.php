@@ -4,53 +4,75 @@ if (!isset($DB_NAME)) {
 }
 
 
-$name = trim($_POST['name'] ?? '');
-$lastName = trim($_POST['last_name'] ?? '');
-$company = trim($_POST['company'] ?? '');
-$phone = trim($_POST['phone'] ?? '');
-$address = trim($_POST['address'] ?? '');
-$role = trim($_POST['role'] ?? 'user');
-$username = trim($_POST['username'] ?? '');
-$email = trim($_POST['email'] ?? '');
-$password = $_POST['password'] ?? '';
-$confirmPassword = $_POST['confirm_password'] ?? '';
+if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['name'])) {
+    // Define variables and initialize with empty values
+    $name = $lastName = $username = $company = $phone = $address = "";
+    $name_err = $lastName_err = $username_err = $company_err = $phone_err = $address_err = "";
 
-// === Validation ===
-if (!$name || !$username || !$email || !$password || !$confirmPassword) {
-    die("<script>alert('لطفاً تمام فیلدها را پر کنید'); window.history.back();</script>");
+    // Validate inputs
+    if (empty(sanitizeInput($_POST["name"]))) {
+        $name_err = "لطفا نام خود را وارد کنید.";
+    } else {
+        $name = sanitizeInput($_POST["name"]);
+    }
+
+    if (empty(sanitizeInput($_POST["last_name"]))) {
+        $lastName_err = "لطفا نام خانوادگی خود را وارد کنید.";
+    } else {
+        $lastName = sanitizeInput($_POST["last_name"]);
+    }
+
+    if (empty(sanitizeInput($_POST["username"]))) {
+        $username_err = "لطفا نام کاربری خود را وارد کنید.";
+    } else {
+        $username = sanitizeInput($_POST["username"]);
+    }
+
+    if (empty(sanitizeInput($_POST["company"]))) {
+        $company_err = "لطفا نام شرکت خود را وارد کنید.";
+    } else {
+        $company = sanitizeInput($_POST["company"]);
+    }
+
+    if (empty(sanitizeInput($_POST["phone"]))) {
+        $phone_err = "لطفا شماره تماس خود را وارد کنید.";
+    } else {
+        $phone = sanitizeInput($_POST["phone"]);
+    }
+
+    if (empty(sanitizeInput($_POST["address"]))) {
+        $address_err = "لطفا آدرس خود را وارد کنید.";
+    } else {
+        $address = sanitizeInput($_POST["address"]);
+    }
+
+    // Check for errors before updating the profile
+    if (empty($name_err) && empty($lastName_err) && empty($username_err) && empty($company_err) && empty($phone_err) && empty($address_err)) {
+        // Update profile in the database
+        if (createProfile(USER['id'], $name, $lastName, $username, $company, $phone, $address)) {
+            header("Location: ./edit.php?success=1");
+            exit;
+        } else {
+            echo "Error updating profile. Please try again later.";
+        }
+    }
 }
 
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    die("<script>alert('ایمیل نامعتبر است'); window.history.back();</script>");
-}
-
-if ($password !== $confirmPassword) {
-    die("<script>alert('رمز عبور با تکرار آن مطابقت ندارد'); window.history.back();</script>");
-}
-
-if (strlen($password) < 6) {
-    die("<script>alert('رمز عبور باید حداقل ۶ کاراکتر باشد'); window.history.back();</script>");
-}
-
-// === Check for existing user ===
-$check = DB->prepare("SELECT users.id, accounts.user_id 
-                        FROM users 
-                        LEFT JOIN accounts ON users.id = accounts.user_id 
-                        WHERE users.username = ? OR users.phone = ? OR accounts.username = ?");
-$check->execute([$email, $username]);
-if ($check->fetch()) {
-    die("<script>alert('شماره تماس یا نام کاربری قبلاً ثبت شده است'); window.history.back();</script>");
-}
-$check->closeCursor();
-
-// === Insert user ===
-$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-$stmt = DB->prepare("INSERT INTO users (name, username, email, password, created_at) VALUES (?, ?, ?, ?, NOW())");
-$success = $stmt->execute([$name, $username, $email, $hashedPassword]);
-$stmt->closeCursor();
-
-if ($success) {
-    echo "<script>alert('حساب کاربری با موفقیت ایجاد شد'); window.location.href = '/users/list.php';</script>";
-} else {
-    echo "<script>alert('خطا در ایجاد حساب'); window.history.back();</script>";
+function createProfile($id, $name, $lastName, $username, $company, $phone, $address) {
+    global $DB_NAME;
+    try {
+        $sql = "UPDATE users SET name = :name, last_name = :last_name, username = :username, company = :company, phone = :phone, address = :address WHERE id = :id";
+        $stmt = DB->prepare($sql);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':last_name', $lastName);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':company', $company);
+        $stmt->bindParam(':phone', $phone);
+        $stmt->bindParam(':address', $address);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
 }

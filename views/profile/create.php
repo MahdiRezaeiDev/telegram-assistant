@@ -3,7 +3,7 @@ $pageTitle = "مدیریت کاربران";
 $category = "users";
 $iconUrl = 'profile.svg';
 require_once '../components/header.php';
-require_once '../../app/controller/profile/UsersController.php';
+require_once '../../app/controller/profile/AccountController.php';
 require_once "../../layouts/navigation.php";
 ?>
 
@@ -28,7 +28,7 @@ require_once "../../layouts/navigation.php";
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">شماره تماس</label>
-                <input name="email" type="text" required
+                <input name="phone" type="text" required
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:outline-none">
             </div>
             <div>
@@ -40,7 +40,7 @@ require_once "../../layouts/navigation.php";
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">شرکت</label>
-                <input name="email" type="email" required
+                <input name="company" type="text" required
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:outline-none">
             </div>
             <div>
@@ -60,6 +60,11 @@ require_once "../../layouts/navigation.php";
                 </button>
             </div>
         </form>
+        <?php if (isset($error)) : ?>
+            <div class="mt-4 text-red-500 text-center">
+                <?= htmlspecialchars($error) ?>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 
