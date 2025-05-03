@@ -17,7 +17,15 @@ require_once "../../layouts/navigation.php";
             class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
             required>
     </div>
-
+    <?php if (isset($file_error)): ?>
+        <span class="text-red-500 text-sm"><?= $file_error; ?></span>
+    <?php endif; ?>
+    <div class="text-sm text-gray-500 mb-4">
+        لطفا یک فایل Excel با فرمت .xlsx یا .xls انتخاب کنید.
+        <br>فایل باید شامل اطلاعات کالاها باشد.
+        <br>اطلاعات باید در ستون‌های مشخص شده قرار گیرد.
+        <br>لطفا از فرمت صحیح استفاده کنید.
+    </div>
     <div class="text-center">
         <button type="submit"
             class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300">
