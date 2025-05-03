@@ -5,7 +5,7 @@ if (!isset($DB_NAME)) {
 
 $currentUser = getUserData(USER['id']);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['name'])) {
     // Define variables and initialize with empty values
     $name = $lastName = $username = $company = $phone = $address = "";
     $name_err = $lastName_err = $username_err = $company_err = $phone_err = $address_err = "";
@@ -96,7 +96,10 @@ function getUserData($userId)
 {
     try {
         // Prepare a select statement
-        $sql = "SELECT * FROM users WHERE id = :id";
+        $sql = "SELECT users.* , accounts.username
+         FROM users 
+         INNER JOIN accounts ON users.id = accounts.user_id
+         WHERE users.id = :id;";
 
         // Prepare the SQL statement
         $stmt = DB->prepare($sql);
@@ -107,6 +110,74 @@ function getUserData($userId)
         // Attempt to execute the prepared statement
         if ($stmt->execute()) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
+        } else {
+            return false;
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['password'])) {
+    // Define variables and initialize with empty values
+    $password = $confirm_password = "";
+    $password_err = $confirm_password_err = "";
+
+    $username = $username_err = "";
+
+    if (empty(sanitizeInput($_POST["username"]))) {
+        $username_err = "لطفا نام کاربری را وارد کنید.";
+    } else {
+        $username = sanitizeInput($_POST["username"]);
+    }
+
+    // Validate inputs
+    if (empty(sanitizeInput($_POST["password"]))) {
+        $password_err = "لطفا رمز عبور جدید را وارد کنید.";
+    } elseif (strlen(sanitizeInput($_POST["password"])) < 6) {
+        $password_err = "رمز عبور باید حداقل 6 کاراکتر باشد.";
+    } else {
+        $password = sanitizeInput($_POST["password"]);
+    }
+
+    if (empty(sanitizeInput($_POST["confirm_password"]))) {
+        $confirm_password_err = "لطفا تکرار رمز عبور را وارد کنید.";
+    } else {
+        $confirm_password = sanitizeInput($_POST["confirm_password"]);
+        if ($password != $confirm_password) {
+            $confirm_password_err = "رمز عبور و تکرار آن مطابقت ندارند.";
+        }
+    }
+
+    // Check for errors before updating the password
+    if (empty($password_err) && empty($confirm_password_err)) {
+        // Update password in the database
+        if (updatePassword(USER['id'], password_hash($password, PASSWORD_DEFAULT), USER['username'])) {
+            header("Location: ./edit.php?success=1");
+            exit;
+        } else {
+            echo "Error updating password. Please try again later.";
+        }
+    }
+}
+
+function updatePassword($userId, $password, $username)
+{
+    try {
+        // Prepare a select statement
+        $sql = "UPDATE accounts SET password = :password , username = :username WHERE user_id = :id";
+
+        // Prepare the SQL statement
+        $stmt = DB->prepare($sql);
+
+        // Bind parameters
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+
+        // Attempt to execute the prepared statement
+        if ($stmt->execute()) {
+            return true;
         } else {
             return false;
         }
