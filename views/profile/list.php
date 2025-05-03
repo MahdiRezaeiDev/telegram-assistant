@@ -69,7 +69,7 @@ require_once "../../layouts/navigation.php";
     </table>
 </section>
 <script>
-        function searchContacts(query) {
+    function searchContacts(query) {
         const initialData = document.getElementById('initial_data');
         const rows = initialData.getElementsByTagName('tr');
         for (let i = 0; i < rows.length; i++) {
@@ -83,6 +83,51 @@ require_once "../../layouts/navigation.php";
             }
             rows[i].style.display = found ? '' : 'none';
         }
+    }
+
+    function deleteUser(userId) {
+        Swal.fire({
+            title: 'آیا مطمئن هستید؟',
+            text: "این کار غیرقابل بازگشت است!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'بله، حذف کن!',
+            cancelButtonText: 'خیر، انصراف'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const params = new URLSearchParams();
+                params.append('action', 'deleteUser');
+                params.append('userId', userId);
+                axios.post('../../app/api/profile/UsersApi.php', params)
+                    .then(function(response) {
+                        if (response.data.status === 'success') {
+                            Swal.fire(
+                                'حذف شد!',
+                                'کاربر با موفقیت حذف شد.',
+                                'success'
+                            ).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire(
+                                'خطا!',
+                                response.data.message,
+                                'error'
+                            );
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Error:', error);
+                        Swal.fire(
+                            'خطا!',
+                            'خطا در حذف کاربر. لطفا دوباره تلاش کنید.',
+                            'error'
+                        );
+                    });
+            }
+        })
     }
 </script>
 <?php require_once '../components/footer.php'; ?>
