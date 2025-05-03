@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['password'])) {
     // Check for errors before updating the password
     if (empty($password_err) && empty($confirm_password_err)) {
         // Update password in the database
-        if (updatePassword(USER['id'], password_hash($password, PASSWORD_DEFAULT), USER['username'])) {
+        if (updatePassword(USER['id'], password_hash($password, PASSWORD_DEFAULT), $username)) {
             header("Location: ./edit.php?success=1");
             exit;
         } else {
