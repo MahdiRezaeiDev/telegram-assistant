@@ -7,8 +7,8 @@ $currentUser = getUserData(USER['id']);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['name'])) {
     // Define variables and initialize with empty values
-    $name = $lastName = $username = $company = $phone = $address = "";
-    $name_err = $lastName_err = $username_err = $company_err = $phone_err = $address_err = "";
+    $name = $lastName  = $company = $phone = $address = "";
+    $name_err = $lastName_err  = $company_err = $phone_err = $address_err = "";
 
     // Validate inputs
     if (empty(sanitizeInput($_POST["name"]))) {
@@ -21,12 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['name'])) {
         $lastName_err = "لطفا نام خانوادگی خود را وارد کنید.";
     } else {
         $lastName = sanitizeInput($_POST["last_name"]);
-    }
-
-    if (empty(sanitizeInput($_POST["username"]))) {
-        $username_err = "لطفا نام کاربری خود را وارد کنید.";
-    } else {
-        $username = sanitizeInput($_POST["username"]);
     }
 
     if (empty(sanitizeInput($_POST["company"]))) {
@@ -50,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['name'])) {
     // Check for errors before updating the profile
     if (empty($name_err) && empty($lastName_err) && empty($username_err) && empty($company_err) && empty($phone_err) && empty($address_err)) {
         // Update profile in the database
-        if (updateProfile(USER['id'], $name, $lastName, $username, $company, $phone, $address)) {
+        if (updateProfile(USER['id'], $name, $lastName, $company, $phone, $address)) {
             header("Location: ./edit.php?success=1");
             exit;
         } else {
