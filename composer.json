@@ -3,7 +3,8 @@
     "description": "Project description",
     "type": "project",
     "require": {
-        "danog/madelineproto": "^8"
+        "danog/madelineproto": "^8",
+        "phpoffice/phpspreadsheet": "^4.2"
     },
     "license": "AGPL-3.0-only",
     "authors": [

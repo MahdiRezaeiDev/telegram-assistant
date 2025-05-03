@@ -43,7 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['name'])) {
     // Check for errors before updating the profile
     if (empty($name_err) && empty($lastName_err) && empty($username_err) && empty($company_err) && empty($phone_err) && empty($address_err)) {
         // Update profile in the database
-        if (createProfile(USER['id'], $name, $lastName, $username, $company, $phone)) {
+        $user_id = createProfile(USER['id'], $name, $lastName, $username, $company, $phone);
+        if ($user_id) {
+            // Create account in the database
+            $role = $_POST['role'] ?? 'user'; // Default to 'user' if not set
+            $password = $_POST['password'] ?? 'default_password'; // Default password if not set
+            $account_id = createAccount($user_id, $username, $password, $role);
+            
             header("Location: ./edit.php?success=1");
             exit;
         } else {
@@ -54,19 +60,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['name'])) {
 
 function createProfile($id, $name, $lastName, $username, $company, $phone)
 {
-    try {
-        $sql = "UPDATE users SET name = :name, last_name = :last_name, username = :username, company = :company, phone = :phone, address = :address WHERE id = :id";
-        $stmt = DB->prepare($sql);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':last_name', $lastName);
-        $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':company', $company);
-        $stmt->bindParam(':phone', $phone);
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-        return false;
+    $sql = "INSERT INTO users (id, name, last_name, username, company, phone) 
+            VALUES (:id, :name, :last_name, :username, :company, :phone)";
+    $stmt = DB->prepare($sql);
+
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':last_name', $lastName);
+    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':company', $company);
+    $stmt->bindParam(':phone', $phone);
+
+    if ($stmt->execute()) {
+        return DB->lastInsertId(); // Return last inserted ID (useful if ID is auto-increment)
+    } else {
+        // Log or handle error
+        $error = $stmt->errorInfo();
+        throw new Exception("Database error: " . $error[2]);
+    }
+}
+
+function createAccount($user_id, $username, $password, $role)
+{
+    $sql = "INSERT INTO accounts (user_id, username, password, role) 
+            VALUES (:user_id, :username, :password, :role)";
+    $stmt = DB->prepare($sql);
+
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT)); // Hash the password
+    $stmt->bindParam(':role', $role);
+
+    if ($stmt->execute()) {
+        return DB->lastInsertId(); // Return last inserted ID (useful if ID is auto-increment)
+    } else {
+        // Log or handle error
+        $error = $stmt->errorInfo();
+        throw new Exception("Database error: " . $error[2]);
     }
 }
 
