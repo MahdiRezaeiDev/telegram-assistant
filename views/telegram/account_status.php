@@ -1,0 +1,40 @@
+<?php
+$pageTitle = " وضعیت حساب تلگرام";
+$category = "telegram";
+$iconUrl = 'telegram.svg';
+require_once '../components/header.php';
+require_once '../../vendor/autoload.php';
+// require_once '../../app/controller/telegram/TelegramController.php';
+require_once "../../layouts/navigation.php";
+?>
+<div class="max-w-xl mx-auto mt-10">
+    <div class="bg-white rounded-2xl shadow-md border border-gray-200 p-6">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <img src="/assets/icons/telegram.svg" alt="Telegram" class="w-12 h-12">
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800">وضعیت حساب تلگرام</h2>
+                    <p class="text-sm text-gray-500">اطلاعات مربوط به اتصال و وضعیت حساب</p>
+                </div>
+            </div>
+            <span class="inline-block px-3 py-1 text-sm font-medium rounded-full 
+                         bg-green-100 text-green-700">
+                فعال
+            </span>
+        </div>
+
+        <div class="mt-6 space-y-2 text-gray-600 text-sm">
+            <p><strong>نام کاربری:</strong> @yourusername</p>
+            <p><strong>وضعیت اتصال:</strong> متصل به API</p>
+            <p><strong>آخرین فعالیت:</strong> 2025/05/02 14:35</p>
+        </div>
+
+        <div class="mt-6 text-right">
+            <a href="/telegram/reconnect.php" class="text-sm text-blue-600 hover:underline">اتصال مجدد</a>
+        </div>
+    </div>
+</div>
+
+<?php
+require_once '../components/footer.php';
+?>

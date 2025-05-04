@@ -17,7 +17,7 @@ if (!is_dir($sessionDir)) {
 
 // Check if the user is logged in (based on session)
 if (isConnectedToTelegram()) {
-    header('Location: send_Message.php');
+    header('Location: account_status.php');
     exit();
 }
 
