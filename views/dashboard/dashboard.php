@@ -79,8 +79,7 @@ require_once "../../layouts/navigation.php";
                 <img class="rounded-md w-16 h-16" src="../../public/icons/checked.svg" alt="">
             </div>
             <div>
-                <span class="inline-block px-2 text-sm text-white bg-green-500 ml-1 rounded"><?= rand(1, 100) ?>%</span>
-                <a href="./requests.php?type=all" class="text-blue-500 underline">مشاهده همه</a>
+                <a href="../prices/index.php" class="text-blue-500 underline">مشاهده همه</a>
             </div>
         </div>
     </div>
