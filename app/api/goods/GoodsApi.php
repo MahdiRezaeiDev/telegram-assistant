@@ -11,10 +11,9 @@ require_once '../../../database/DB_connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['action']) && $_POST['action'] === 'updateGoodStatus') {
-        $status = $_POST['type'] ?? null;
+        $status = $_POST['status'] ?? null;
         $patternId = $_POST['pattern_id'] ?? null;
-        $is_checked = $_POST['value'] ?? null;
-        
+        $is_checked = $_POST['is_checked'] == 'true' ? 1 : 0;
 
         updatePatternStatus($status, $patternId, $is_checked);
     }
@@ -32,6 +31,7 @@ function updatePatternStatus($status, $patternId, $is_checked)
 
     try {
         $sql = "UPDATE patterns SET {$status} = :is_checked WHERE id = :pattern_id";
+
         $stmt = DB->prepare($sql);
         $stmt->bindParam(':is_checked', $is_checked, PDO::PARAM_BOOL);
         $stmt->bindParam(':pattern_id', $patternId, PDO::PARAM_INT);

@@ -107,6 +107,7 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
 
         axios.post('../../app/api/goods/GoodsApi.php', params)
             .then(response => {
+                console.log(response.data);
                 if (response.data.status === 'success') {
                     console.log('Status updated successfully!');
                 } else {
