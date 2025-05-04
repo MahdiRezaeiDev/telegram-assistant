@@ -46,6 +46,14 @@ function deleteFolder($folderPath)
     return rmdir($folderPath); // Remove the now-empty folder
 }
 
+function deleteTelegramCredentials($userId)
+{
+    $sql = "DELETE FROM telegram_credentials WHERE user_id = :user_id";
+    $stmt = DB->prepare($sql);
+    $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+    return $stmt->execute();
+}
+
 
 // // header('Location: index.php');
 // // exit();
