@@ -55,8 +55,7 @@ require_once "../../layouts/navigation.php";
                 <img class="rounded-md w-16 h-16" src="../../public/icons/items.svg" alt="">
             </div>
             <div>
-                <span class="inline-block px-2 text-sm text-white bg-green-500 ml-1 rounded"><?= rand(1, 100) ?>%</span>
-                <a href="./registeredGoods.php" class="text-blue-500 underline">مشاهده همه</a>
+                <a href="../goods/index.php" class="text-blue-500 underline">مشاهده همه</a>
             </div>
         </div>
         <div class="p-4 transition-shadow bg-white rounded-lg shadow-sm hover:shadow-lg">
@@ -68,8 +67,7 @@ require_once "../../layouts/navigation.php";
                 <img class="rounded-md w-16 h-16" src="../../public/icons/contacts.svg" alt="">
             </div>
             <div>
-                <span class="inline-block px-2 text-sm text-white bg-green-500 ml-1 rounded"><?= rand(1, 100) ?>%</span>
-                <a href="./contacts.php" class="text-blue-500 underline">مشاهده همه</a>
+                <a href="../telegram/contacts.php" class="text-blue-500 underline">مشاهده همه</a>
             </div>
         </div>
         <div class="p-4 transition-shadow bg-white rounded-lg shadow-sm hover:shadow-lg">
@@ -157,10 +155,16 @@ require_once "../../layouts/navigation.php";
                                 شماره
                             </th>
                             <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                کد درخواستی
+                                مشتری
                             </th>
                             <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                دفعات درخواست
+                                کدفنی
+                            </th>
+                            <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
+                                برند
+                            </th>
+                            <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
+                                قیمت
                             </th>
                         </tr>
                     </thead>
@@ -172,10 +176,16 @@ require_once "../../layouts/navigation.php";
                                     <?= ++$index; ?>
                                 </th>
                                 <th class="px-6 py-3  font-semibold text-gray-800 text-center">
-                                    <?= $request['request'] ?>
+                                    <?= $request['name'] ?>
                                 </th>
                                 <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['quantity'] ?>
+                                    <?= $request['part_number'] ?>
+                                </td>
+                                <td class="px-6 py-3  font-semibold text-center text-gray-800">
+                                    <?= $request['brand_name'] ?>
+                                </td>
+                                <td class="px-6 py-3  font-semibold text-center text-gray-800">
+                                    <?= $request['price'] ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -196,10 +206,16 @@ require_once "../../layouts/navigation.php";
                                 شماره
                             </th>
                             <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                کد درخواستی
+                                مشتری
                             </th>
                             <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                دفعات درخواست
+                                کدفنی
+                            </th>
+                            <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
+                                برند
+                            </th>
+                            <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
+                                قیمت
                             </th>
                         </tr>
                     </thead>
@@ -211,10 +227,16 @@ require_once "../../layouts/navigation.php";
                                     <?= ++$index; ?>
                                 </th>
                                 <th class="px-6 py-3  font-semibold text-gray-800 text-center">
-                                    <?= $request['request'] ?>
+                                    <?= $request['name'] ?>
                                 </th>
                                 <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['quantity'] ?>
+                                    <?= $request['part_number'] ?>
+                                </td>
+                                <td class="px-6 py-3  font-semibold text-center text-gray-800">
+                                    <?= $request['brand_name'] ?>
+                                </td>
+                                <td class="px-6 py-3  font-semibold text-center text-gray-800">
+                                    <?= $request['price'] ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

@@ -7,8 +7,8 @@ $totalGoods = getTotalGoodsCount();
 $totalContacts = getTotalContactsCount();
 
 $lastHourMostRequested = getLastHourMostRequested();
-
-print_r($lastHourMostRequested);
+$todayMostRequested = getTodayMostRequested();
+$allTimeMostRequested = getAllTimeMostRequested();
 
 function getTotalGoodsCount()
 {
@@ -38,6 +38,35 @@ function getLastHourMostRequested()
             INNER JOIN goods ON prices.good_id = goods.id
             INNER JOIN brands ON goods.brand_id = brands.id
             WHERE prices.created_at >= NOW() - INTERVAL 1 HOUR
+            LIMIT 10";
+
+    $stmt = DB->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getTodayMostRequested()
+{
+    $sql = "SELECT prices.*, contacts.name, goods.part_number, brands.brand_name
+            FROM prices
+            INNER JOIN contacts ON prices.contact_id = contacts.id
+            INNER JOIN goods ON prices.good_id = goods.id
+            INNER JOIN brands ON goods.brand_id = brands.id
+            WHERE DATE(prices.created_at) = CURDATE()
+            LIMIT 10";
+
+    $stmt = DB->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getAllTimeMostRequested()
+{
+    $sql = "SELECT prices.*, contacts.name, goods.part_number, brands.brand_name
+            FROM prices
+            INNER JOIN contacts ON prices.contact_id = contacts.id
+            INNER JOIN goods ON prices.good_id = goods.id
+            INNER JOIN brands ON goods.brand_id = brands.id
             LIMIT 10";
 
     $stmt = DB->prepare($sql);
