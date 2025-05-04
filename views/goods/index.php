@@ -13,7 +13,7 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
 <section class="shadow-md rounded-lg p-6 w-full">
     <div class="mb-4 flex justify-between items-center">
         <div class="">
-            <h1 class="text-2xl font-bold text-gray-800">لیست مخاطبین</h1>
+            <h1 class="text-2xl font-bold text-gray-800">لیست کدهای فنی اضافه شده</h1>
             <span class="text-sm text-gray-600 pb-4">در اینجا لیست مخاطبین شما نمایش داده می‌شود.</span>
         </div>
         <input type="search" name="search" id="search" placeholder="جستجو..."
