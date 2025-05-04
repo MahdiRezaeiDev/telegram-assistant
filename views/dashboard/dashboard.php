@@ -49,9 +49,9 @@ require_once "../../layouts/navigation.php";
             <div class="flex items-start justify-between">
                 <div class="flex flex-col space-y-2">
                     <span class="text-gray-800 font-semibold">مجموع کد های ثبت شده</span>
-                    <span class="text-lg font-semibold">30</span>
+                    <span class="text-lg font-semibold"><?= $totalGoods ?></span>
                 </div>
-                <img class="rounded-md w-16 h-16" src="../../public/icons/contacts.svg" alt="">
+                <img class="rounded-md w-16 h-16" src="../../public/icons/items.svg" alt="">
             </div>
             <div>
                 <span class="inline-block px-2 text-sm text-white bg-green-500 ml-1 rounded"><?= rand(1, 100) ?>%</span>
@@ -62,9 +62,9 @@ require_once "../../layouts/navigation.php";
             <div class="flex items-start justify-between">
                 <div class="flex flex-col space-y-2">
                     <span class="text-gray-800 font-semibold">مخاطبین</span>
-                    <span class="text-lg font-semibold"><?= 100 ?></span>
+                    <span class="text-lg font-semibold"><?= $totalContacts ?></span>
                 </div>
-                <img class="rounded-md w-16 h-16" src="../../public/icons/items.svg" alt="">
+                <img class="rounded-md w-16 h-16" src="../../public/icons/contacts.svg" alt="">
             </div>
             <div>
                 <span class="inline-block px-2 text-sm text-white bg-green-500 ml-1 rounded"><?= rand(1, 100) ?>%</span>
