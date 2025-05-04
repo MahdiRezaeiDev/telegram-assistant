@@ -2,8 +2,6 @@
 $pageTitle = "مدیریت کالاها";
 $category = "goods";
 $iconUrl = 'goods.svg';
-
-require_once '../../vendor/autoload.php';
 require_once '../components/header.php';
 require_once '../../app/controller/goods/FileController.php';
 require_once "../../layouts/navigation.php";
@@ -14,10 +12,10 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
     <div class="mb-4 flex justify-between items-center">
         <div class="">
             <h1 class="text-2xl font-bold text-gray-800">لیست کدهای فنی اضافه شده</h1>
-            <span class="text-sm text-gray-600 pb-4">در اینجا لیست مخاطبین شما نمایش داده می‌شود.</span>
+            <span class="text-sm text-gray-600 pb-4">در اینجا لیست کدهای فنی اضافه شده توسط شما نمایش داده می‌شود.</span>
         </div>
         <input type="search" name="search" id="search" placeholder="جستجو..."
-            onkeyup="searchContacts(this.value)"
+            onkeyup="searchGoods(this.value)"
             class="rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         <a class="rounded bg-sky-600 text-white text-xs p-3" href="../goods/upload.php">آپلود فایل کد های فنی</a>
     </div>
@@ -56,7 +54,7 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
         <tbody id="initial_data" class="border border-dashed border-gray-600">
             <?php if (empty($goods)) : ?>
                 <tr>
-                    <td colspan="6" class="text-center text-gray-500 p-4 ">هیچ مخاطبی برای نمایش وجود ندارد</td>
+                    <td colspan="9" class="text-center text-gray-500 p-4 ">هیچ کدفنی برای نمایش وجود ندارد</td>
                 </tr>
                 <?php
             else:
@@ -117,6 +115,22 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
             .catch(error => {
                 console.error('Error:', error);
             });
+    }
+
+    function searchGoods(query) {
+        const initialData = document.getElementById('initial_data');
+        const rows = initialData.getElementsByTagName('tr');
+        for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            let found = false;
+            for (let j = 1; j < cells.length; j++) { // Start from 1 to skip the first cell
+                if (cells[j].innerText.toLowerCase().includes(query.toLowerCase())) {
+                    found = true;
+                    break;
+                }
+            }
+            rows[i].style.display = found ? '' : 'none';
+        }
     }
 </script>
 <?php

@@ -2,8 +2,9 @@
 $pageTitle = "مدیریت کالاها";
 $category = "goods";
 $iconUrl = 'goods.svg';
+require_once '../../vendor/autoload.php';
 require_once '../components/header.php';
-require_once '../../app/controller/dashboard/DashboardController.php';
+require_once '../../app/controller/goods/FileController.php';
 require_once "../../layouts/navigation.php";
 ?>
 <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-2xl space-y-6">
@@ -31,7 +32,16 @@ require_once "../../layouts/navigation.php";
         </button>
     </div>
 </form>
-
+<script>
+    <?php if (isset($success) && $success): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'عملیات موفقیت آمیز بود',
+            html: 'کدهای فنی شما با موفقیت بارگیری شدند. <br><a href="../goods/index.php" class="text-blue-500 underline mt-2 inline-block">بازگشت به صفحه کالاها</a>',
+            confirmButtonText: 'باشه'
+        });
+    <?php endif; ?>
+</script>
 <?php
 require_once '../components/footer.php';
 ?>

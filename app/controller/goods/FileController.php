@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $fileType = $_FILES['excel_file']['type'];
 
         $file_error = '';
+        $success = false;
 
         // Check file type
         $allowedTypes = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'];
@@ -57,6 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         storeGoods($code, $brand_id, $pattern_id);
                     }
                 }
+
+                $success = true;
             }
         } catch (Exception $e) {
             echo "خطا در بارگذاری فایل: " . $e->getMessage();
