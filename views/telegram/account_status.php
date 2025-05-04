@@ -37,7 +37,7 @@ require_once "../../layouts/navigation.php";
 
         <div class="mt-6 text-right">
             <?php if (isAccountConnected(USER['id'])): ?>
-                <a href="../telegram/disconnect.php" class="inline-block px-3 py-1 text-sm font-medium rounded-full 
+                <a href="javascript:void(0)" onclick="confirmDisconnect()" class="inline-block px-3 py-1 text-sm font-medium rounded-full 
                     bg-red-100 hover:bg-red-200 text-red-600 hover:underline">قطع اتصال</a>
             <?php else: ?>
                 <a href="../telegram/connect.php" class="inline-block px-3 py-1 text-sm font-medium rounded-full 
@@ -46,7 +46,24 @@ require_once "../../layouts/navigation.php";
         </div>
     </div>
 </div>
-
+<script>
+    function confirmDisconnect() {
+        Swal.fire({
+            title: 'آیا مطمئن هستید؟',
+            text: "با قطع اتصال، دسترسی به حساب تلگرام شما از بین می‌رود.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'بله، قطع کن!',
+            cancelButtonText: 'خیر، انصراف'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '../telegram/disconnect.php';
+            }
+        })
+    }
+</script>
 <?php
 require_once '../components/footer.php';
 ?>
