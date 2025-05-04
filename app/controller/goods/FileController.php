@@ -89,7 +89,6 @@ function createPattern($name, $price, $is_bot_allowed, $with_price, $without_pri
     }
 }
 
-
 function sanitizeInput($data)
 {
     // Trim, strip slashes, escape HTML
@@ -139,7 +138,6 @@ function storeBrand($brand_name)
     return false; // Insert failed
 }
 
-
 function storeGoods($partNumber, $brand_id, $pattern_id)
 {
     $sql = "INSERT INTO goods (part_number, brand_id, pattern_id) VALUES (:part_number, :brand_id, :pattern_id)";
@@ -150,4 +148,19 @@ function storeGoods($partNumber, $brand_id, $pattern_id)
     $stmt->bindParam(':pattern_id', $pattern_id, PDO::PARAM_INT);
 
     return $stmt->execute();
+}
+
+function getAllGoods()
+{
+    $sql = "SELECT patterns.id AS pattern_id ,patterns.*, goods.*, brands.brand_name 
+            FROM patterns
+            INNER JOIN goods ON patterns.id = goods.pattern_id
+            INNER JOIN brands ON goods.brand_id = brands.id
+            WHERE patterns.user_id = :user_id";
+
+    $stmt = DB->prepare($sql);
+    $user_id = USER['id'];
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
