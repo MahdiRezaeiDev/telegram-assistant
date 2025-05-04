@@ -53,7 +53,3 @@ function deleteTelegramCredentials($userId)
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     return $stmt->execute();
 }
-
-
-// // header('Location: index.php');
-// // exit();

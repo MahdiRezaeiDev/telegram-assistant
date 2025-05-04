@@ -12,6 +12,11 @@ use danog\MadelineProto\Exception;
 
 $sessionName = getAccountSession(USER_ID);
 
+if (!isAccountConnected(USER_ID)) {
+    header("Location: ../telegram/account_status.php");
+    exit;
+}
+
 $MadelineProto = new API($sessionName);
 $MadelineProto->start();
 
