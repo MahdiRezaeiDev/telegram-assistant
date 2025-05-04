@@ -17,7 +17,7 @@ require_once "../../layouts/navigation.php";
                     <p class="text-sm text-gray-500">اطلاعات مربوط به اتصال و وضعیت حساب</p>
                 </div>
             </div>
-            <?php if (!isAccountConnected(USER['id'])): ?>
+            <?php if (isAccountConnected(USER['id'])): ?>
                 <span class="inline-block px-3 py-1 text-sm font-medium rounded-full 
                          bg-green-100 text-green-700">
                     فعال
@@ -37,7 +37,13 @@ require_once "../../layouts/navigation.php";
         </div>
 
         <div class="mt-6 text-right">
-            <a href="/telegram/reconnect.php" class="text-sm text-blue-600 hover:underline">اتصال مجدد</a>
+            <?php if (isAccountConnected(USER['id'])): ?>
+                <a href="/telegram/reconnect.php" class="inline-block px-3 py-1 text-sm font-medium rounded-full 
+                bg-green-100 hover:bg-green-200 text-green-600 hover:underline">اتصال مجدد</a>
+            <?php else: ?>
+                <a href="/telegram/disconnect.php" class="inline-block px-3 py-1 text-sm font-medium rounded-full 
+                    bg-red-100 hover:bg-red-200 text-red-600 hover:underline">قطع اتصال</a>
+            <?php endif; ?>
         </div>
     </div>
 </div>
