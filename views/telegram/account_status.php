@@ -11,22 +11,29 @@ require_once "../../layouts/navigation.php";
     <div class="bg-white rounded-2xl shadow-md border border-gray-200 p-6">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <img src="/assets/icons/telegram.svg" alt="Telegram" class="w-12 h-12">
+                <img src="../../public/img/telegram.svg" alt="Telegram" class="w-12 h-12">
                 <div>
                     <h2 class="text-xl font-semibold text-gray-800">وضعیت حساب تلگرام</h2>
                     <p class="text-sm text-gray-500">اطلاعات مربوط به اتصال و وضعیت حساب</p>
                 </div>
             </div>
-            <span class="inline-block px-3 py-1 text-sm font-medium rounded-full 
+            <?php if (!isAccountConnected(USER['id'])): ?>
+                <span class="inline-block px-3 py-1 text-sm font-medium rounded-full 
                          bg-green-100 text-green-700">
-                فعال
-            </span>
+                    فعال
+                </span>
+            <?php else: ?>
+                <span class="inline-block px-3 py-1 text-sm font-medium rounded-full 
+                         bg-red-100 text-red-700">
+                    غیرفعال
+                </span>
+            <?php endif; ?>
         </div>
 
         <div class="mt-6 space-y-2 text-gray-600 text-sm">
-            <p><strong>نام کاربری:</strong> @yourusername</p>
+            <p><strong>نام کاربری:</strong> <?= USER['username'] ?></p>
             <p><strong>وضعیت اتصال:</strong> متصل به API</p>
-            <p><strong>آخرین فعالیت:</strong> 2025/05/02 14:35</p>
+            <p><strong>زمان اتصال:</strong> <span style="direction: ltr !important;"><?= date('Y-m-d', strtotime(USER['created_at'])) ?></span></p>
         </div>
 
         <div class="mt-6 text-right">
