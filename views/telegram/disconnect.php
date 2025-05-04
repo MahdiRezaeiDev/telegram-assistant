@@ -17,9 +17,8 @@ if (isConnectedToTelegram()) {
 
     markAccountAsDisconnected(USER_ID);
     deleteFolder($sessionName);
-
-    // Destroy session
-    session_destroy();
+    header('Location: account_status.php');
+    exit();
 }
 
 function deleteFolder($folderPath)

@@ -8,7 +8,8 @@ function isConnectedToTelegram()
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result;
+
+    return $result['is_connected'] == 1;
 }
 
 function isDirExists($userId)
