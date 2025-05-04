@@ -6,6 +6,10 @@ if (!isset($DB_NAME)) {
 $totalGoods = getTotalGoodsCount();
 $totalContacts = getTotalContactsCount();
 
+$lastHourMostRequested = getLastHourMostRequested();
+
+print_r($lastHourMostRequested);
+
 function getTotalGoodsCount()
 {
     $sql = "SELECT COUNT(*) as total FROM goods";
@@ -24,4 +28,19 @@ function getTotalContactsCount()
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     return $row['total'];
+}
+
+function getLastHourMostRequested()
+{
+    $sql = "SELECT prices.*, contacts.name, goods.part_number, brands.brand_name
+            FROM prices
+            INNER JOIN contacts ON prices.contact_id = contacts.id
+            INNER JOIN goods ON prices.good_id = goods.id
+            INNER JOIN brands ON goods.brand_id = brands.id
+            WHERE prices.created_at >= NOW() - INTERVAL 1 HOUR
+            LIMIT 10";
+
+    $stmt = DB->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

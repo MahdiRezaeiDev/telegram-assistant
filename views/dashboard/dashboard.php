@@ -105,10 +105,16 @@ require_once "../../layouts/navigation.php";
                                 شماره
                             </th>
                             <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                کد درخواستی
+                                مشتری
                             </th>
                             <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                دفعات درخواست
+                                کدفنی
+                            </th>
+                            <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
+                                برند
+                            </th>
+                            <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
+                                قیمت
                             </th>
                         </tr>
                     </thead>
@@ -120,10 +126,16 @@ require_once "../../layouts/navigation.php";
                                     <?= ++$index; ?>
                                 </th>
                                 <th class="px-6 py-3  font-semibold text-gray-800 text-center">
-                                    <?= $request['request'] ?>
+                                    <?= $request['name'] ?>
                                 </th>
                                 <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['quantity'] ?>
+                                    <?= $request['part_number'] ?>
+                                </td>
+                                <td class="px-6 py-3  font-semibold text-center text-gray-800">
+                                    <?= $request['brand_name'] ?>
+                                </td>
+                                <td class="px-6 py-3  font-semibold text-center text-gray-800">
+                                    <?= $request['price'] ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -212,6 +224,7 @@ require_once "../../layouts/navigation.php";
         </div>
     </div>
 </section>
+
 <script>
     const contactApi = "../../app/api/telegram/ContactsApi.php";
 
