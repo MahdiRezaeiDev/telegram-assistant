@@ -27,7 +27,11 @@ function deleteFolder($folderPath)
         return false;
     }
 
-    $items = scandir($folderPath);
+    // Try to read contents
+    $items = @scandir($folderPath);
+    if ($items === false) {
+        return false;
+    }
 
     foreach ($items as $item) {
         if ($item === '.' || $item === '..') {
@@ -39,11 +43,11 @@ function deleteFolder($folderPath)
         if (is_dir($itemPath)) {
             deleteFolder($itemPath); // Recursively delete subfolder
         } else {
-            unlink($itemPath); // Delete file
+            @unlink($itemPath); // Suppress warnings when deleting files
         }
     }
 
-    return rmdir($folderPath); // Remove the now-empty folder
+    return @rmdir($folderPath); // Suppress warnings on rmdir
 }
 
 function deleteTelegramCredentials($userId)
