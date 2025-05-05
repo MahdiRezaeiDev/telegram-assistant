@@ -43,13 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['name'])) {
     // Check for errors before updating the profile
     if (empty($name_err) && empty($lastName_err) && empty($username_err) && empty($company_err) && empty($phone_err) && empty($address_err)) {
         // Update profile in the database
-        $user_id = createProfile(USER['id'], $name, $lastName, $username, $company, $phone);
+        $user_id = createProfile(USER['id'], $name, $lastName, $company, $phone);
         if ($user_id) {
             // Create account in the database
             $role = $_POST['role'] ?? 'user'; // Default to 'user' if not set
             $password = $_POST['password'] ?? 'default_password'; // Default password if not set
             $account_id = createAccount($user_id, $username, $password, $role);
-            
+
             header("Location: ./edit.php?success=1");
             exit;
         } else {
@@ -58,16 +58,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['name'])) {
     }
 }
 
-function createProfile($id, $name, $lastName, $username, $company, $phone)
+function createProfile($name, $lastName, $company, $phone)
 {
-    $sql = "INSERT INTO users (id, name, last_name, username, company, phone) 
-            VALUES (:id, :name, :last_name, :username, :company, :phone)";
+    $sql = "INSERT INTO users (name, last_name, company, phone) 
+            VALUES (:name, :last_name, :company, :phone)";
     $stmt = DB->prepare($sql);
 
-    $stmt->bindParam(':id', $id);
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':last_name', $lastName);
-    $stmt->bindParam(':username', $username);
     $stmt->bindParam(':company', $company);
     $stmt->bindParam(':phone', $phone);
 
