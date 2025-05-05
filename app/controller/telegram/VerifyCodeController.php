@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['code'])) {
 
         // Save session info
         $_SESSION['user_id'] = $user['id'];
-        markAccountAsConnected(USER_ID);
+        markAccountAsConnected(USER_ID,  $user['id']);
 
         // Redirect to send message page
         header('Location: ../dashboard/dashboard.php');

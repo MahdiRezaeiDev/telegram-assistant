@@ -48,8 +48,14 @@ function isAccountConnected($userId)
     return $result['is_connected'] == 1;
 }
 
-function markAccountAsConnected($userId)
+function markAccountAsConnected($userId, $telegramId)
 {
+    $sql = "UPDATE telegram_credentials SET is_connected = 1, telegram_id = :telegram_id WHERE user_id = :user_id";
+    $stmt = DB->prepare($sql);
+    $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+    $stmt->bindParam(':telegram_id', $telegramId, PDO::PARAM_INT);
+    return $stmt->execute();
+} {
     $sql = "UPDATE telegram_credentials SET is_connected = 1 WHERE user_id = :user_id";
     $stmt = DB->prepare($sql);
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
