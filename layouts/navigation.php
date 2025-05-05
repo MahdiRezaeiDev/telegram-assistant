@@ -48,7 +48,12 @@ if (!isset($DB_NAME)) {
         </li>
     </ul>
     <div class="hidden sm:flex items-center">
-
+        <p>
+            <?= USER['name'] . ' ' ?>
+            <?= USER['last_name'] ?>
+            <span class="text-xs text-gray-500">|</span>
+            <a class="text-xs text-red-500" href="../auth/logout.php">خروج</a>
+        </p>
         <?php
         $profile = '../../public/icons/avatar.svg';
         if (file_exists("../../public/userimg/" . $_SESSION['id'] . ".jpg")) {
