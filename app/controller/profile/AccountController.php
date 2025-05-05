@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['name'])) {
     // Check for errors before updating the profile
     if (empty($name_err) && empty($lastName_err) && empty($username_err) && empty($company_err) && empty($phone_err) && empty($address_err)) {
         // Update profile in the database
-        $user_id = createProfile(USER['id'], $name, $lastName, $company, $phone);
+        $user_id = createProfile($name, $lastName, $company, $phone);
         if ($user_id) {
             // Create account in the database
             $role = $_POST['role'] ?? 'user'; // Default to 'user' if not set
