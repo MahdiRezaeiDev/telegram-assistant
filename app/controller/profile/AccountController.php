@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['name'])) {
             $password = $_POST['password'] ?? 'default_password'; // Default password if not set
             $account_id = createAccount($user_id, $username, $password, $role);
 
-            header("Location: ./edit.php?success=1");
+            header("Location: ./list.php?success=1");
             exit;
         } else {
             echo "Error updating profile. Please try again later.";
