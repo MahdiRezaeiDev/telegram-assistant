@@ -2,8 +2,9 @@
 $pageTitle = "ویرایش پروفایل";
 $category = "profile";
 $iconUrl = 'profile.svg';
-require_once '../components/header.php';
+require_once '../components/init.php';
 require_once '../../app/controller/profile/ProfileController.php';
+require_once '../components/header.php';
 require_once "../../layouts/navigation.php";
 
 // Example user data (replace with real user from controller)

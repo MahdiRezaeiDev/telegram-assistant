@@ -2,8 +2,9 @@
 $pageTitle = "مدیریت کالاها";
 $category = "goods";
 $iconUrl = 'goods.svg';
-require_once '../components/header.php';
+require_once '../components/init.php';
 require_once '../../app/controller/goods/FileController.php';
+require_once '../components/header.php';
 require_once "../../layouts/navigation.php";
 
 $goods = getAllGoods(); // Assuming this function fetches the goods list from the database

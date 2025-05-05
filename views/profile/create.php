@@ -2,8 +2,9 @@
 $pageTitle = "مدیریت کاربران";
 $category = "users";
 $iconUrl = 'profile.svg';
-require_once '../components/header.php';
+require_once '../components/init.php';
 require_once '../../app/controller/profile/AccountController.php';
+require_once '../components/header.php';
 require_once "../../layouts/navigation.php";
 ?>
 

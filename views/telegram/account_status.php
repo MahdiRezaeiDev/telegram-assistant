@@ -2,8 +2,9 @@
 $pageTitle = " وضعیت حساب تلگرام";
 $category = "telegram";
 $iconUrl = 'telegram.svg';
-require_once '../components/header.php';
+require_once '../components/init.php';
 require_once '../../vendor/autoload.php';
+require_once '../components/header.php';
 require_once "../../layouts/navigation.php";
 ?>
 <div class="max-w-xl mx-auto mt-10">
