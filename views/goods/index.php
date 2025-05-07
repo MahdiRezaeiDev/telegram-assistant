@@ -50,6 +50,9 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
                 <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
                     ارسال با قیمت
                 </th>
+                <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
+                    عملیات
+                </th>
             </tr>
         </thead>
         <tbody id="initial_data" class="border border-dashed border-gray-600">
@@ -87,6 +90,12 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
                                 type="checkbox" name="blocked" id="blocked"
                                 class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
                                 <?= $good['without_price'] ? 'checked' : '' ?>>
+                        </td>
+                        <td class="p-3 text-center">
+                            <a href="../goods/edit.php?id=<?= $good['pattern_id'] ?>"
+                                class="text-blue-500 hover:text-blue-700">ویرایش</a>
+                            <a href="../goods/delete.php?id=<?= $good['pattern_id'] ?>"
+                                class="text-red-500 hover:text-red-700">حذف</a>
                         </td>
                     </tr>
             <?php

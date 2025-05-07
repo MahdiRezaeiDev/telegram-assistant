@@ -35,31 +35,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $partNumber = sanitizeInput($row['B']);
                 $similar_codes = $row['C'];
                 $brand_name = $row['D'];
-                $price = $row['E'];
+                $price = $row['E'] ?? 0;
                 $description = $row['F'];
                 $with_price = $row['G'];
                 $without_price = $row['H'];
                 $is_bot_allowed = $row['I'];
 
 
-                // Validate data (you can add more validation as needed)
-                if (empty($partNumber) || empty($brand_name) || empty($price)) {
-                    $file_error = "اطلاعات ناقص است. لطفا تمام ستون‌ها را پر کنید.";
-                    return;
-                }
-
-                $pattern_id = createPattern($partNumber, $price, $is_bot_allowed, $with_price, $without_price, $description);
-                $similar_codes = [$partNumber, ...extractSimilarCodes($similar_codes)];
-                $similar_codes = array_unique($similar_codes); // Remove duplicates
-                $brand_id = storeBrand($brand_name);
-
-                foreach ($similar_codes as $code) {
-                    if (!empty($code)) {
-                        storeGoods($code, $brand_id, $pattern_id);
+                try {
+                    // Validate data (you can add more validation as needed)
+                    if (empty($partNumber) || empty($brand_name) || $price === null || $price === '') {
+                        $file_error = "اطلاعات ناقص است. لطفا تمام ستون‌ها را پر کنید.";
                     }
-                }
 
-                $success = true;
+                    $pattern_id = createPattern($partNumber, $price, $is_bot_allowed, $with_price, $without_price, $description);
+                    $similar_codes = [$partNumber, ...extractSimilarCodes($similar_codes)];
+                    $similar_codes = array_unique($similar_codes); // Remove duplicates
+                    $brand_id = storeBrand($brand_name);
+
+                    foreach ($similar_codes as $code) {
+                        if (!empty($code)) {
+                            storeGoods($code, $brand_id, $pattern_id);
+                        }
+                    }
+                    $success = true;
+                } catch (\Throwable $th) {
+                    throw $th;
+                }
             }
         } catch (Exception $e) {
             echo "خطا در بارگذاری فایل: " . $e->getMessage();
@@ -106,15 +108,23 @@ function sanitizeInput($data)
 
 function extractSimilarCodes($similar_codes)
 {
-    $codes = explode('/', $similar_codes);
+    if (empty($similar_codes)) {
+        return [];
+    }
 
+    $codes = explode('/', $similar_codes);
     $result = [];
 
     foreach ($codes as $code) {
-        array_push($result, sanitizeInput($code));
+        $cleaned = sanitizeInput($code);
+        if (!empty($cleaned)) {
+            $result[] = $cleaned;
+        }
     }
+
     return $result;
 }
+
 
 function storeBrand($brand_name)
 {

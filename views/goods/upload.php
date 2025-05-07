@@ -3,7 +3,7 @@ $pageTitle = "مدیریت کالاها";
 $category = "goods";
 $iconUrl = 'goods.svg';
 require_once '../../vendor/autoload.php';
-require_once '../components/init.php';
+require_once '../components/init.php'; 
 require_once '../../app/controller/goods/FileController.php';
 require_once '../components/header.php';
 require_once "../../layouts/navigation.php";
