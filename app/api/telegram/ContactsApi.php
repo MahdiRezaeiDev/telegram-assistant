@@ -19,6 +19,17 @@ if (isset($_POST['action']) && $_POST['action'] === 'updateContactStatus') {
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Invalid parameters']);
     }
-} else {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
+}
+
+if (isset($_POST['action']) && $_POST['action'] === 'toggleContactStatus') {
+    $userId = $_POST['user_id'] ?? null;
+
+    if ($userId) {
+        $stmt = DB->prepare("UPDATE telegram_credentials SET is_connected = NOT is_connected WHERE user_id = ?");
+        $stmt->execute([$userId]);
+
+        echo json_encode(['status' => 'success']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid userId']);
+    }
 }

@@ -21,9 +21,7 @@ require_once "../../layouts/navigation.php";
                             حساب تلگرام شما به سامانه متصل شده است
                         </span>
                     </div>
-                    <a href="../telegram/connect.php">
-                        <img onclick="toggleStatus(1)" title="توقف ارسال پیام خودکار" class="cursor-pointer" src="../../public/icons/power_on.svg" alt="power off icon">
-                    </a>
+                    <img onclick="toggleContactStatus(1)" title="توقف ارسال پیام خودکار" class="cursor-pointer" src="../../public/icons/power_on.svg" alt="power off icon">
                 </div>
                 <div>
                     <span class="text-xs text-gray-100">برای توقف و از سر گیری ارسال پیام خودکار
@@ -39,7 +37,7 @@ require_once "../../layouts/navigation.php";
                             حساب تلگرام شما به سامانه متصل نشده است
                         </span>
                     </div>
-                    <img onclick="toggleStatus(0)" title="توقف ارسال پیام خودکار" class="cursor-pointer" src="../../public/icons/power_off.svg" alt="power off icon">
+                    <img onclick="toggleContactStatus()" title="توقف ارسال پیام خودکار" class="cursor-pointer" src="../../public/icons/power_off.svg" alt="power off icon">
                 </div>
                 <div>
                     <span class="text-xs text-gray-100">برای توقف و از سر گیری ارسال پیام خودکار
@@ -260,6 +258,28 @@ require_once "../../layouts/navigation.php";
             .then(function(response) {
                 const data = response.data;
                 window.location.reload();
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+    }
+
+    function toggleContactStatus(contactId, isBlocked) {
+        var params = new URLSearchParams();
+        params.append('action', 'toggleContactStatus');
+        params.append('user_id', <?= USER_ID ?>);
+
+        axios
+            .post(contactApi, params)
+            .then(function(response) {
+                const data = response.data;
+                console.log(data);
+
+                if (data.status === 'success') {
+                    window.location.reload();
+                } else {
+                    console.error(data.message);
+                }
             })
             .catch(function(error) {
                 console.log(error);
