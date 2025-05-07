@@ -20,13 +20,27 @@ if (!isAccountConnected(USER_ID)) {
 $MadelineProto = new API($sessionName);
 $MadelineProto->start();
 
+// try {
+//     $contacts = $MadelineProto->contacts->getContacts(['hash' => '0']);
+//     saveContacts($contacts['users'], USER_ID);
+//     header("Location: contacts.php?success=1");
+// } catch (Exception $e) {
+//     echo "Error: " . $e->getMessage();
+//     exit;
+// }
+
+
 try {
-    $contacts = $MadelineProto->contacts->getContacts(['hash' => '0']);
+    $contacts = $MadelineProto->channels->getParticipants([
+        'channel' => '-1002320490188',
+        'filter' => ['_' => 'channelParticipantsRecent'], // or 'channelParticipantsAdmins', etc.
+        'offset' => 0,
+        'limit' => 200,
+        'hash' => 0
+    ]);
     saveContacts($contacts['users'], USER_ID);
-    header("Location: contacts.php?success=1");
-} catch (Exception $e) {
-    echo "Error: " . $e->getMessage();
-    exit;
+} catch (\Throwable $th) {
+    //throw $th;
 }
 
 function saveContacts($contacts, $userId)
