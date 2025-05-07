@@ -28,7 +28,7 @@ if (!isset($DB_NAME)) {
                 پروفایل کاربری
             </a>
         </li>
-        <li class="mx-1 <?= $category == 'contacts' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
+        <li class="mx-1 <?= $category == 'telegramGroupContacts' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
             <a class="p-2 menu_item flex items-center gap-2" href="../telegram/GroupContacts.php">
                 <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
                 لیست مخاطبین چراغ برق

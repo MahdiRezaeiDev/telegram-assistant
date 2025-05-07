@@ -39,6 +39,7 @@ try {
         'hash' => 0
     ]);
     saveContacts($contacts['users'], USER_ID);
+    header("Location: groupContacts.php?success=1");
 } catch (\Throwable $th) {
     //throw $th;
 }
