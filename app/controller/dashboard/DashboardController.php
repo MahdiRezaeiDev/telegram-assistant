@@ -12,8 +12,12 @@ $allTimeMostRequested = getAllTimeMostRequested();
 
 function getTotalGoodsCount()
 {
-    $sql = "SELECT COUNT(*) as total FROM goods";
+    $sql = "SELECT COUNT(*) as total FROM goods
+    INNER JOIN patterns ON goods.pattern_id = patterns.id 
+    WHERE patterns.user_id = :user_id";
     $result = DB->prepare($sql);
+    $user_id = USER_ID; // Assuming USER_ID is defined and accessible
+    $result->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $result->execute();
     $row = $result->fetch(PDO::FETCH_ASSOC);
     return $row['total'];
