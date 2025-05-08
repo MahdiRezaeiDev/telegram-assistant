@@ -16,7 +16,7 @@ if (isConnectedToTelegram()) {
     $MadelineProto->logOut();
 
     markAccountAsDisconnected(USER_ID);
-    deleteFolder($sessionName);
+    // deleteFolder($sessionName);
     header('Location: account_status.php');
     exit();
 }
