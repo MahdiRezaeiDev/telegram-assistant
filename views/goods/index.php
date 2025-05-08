@@ -93,7 +93,7 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
                         </td>
                         <td class="p-3 text-center">
                             <img src="../../public/icons/delete.svg" alt="delete icon"
-                                class="w-5 h-5 cursor-pointer hover:scale-110 transition duration-300"
+                                class="w-5 h-5 cursor-pointer hover:scale-110 transition duration-300 mx-auto"
                                 onclick="deleteGood(<?= $good['pattern_id'] ?>)">
                         </td>
                     </tr>
@@ -150,7 +150,8 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'بله، حذف کن!'
+            confirmButtonText: 'بله، حذف کن!',
+            cancelButtonText: 'خیر، انصراف!'
         }).then((result) => {
             if (result.isConfirmed) {
                 const params = new URLSearchParams({
