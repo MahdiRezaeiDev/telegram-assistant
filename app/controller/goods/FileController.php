@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     foreach ($similar_codes as $code) {
                         if (!empty($code)) {
-                            storeGoods($code, $brand_id, $pattern_id);
+                            storeGoods($code, $brand_name, $pattern_id);
                         }
                     }
                     $success = true;
@@ -151,13 +151,13 @@ function storeBrand($brand_name)
     return false; // Insert failed
 }
 
-function storeGoods($partNumber, $brand_id, $pattern_id)
+function storeGoods($partNumber, $brand, $pattern_id)
 {
-    $sql = "INSERT INTO goods (part_number, brand_id, pattern_id) VALUES (:part_number, :brand_id, :pattern_id)";
+    $sql = "INSERT INTO goods (part_number, brand, pattern_id) VALUES (:part_number, :brand, :pattern_id)";
     $stmt = DB->prepare($sql);
 
     $stmt->bindParam(':part_number', $partNumber, PDO::PARAM_STR);
-    $stmt->bindParam(':brand_id', $brand_id, PDO::PARAM_INT);
+    $stmt->bindParam(':brand', $brand, PDO::PARAM_INT);
     $stmt->bindParam(':pattern_id', $pattern_id, PDO::PARAM_INT);
 
     return $stmt->execute();
@@ -165,10 +165,9 @@ function storeGoods($partNumber, $brand_id, $pattern_id)
 
 function getAllGoods()
 {
-    $sql = "SELECT patterns.id AS pattern_id ,patterns.*, goods.*, brands.brand_name 
+    $sql = "SELECT patterns.id AS pattern_id ,patterns.*, goods.*
             FROM patterns
             INNER JOIN goods ON patterns.id = goods.pattern_id
-            INNER JOIN brands ON goods.brand_id = brands.id
             WHERE patterns.user_id = :user_id AND goods.is_deleted = 0
             ORDER BY patterns.id ASC";
 
@@ -178,3 +177,4 @@ function getAllGoods()
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+

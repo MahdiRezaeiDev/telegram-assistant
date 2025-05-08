@@ -10,7 +10,7 @@ require_once "../../layouts/navigation.php";
 $goods = getAllGoods(); // Assuming this function fetches the goods list from the database
 ?>
 <section class="shadow-md rounded-lg p-6 w-full">
-    <div class="w-full overflow-x-auto">
+    <div class="w-full overflow-x-auto min-h-screen">
         <div class="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div class="">
                 <h1 class="text-2xl font-bold text-gray-800">لیست کدهای فنی اضافه شده</h1>
@@ -76,9 +76,22 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
                             <td class="p-3 text-center"><?= $index + 1 ?></td>
                             <td class="p-3 text-center"><?= htmlspecialchars($good['part_number']) ?></td>
                             <td class="p-3 text-center"><?= htmlspecialchars($good['name']) ?></td>
-                            <td class="p-3 text-center"><?= htmlspecialchars($good['brand_name']) ?></td>
-                            <td class="p-3 text-center"><?= htmlspecialchars($good['price']) ?></td>
-                            <td class="p-3 text-center"><?= htmlspecialchars($good['description']) ?></td>
+                            <td class="p-3 text-center"
+                                ondblclick="enableEdit(this)"
+                                onblur="updateGoodField(<?= $good['id'] ?>, 'brand', this.innerText)">
+                                <?= htmlspecialchars($good['brand']) ?>
+                            </td>
+                            <td class="p-3 text-center"
+                                ondblclick="enableEdit(this)"
+                                onblur="updateGoodField(<?= $good['id'] ?>, 'price', this.innerText)">
+                                <?= htmlspecialchars($good['price']) ?>
+                            </td>
+                            <td class="p-3 text-center"
+                                ondblclick="enableEdit(this)"
+                                onblur="updateGoodField(<?= $good['id'] ?>, 'description', this.innerText)">
+                                <?= htmlspecialchars($good['description']) ?>
+                            </td>
+
                             <td class="p-3 text-center">
                                 <input
                                     onclick="updateGoodStatus('is_bot_allowed',<?= $good['pattern_id'] ?>, this.checked)"
@@ -234,6 +247,39 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
                     });
             }
         })
+    }
+
+    function updateGoodField(id, field, value) {
+        const formData = new URLSearchParams();
+        formData.append('action', 'updateGoodField');
+        formData.append('id', id);
+        formData.append('field', field);
+        formData.append('value', value);
+
+        axios.post('../../app/api/goods/GoodsApi.php', formData)
+            .then(response => {
+                if (response.data.status === 'success') {
+                    Swal.fire(
+                        'به روز رسانی شد!',
+                        'فیلد با موفقیت به روز رسانی شد.',
+                        'success'
+                    );
+                } else {
+                    Swal.fire(
+                        'خطا!',
+                        response.data.message,
+                        'error'
+                    );
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function enableEdit(cell) {
+        cell.setAttribute('contenteditable', 'true');
+        cell.focus();
     }
 </script>
 <?php

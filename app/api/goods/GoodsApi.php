@@ -83,3 +83,24 @@ function deleteAllGoods()
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
 }
+
+if (isset($_POST['action']) && $_POST['action'] == 'updateGoodField') {
+    $id = $_POST['id'] ?? null;
+    $field = $_POST['field'] ?? '';
+    $value = $_POST['value'] ?? '';
+
+    $allowedFields = ['brand', 'price', 'description'];
+
+    if (!$id || !in_array($field, $allowedFields)) {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid parameters']);
+        exit;
+    }
+
+    try {
+        $stmt = DB->prepare("UPDATE patterns SET $field = :value WHERE id = :id");
+        $stmt->execute(['value' => $value, 'id' => $id]);
+        echo json_encode(['status' => 'success']);
+    } catch (PDOException $e) {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    }
+}
