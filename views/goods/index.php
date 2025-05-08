@@ -10,98 +10,108 @@ require_once "../../layouts/navigation.php";
 $goods = getAllGoods(); // Assuming this function fetches the goods list from the database
 ?>
 <section class="shadow-md rounded-lg p-6 w-full">
-    <div class="mb-4 flex justify-between items-center">
-        <div class="">
-            <h1 class="text-2xl font-bold text-gray-800">لیست کدهای فنی اضافه شده</h1>
-            <span class="text-sm text-gray-600 pb-4">در اینجا لیست کدهای فنی اضافه شده توسط شما نمایش داده می‌شود.</span>
+    <div class="w-full overflow-x-auto">
+        <div class="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="">
+                <h1 class="text-2xl font-bold text-gray-800">لیست کدهای فنی اضافه شده</h1>
+                <span class="text-sm text-gray-600 pb-4">در اینجا لیست کدهای فنی اضافه شده توسط شما نمایش داده می‌شود.</span>
+            </div>
+            <input type="search" name="search" id="search" placeholder="جستجو..."
+                onkeyup="searchGoods(this.value)"
+                class="rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <div class="flex gap-2">
+                <a class="rounded bg-sky-600 text-white text-xs p-3" href="../goods/upload.php">آپلود فایل کد های فنی</a>
+
+                <button class="rounded bg-red-600 text-white text-xs p-3 flex items-center gap-2"
+                    onclick="deleteGood(0)">
+                    حذف همه کدهای فنی
+                </button>
+            </div>
+
         </div>
-        <input type="search" name="search" id="search" placeholder="جستجو..."
-            onkeyup="searchGoods(this.value)"
-            class="rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-        <a class="rounded bg-sky-600 text-white text-xs p-3" href="../goods/upload.php">آپلود فایل کد های فنی</a>
-    </div>
-    <table class="table-fixed w-full">
-        <thead class="sticky_nav sticky bg-gray-800 border border-gray-600">
-            <tr>
-                <th scope="col" class="text-white text-xs font-semibold p-3 text-center w-8">
-                    #
-                </th>
-                <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
-                    کد فنی
-                </th>
-                <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
-                    کد مشابه
-                </th>
-                <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
-                    برند
-                </th>
-                <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
-                    قیمت
-                </th>
-                <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
-                    توضیحات
-                </th>
-                <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
-                    اجازه ربات
-                </th>
-                <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
-                    ارسال بدون قیمت
-                </th>
-                <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
-                    ارسال با قیمت
-                </th>
-                <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
-                    عملیات
-                </th>
-            </tr>
-        </thead>
-        <tbody id="initial_data" class="border border-dashed border-gray-600">
-            <?php if (empty($goods)) : ?>
+        <table class="w-full">
+            <thead class="bg-gray-800 border border-gray-600">
                 <tr>
-                    <td colspan="9" class="text-center text-gray-500 p-4 ">هیچ کدفنی برای نمایش وجود ندارد</td>
+                    <th scope="col" class="text-white text-xs font-semibold p-3 text-center w-8">
+                        #
+                    </th>
+                    <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
+                        کد فنی
+                    </th>
+                    <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
+                        کد مشابه
+                    </th>
+                    <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
+                        برند
+                    </th>
+                    <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
+                        قیمت
+                    </th>
+                    <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
+                        توضیحات
+                    </th>
+                    <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
+                        اجازه ربات
+                    </th>
+                    <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
+                        ارسال بدون قیمت
+                    </th>
+                    <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
+                        ارسال با قیمت
+                    </th>
+                    <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
+                        عملیات
+                    </th>
                 </tr>
-                <?php
-            else:
-                foreach ($goods as $index => $good): ?>
-                    <tr class="even:bg-gray-100 odd:bg-white hover:bg-gray-200 transition duration-300">
-                        <td class="p-3 text-center"><?= $index + 1 ?></td>
-                        <td class="p-3 text-center"><?= htmlspecialchars($good['part_number']) ?></td>
-                        <td class="p-3 text-center"><?= htmlspecialchars($good['name']) ?></td>
-                        <td class="p-3 text-center"><?= htmlspecialchars($good['brand_name']) ?></td>
-                        <td class="p-3 text-center"><?= htmlspecialchars($good['price']) ?></td>
-                        <td class="p-3 text-center"><?= htmlspecialchars($good['description']) ?></td>
-                        <td class="p-3 text-center">
-                            <input
-                                onclick="updateGoodStatus('is_bot_allowed',<?= $good['pattern_id'] ?>, this.checked)"
-                                type="checkbox" name="blocked" id="blocked"
-                                class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
-                                <?= $good['is_bot_allowed'] ? 'checked' : '' ?>>
-                        </td>
-                        <td class="p-3 text-center">
-                            <input
-                                onclick="updateGoodStatus('with_price',<?= $good['pattern_id'] ?>, this.checked)"
-                                type="checkbox" name="blocked" id="blocked"
-                                class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
-                                <?= $good['with_price'] ? 'checked' : '' ?>>
-                        </td>
-                        <td class="p-3 text-center">
-                            <input
-                                onclick="updateGoodStatus('without_price',<?= $good['pattern_id'] ?>, this.checked)"
-                                type="checkbox" name="blocked" id="blocked"
-                                class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
-                                <?= $good['without_price'] ? 'checked' : '' ?>>
-                        </td>
-                        <td class="p-3 text-center">
-                            <img src="../../public/icons/delete.svg" alt="delete icon"
-                                class="w-5 h-5 cursor-pointer hover:scale-110 transition duration-300 mx-auto"
-                                onclick="deleteGood(<?= $good['pattern_id'] ?>)">
-                        </td>
+            </thead>
+            <tbody id="initial_data" class="border border-dashed border-gray-600">
+                <?php if (empty($goods)) : ?>
+                    <tr>
+                        <td colspan="9" class="text-center text-gray-500 p-4 ">هیچ کدفنی برای نمایش وجود ندارد</td>
                     </tr>
-            <?php
-                endforeach;
-            endif; ?>
-        </tbody>
-    </table>
+                    <?php
+                else:
+                    foreach ($goods as $index => $good): ?>
+                        <tr class="even:bg-gray-100 odd:bg-white hover:bg-gray-200 transition duration-300">
+                            <td class="p-3 text-center"><?= $index + 1 ?></td>
+                            <td class="p-3 text-center"><?= htmlspecialchars($good['part_number']) ?></td>
+                            <td class="p-3 text-center"><?= htmlspecialchars($good['name']) ?></td>
+                            <td class="p-3 text-center"><?= htmlspecialchars($good['brand_name']) ?></td>
+                            <td class="p-3 text-center"><?= htmlspecialchars($good['price']) ?></td>
+                            <td class="p-3 text-center"><?= htmlspecialchars($good['description']) ?></td>
+                            <td class="p-3 text-center">
+                                <input
+                                    onclick="updateGoodStatus('is_bot_allowed',<?= $good['pattern_id'] ?>, this.checked)"
+                                    type="checkbox" name="blocked" id="blocked"
+                                    class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
+                                    <?= $good['is_bot_allowed'] ? 'checked' : '' ?>>
+                            </td>
+                            <td class="p-3 text-center">
+                                <input
+                                    onclick="updateGoodStatus('with_price',<?= $good['pattern_id'] ?>, this.checked)"
+                                    type="checkbox" name="blocked" id="blocked"
+                                    class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
+                                    <?= $good['with_price'] ? 'checked' : '' ?>>
+                            </td>
+                            <td class="p-3 text-center">
+                                <input
+                                    onclick="updateGoodStatus('without_price',<?= $good['pattern_id'] ?>, this.checked)"
+                                    type="checkbox" name="blocked" id="blocked"
+                                    class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
+                                    <?= $good['without_price'] ? 'checked' : '' ?>>
+                            </td>
+                            <td class="p-3 text-center">
+                                <img src="../../public/icons/delete.svg" alt="delete icon"
+                                    class="w-5 h-5 cursor-pointer hover:scale-110 transition duration-300 mx-auto"
+                                    onclick="deleteGood(<?= $good['pattern_id'] ?>)">
+                            </td>
+                        </tr>
+                <?php
+                    endforeach;
+                endif; ?>
+            </tbody>
+        </table>
+    </div>
 </section>
 <script>
     updateGoodStatus = (type, id, value) => {
