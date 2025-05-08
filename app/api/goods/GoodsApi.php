@@ -56,7 +56,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'deleteGood') {
 function deleteGood($patternId)
 {
     try {
-        $sql = "DELETE FROM patterns WHERE id = :pattern_id";
+        $sql = "UPDATE goods SET is_deleted = NOT is_deleted WHERE id = :pattern_id"; // fixed syntax
         $stmt = DB->prepare($sql);
         $stmt->bindParam(':pattern_id', $patternId, PDO::PARAM_INT);
         $stmt->execute();
@@ -69,8 +69,6 @@ function deleteGood($patternId)
 
 if (isset($_POST['action']) && $_POST['action'] === 'deleteAllGoods') {
     deleteAllGoods();
-} else {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
 }
 
 function deleteAllGoods()

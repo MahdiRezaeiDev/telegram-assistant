@@ -103,7 +103,7 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
                             <td class="p-3 text-center">
                                 <img src="../../public/icons/delete.svg" alt="delete icon"
                                     class="w-5 h-5 cursor-pointer hover:scale-110 transition duration-300 mx-auto"
-                                    onclick="deleteGood(<?= $good['pattern_id'] ?>)">
+                                    onclick="deleteGood(<?= $good['id'] ?>)">
                             </td>
                         </tr>
                 <?php
@@ -171,7 +171,6 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
 
                 axios.post('../../app/api/goods/GoodsApi.php', params)
                     .then(response => {
-                        console.log(response.data);
                         if (response.data.status === 'success') {
                             Swal.fire(
                                 'حذف شد!',

@@ -169,7 +169,8 @@ function getAllGoods()
             FROM patterns
             INNER JOIN goods ON patterns.id = goods.pattern_id
             INNER JOIN brands ON goods.brand_id = brands.id
-            WHERE patterns.user_id = :user_id";
+            WHERE patterns.user_id = :user_id AND goods.is_deleted = 0
+            ORDER BY patterns.id ASC";
 
     $stmt = DB->prepare($sql);
     $user_id = USER['id'];
