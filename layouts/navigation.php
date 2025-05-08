@@ -5,7 +5,7 @@ if (!isset($DB_NAME)) {
 ?>
 <nav id="main_nav" class="fixed top-0 left-0 right-0 z-50 p-2 flex justify-between bg-white shadow-md">
     <ul class="flex">
-        <li onclick="toggleSidebar()" class="mx-1 px-3 bg-gray-200 hover:bg-gray-400 text-sm font-bold cursor-pointer flex items-center gap-2">
+        <li onclick="toggleSidebar()" class="flex md:hidden mx-1 p-3 bg-gray-200 hover:bg-gray-400 text-sm font-bold cursor-pointer items-center gap-2">
             <img id="open_aside_icon" class="w-6 h-6" src="../../public/icons/menu.svg" alt="menu icon">
         </li>
         <div class="hidden md:flex">
