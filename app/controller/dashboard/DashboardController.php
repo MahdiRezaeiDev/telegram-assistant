@@ -36,7 +36,7 @@ function getTotalContactsCount()
 
 function getLastHourMostRequested()
 {
-    $sql = "SELECT prices.*, contacts.name, goods.part_number
+    $sql = "SELECT prices.*, contacts.name, goods.part_number,goods.brand
             FROM prices
             INNER JOIN contacts ON prices.contact_id = contacts.id
             INNER JOIN goods ON prices.good_id = goods.id
@@ -50,7 +50,7 @@ function getLastHourMostRequested()
 
 function getTodayMostRequested()
 {
-    $sql = "SELECT prices.*, contacts.name, goods.part_number
+    $sql = "SELECT prices.*, contacts.name, goods.part_number,goods.brand
             FROM prices
             INNER JOIN contacts ON prices.contact_id = contacts.id
             INNER JOIN goods ON prices.good_id = goods.id
@@ -64,7 +64,7 @@ function getTodayMostRequested()
 
 function getAllTimeMostRequested()
 {
-    $sql = "SELECT prices.*, contacts.name, goods.part_number
+    $sql = "SELECT prices.*, contacts.name, goods.part_number,goods.brand
             FROM prices
             INNER JOIN contacts ON prices.contact_id = contacts.id
             INNER JOIN goods ON prices.good_id = goods.id

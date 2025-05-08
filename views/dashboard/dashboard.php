@@ -128,7 +128,7 @@ require_once "../../layouts/navigation.php";
                                     <?= $request['part_number'] ?>
                                 </td>
                                 <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['brand_name'] ?>
+                                    <?= $request['brand'] ?>
                                 </td>
                                 <td class="px-6 py-3  font-semibold text-center text-gray-800">
                                     <?= $request['price'] ?>
@@ -180,7 +180,7 @@ require_once "../../layouts/navigation.php";
                                     <?= $request['part_number'] ?>
                                 </td>
                                 <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['brand_name'] ?>
+                                    <?= $request['brand'] ?>
                                 </td>
                                 <td class="px-6 py-3  font-semibold text-center text-gray-800">
                                     <?= $request['price'] ?>
@@ -231,7 +231,7 @@ require_once "../../layouts/navigation.php";
                                     <?= $request['part_number'] ?>
                                 </td>
                                 <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['brand_name'] ?>
+                                    <?= $request['brand'] ?>
                                 </td>
                                 <td class="px-6 py-3  font-semibold text-center text-gray-800">
                                     <?= $request['price'] ?>
