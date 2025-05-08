@@ -6,6 +6,7 @@ require_once '../components/init.php';
 require_once '../../app/controller/dashboard/DashboardController.php';
 require_once '../components/header.php';
 require_once "../../layouts/navigation.php";
+require_once "../../layouts/sidebar.php";
 ?>
 
 <!-- ------------------------------------------------ Dashboard card section ---------------------------------------------------- -->
