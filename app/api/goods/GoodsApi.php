@@ -66,3 +66,22 @@ function deleteGood($patternId)
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
 }
+
+if (isset($_POST['action']) && $_POST['action'] === 'deleteAllGoods') {
+    deleteAllGoods();
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
+}
+
+function deleteAllGoods()
+{
+    try {
+        $sql = "DELETE FROM patterns"; // fixed syntax
+        $stmt = DB->prepare($sql);
+        $stmt->execute();
+
+        echo json_encode(['status' => 'success']);
+    } catch (PDOException $e) {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    }
+}

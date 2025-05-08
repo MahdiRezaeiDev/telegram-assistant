@@ -18,12 +18,12 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
             </div>
             <input type="search" name="search" id="search" placeholder="جستجو..."
                 onkeyup="searchGoods(this.value)"
-                class="rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            <div class="flex gap-2">
+                class="rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 items-center" />
+            <div class="flex justify-end items-center gap-2">
                 <a class="rounded bg-sky-600 text-white text-xs p-3" href="../goods/upload.php">آپلود فایل کد های فنی</a>
 
                 <button class="rounded bg-red-600 text-white text-xs p-3 flex items-center gap-2"
-                    onclick="deleteGood(0)">
+                    onclick="deleteAllGoods()">
                     حذف همه کدهای فنی
                 </button>
             </div>
@@ -176,6 +176,48 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
                             Swal.fire(
                                 'حذف شد!',
                                 'کد فنی با موفقیت حذف شد.',
+                                'success'
+                            ).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire(
+                                'خطا!',
+                                response.data.message,
+                                'error'
+                            );
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        })
+    }
+
+    function deleteAllGoods() {
+        Swal.fire({
+            title: 'آیا مطمئن هستید؟',
+            text: "این عمل غیرقابل بازگشت است!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'بله، حذف کن!',
+            cancelButtonText: 'خیر، انصراف!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const params = new URLSearchParams({
+                    action: 'deleteAllGoods'
+                });
+
+                axios.post('../../app/api/goods/GoodsApi.php', params)
+                    .then(response => {
+                        console.log(response.data);
+                        if (response.data.status === 'success') {
+                            Swal.fire(
+                                'حذف شد!',
+                                'همه کدهای فنی با موفقیت حذف شدند.',
                                 'success'
                             ).then(() => {
                                 location.reload();
