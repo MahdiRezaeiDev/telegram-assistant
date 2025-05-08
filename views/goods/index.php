@@ -83,12 +83,12 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
                             </td>
                             <td class="p-3 text-center"
                                 ondblclick="enableEdit(this)"
-                                onblur="updateGoodField(<?= $good['id'] ?>, 'price', this.innerText)">
+                                onblur="updateGoodField(<?= $good['pattern_id'] ?>, 'price', this.innerText)">
                                 <?= htmlspecialchars($good['price']) ?>
                             </td>
                             <td class="p-3 text-center"
                                 ondblclick="enableEdit(this)"
-                                onblur="updateGoodField(<?= $good['id'] ?>, 'description', this.innerText)">
+                                onblur="updateGoodField(<?= $good['pattern_id'] ?>, 'description', this.innerText)">
                                 <?= htmlspecialchars($good['description']) ?>
                             </td>
 

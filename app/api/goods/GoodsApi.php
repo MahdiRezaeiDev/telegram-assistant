@@ -98,6 +98,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateGoodField') {
 
     try {
         $stmt = DB->prepare("UPDATE patterns SET $field = :value WHERE id = :id");
+
+        if ($field == 'brand') {
+            $stmt = DB->prepare("UPDATE goods SET brand = :value WHERE id = :id");
+        }
         $stmt->execute(['value' => $value, 'id' => $id]);
         echo json_encode(['status' => 'success']);
     } catch (PDOException $e) {
