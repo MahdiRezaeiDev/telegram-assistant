@@ -92,10 +92,9 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
                                 <?= $good['without_price'] ? 'checked' : '' ?>>
                         </td>
                         <td class="p-3 text-center">
-                            <a href="../goods/edit.php?id=<?= $good['pattern_id'] ?>"
-                                class="text-blue-500 hover:text-blue-700">ویرایش</a>
-                            <a href="../goods/delete.php?id=<?= $good['pattern_id'] ?>"
-                                class="text-red-500 hover:text-red-700">حذف</a>
+                            <img src="../../public/icons/delete.svg" alt="delete icon"
+                                class="w-5 h-5 cursor-pointer hover:scale-110 transition duration-300"
+                                onclick="deleteGood(<?= $good['pattern_id'] ?>)">
                         </td>
                     </tr>
             <?php
@@ -141,6 +140,48 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
             }
             rows[i].style.display = found ? '' : 'none';
         }
+    }
+
+    function deleteGood(id) {
+        Swal.fire({
+            title: 'آیا مطمئن هستید؟',
+            text: "این عمل غیرقابل بازگشت است!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'بله، حذف کن!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const params = new URLSearchParams({
+                    action: 'deleteGood',
+                    pattern_id: id
+                });
+
+                axios.post('../../app/api/goods/GoodsApi.php', params)
+                    .then(response => {
+                        console.log(response.data);
+                        if (response.data.status === 'success') {
+                            Swal.fire(
+                                'حذف شد!',
+                                'کد فنی با موفقیت حذف شد.',
+                                'success'
+                            ).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire(
+                                'خطا!',
+                                response.data.message,
+                                'error'
+                            );
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        })
     }
 </script>
 <?php

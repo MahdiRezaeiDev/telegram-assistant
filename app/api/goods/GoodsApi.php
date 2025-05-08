@@ -42,3 +42,27 @@ function updatePatternStatus($status, $patternId, $is_checked)
         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
 }
+
+if (isset($_POST['action']) && $_POST['action'] === 'deleteGood') {
+    $patternId = $_POST['pattern_id'] ?? null;
+
+    if ($patternId) {
+        deleteGood($patternId);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Pattern ID is required']);
+    }
+}
+
+function deleteGood($patternId)
+{
+    try {
+        $sql = "DELETE FROM patterns WHERE id = :pattern_id";
+        $stmt = DB->prepare($sql);
+        $stmt->bindParam(':pattern_id', $patternId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        echo json_encode(['status' => 'success']);
+    } catch (PDOException $e) {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    }
+}
