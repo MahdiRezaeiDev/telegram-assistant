@@ -14,4 +14,4 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<body class="min-h-screen bg-gray-100 pt-32 md:pt-16">
+<body class="min-h-screen bg-gray-100 pt-20 md:pt-16">
