@@ -11,14 +11,18 @@ use danog\MadelineProto\API;
 if (isConnectedToTelegram()) {
     $sessionName = getAccountSession(USER_ID);
 
-    // $MadelineProto = new API($sessionName);
-    // // Logout from Telegram
-    // $MadelineProto->logOut();
+    if (isDirExists($sessionName)) {
+        $MadelineProto = new API($sessionName);
+        // Logout from Telegram
+        $MadelineProto->logOut();
 
-    markAccountAsDisconnected(USER_ID);
-    // deleteFolder($sessionName);
-    header('Location: account_status.php');
-    exit();
+        markAccountAsDisconnected(USER_ID);
+        deleteFolder($sessionName);
+        header('Location: account_status.php');
+        exit();
+    } else {
+        header('Location: connect.php');
+    }
 }
 
 function deleteFolder($folderPath)

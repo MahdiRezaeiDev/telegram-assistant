@@ -40,7 +40,7 @@ require_once "../../layouts/sidebar.php";
         <div class="mt-6 text-right">
             <?php if (isAccountConnected(USER['id'])): ?>
                 <a href="javascript:void(0)" onclick="confirmDisconnect()" class="inline-block px-3 py-1 text-sm font-medium rounded-full 
-                    bg-red-100 hover:bg-red-200 text-red-600 hover:underline">قطع اتصال</a>
+                    bg-red-100 hover:bg-red-200 text-red-600 hover:underline">قطع اتصال دائمی</a>
             <?php else: ?>
                 <a href="../telegram/connect.php" class="inline-block px-3 py-1 text-sm font-medium rounded-full 
                 bg-green-100 hover:bg-green-200 text-green-600 hover:underline">اتصال مجدد</a>
