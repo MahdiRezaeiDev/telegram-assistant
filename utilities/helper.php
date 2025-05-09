@@ -78,3 +78,15 @@ function getAccountSession($userId)
     $stmt->execute();
     return $stmt->fetchColumn();
 }
+
+function sanitizeDataInput($data)
+{
+    // Convert null to empty string to avoid deprecation warning
+    $data = htmlspecialchars(stripslashes(trim((string) $data)));
+
+    // Remove all non-alphanumeric characters (letters and numbers only)
+    $data = preg_replace("/[^a-zA-Z0-9]/", "", $data);
+
+    // Convert to uppercase
+    return strtoupper($data);
+}
