@@ -9,8 +9,8 @@ require_once '../components/header.php';
 require_once "../../layouts/navigation.php";
 require_once "../../layouts/sidebar.php";
 ?>
-<section class="shadow-md rounded-lg p-6 w-full">
-    <div class="mb-4 flex justify-between items-center">
+<section class="shadow-md rounded-lg p-6 w-full overflow-x-auto min-h-screen">
+    <div class="mb-4 grid grid-cols-1 md:grid-cols-3 gap-2 justify-between items-center">
         <div class="">
             <h1 class="text-2xl font-bold text-gray-800">لیست مخاطبین</h1>
             <span class="text-sm text-gray-600 pb-4">در اینجا لیست مخاطبین شما نمایش داده می‌شود.</span>
@@ -18,9 +18,9 @@ require_once "../../layouts/sidebar.php";
         <input type="search" name="search" id="search" placeholder="جستجو..."
             onkeyup="searchContacts(this.value)"
             class="rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-        <a class="rounded bg-sky-600 text-white text-xs p-3" href="../telegram/telegramContacts.php">بارگیری مخاطبین تلگرام</a>
+        <a class="rounded bg-sky-600 text-white text-xs text-center p-3" href="../telegram/telegramContacts.php">بارگیری مخاطبین تلگرام</a>
     </div>
-    <table class="table-fixed w-full">
+    <table class="w-full">
         <thead class="sticky_nav sticky bg-gray-800 border border-gray-600">
             <tr>
                 <th scope="col" class="text-white font-semibold p-3 text-center w-8">
