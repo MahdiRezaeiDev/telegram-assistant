@@ -18,7 +18,10 @@ require_once "../../layouts/sidebar.php";
         <input type="search" name="search" id="search" placeholder="جستجو..."
             onkeyup="searchContacts(this.value)"
             class="rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-        <a class="rounded bg-sky-600 text-white text-xs text-center p-3" href="../telegram/telegramContacts.php">بارگیری مخاطبین تلگرام</a>
+        <div class="flex justify-end">
+            <a class="rounded bg-sky-600 text-white text-xs text-center p-3 w-full md:w-40" href="../telegram/telegramContacts.php">بارگیری مخاطبین تلگرام</a>
+
+        </div>
     </div>
     <table class="w-full">
         <thead class="sticky_nav sticky bg-gray-800 border border-gray-600">
