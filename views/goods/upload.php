@@ -7,6 +7,7 @@ require_once '../components/init.php';
 require_once '../../app/controller/goods/FileController.php';
 require_once '../components/header.php';
 require_once "../../layouts/navigation.php";
+require_once "../../layouts/sidebar.php";
 ?>
 <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST" enctype="multipart/form-data" class="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-2xl space-y-6">
     <h2 class="text-xl font-bold text-gray-800 text-center">📤 آپلود فایل اکسل</h2>

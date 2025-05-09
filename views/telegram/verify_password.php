@@ -7,6 +7,7 @@ require_once '../../vendor/autoload.php';
 require_once '../../app/controller/telegram/VerifyPasswordController.php';
 require_once '../components/header.php';
 require_once "../../layouts/navigation.php";
+require_once "../../layouts/sidebar.php";
 ?>
 <main class="flex flex-col items-center justify-center  bg-gray-100 pt-20">
     <section class="bg-white shadow-md rounded-lg p-6 max-w-md w-full">

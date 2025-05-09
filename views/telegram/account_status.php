@@ -6,6 +6,7 @@ require_once '../components/init.php';
 require_once '../../vendor/autoload.php';
 require_once '../components/header.php';
 require_once "../../layouts/navigation.php";
+require_once "../../layouts/sidebar.php";
 ?>
 <div class="max-w-xl mx-auto mt-10">
     <div class="bg-white rounded-2xl shadow-md border border-gray-200 p-6">

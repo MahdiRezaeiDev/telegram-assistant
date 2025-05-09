@@ -7,6 +7,7 @@ require_once '../../vendor/autoload.php';
 require_once '../../app/controller/telegram/ContactsController.php';
 require_once '../components/header.php';
 require_once "../../layouts/navigation.php";
+require_once "../../layouts/sidebar.php";
 ?>
 <section class="shadow-md rounded-lg p-6 w-full">
     <div class="mb-4 flex justify-between items-center">
