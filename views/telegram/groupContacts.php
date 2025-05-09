@@ -60,7 +60,7 @@ require_once "../../layouts/sidebar.php";
                         <td class="p-3 text-center">
                             <input
                                 onclick="updateContactStatus(<?= $contact['id'] ?>, this.checked)"
-                                type="checkbox" name="blocked" id="blocked"
+                                type="checkbox" name="blocked"
                                 class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
                                 <?= $contact['is_blocked'] ? 'checked' : '' ?>>
                         </td>
@@ -90,7 +90,6 @@ require_once "../../layouts/sidebar.php";
 
         axios.post('../../app/api/telegram/ContactsApi.php', params)
             .then(function(response) {
-                console.log(response.data);
                 if (response.data.status === 'success') {
                     Swal.fire({
                         icon: 'success',
