@@ -11,9 +11,9 @@ use danog\MadelineProto\API;
 if (isConnectedToTelegram()) {
     $sessionName = getAccountSession(USER_ID);
 
-    $MadelineProto = new API($sessionName);
-    // Logout from Telegram
-    $MadelineProto->logOut();
+    // $MadelineProto = new API($sessionName);
+    // // Logout from Telegram
+    // $MadelineProto->logOut();
 
     markAccountAsDisconnected(USER_ID);
     // deleteFolder($sessionName);
