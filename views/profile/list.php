@@ -18,7 +18,7 @@ require_once "../../layouts/sidebar.php";
             onkeyup="searchContacts(this.value)"
             class="rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         <div class="flex justify-end">
-            <a class="rounded bg-sky-600 text-white text-xs p-3 w-full md:w-40" href="../profile/create.php">ایجاد حساب کاربری</a>
+            <a class="rounded bg-sky-600 text-white text-xs p-3 w-full md:w-40 text-center" href="../profile/create.php">ایجاد حساب کاربری</a>
         </div>
 
     </div>
@@ -58,10 +58,10 @@ require_once "../../layouts/sidebar.php";
                 foreach ($users as $index => $user): ?>
                     <tr class="even:bg-gray-100 odd:bg-white hover:bg-gray-200 transition duration-300">
                         <td class="p-3 text-center"><?= $index + 1 ?></td>
-                        <td class="p-3 text-center"><?= sanitizeDataInput($user['name']) ?></td>
-                        <td class="p-3 text-center"><?= sanitizeDataInput($user['last_name']) ?></td>
-                        <td class="p-3 text-center"><?= sanitizeDataInput($user['phone']) ?></td>
-                        <td class="p-3 text-center"><?= sanitizeDataInput($user['company']) ?></td>
+                        <td class="p-3 text-center"><?= ($user['name']) ?></td>
+                        <td class="p-3 text-center"><?= ($user['last_name']) ?></td>
+                        <td class="p-3 text-center"><?= ($user['phone']) ?></td>
+                        <td class="p-3 text-center"><?= ($user['company']) ?></td>
                         <td class="p-3 text-center"><?= sanitizeDataInput($user['address']) ?></td>
                         <td class="p-3 text-center">
                             <img src="../../public/icons/delete.svg" alt="delete icon" class="w-5 h-5 cursor-pointer mx-auto"
