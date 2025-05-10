@@ -20,6 +20,7 @@ if (!isAccountConnected(USER_ID)) {
 $MadelineProto = new API($sessionName);
 $MadelineProto->start();
 
+// GETTING ALL THE CONTACTS OF ACCOUNT
 // try {
 //     $contacts = $MadelineProto->contacts->getContacts(['hash' => '0']);
 //     saveContacts($contacts['users'], USER_ID);
