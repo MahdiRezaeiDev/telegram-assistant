@@ -9,7 +9,11 @@ function isConnectedToTelegram()
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    return $result['is_connected'] == 1;
+    if (isset($result['is_connected'])) {
+        return $result['is_connected'] == 1;
+    }
+
+    return false;
 }
 
 function isDirExists($userId)
@@ -45,7 +49,12 @@ function isAccountConnected($userId)
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['is_connected'] == 1;
+
+    if (isset($result['is_connected'])) {
+        return $result['is_connected'] == 1;
+    }
+
+    return false;
 }
 
 function markAccountAsConnected($userId, $telegramId)

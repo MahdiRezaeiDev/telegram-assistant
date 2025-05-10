@@ -32,7 +32,7 @@ $MadelineProto->start();
 
 try {
     $contacts = $MadelineProto->channels->getParticipants([
-        'channel' => '-1002320490188',
+        'channel' => 'https://t.me/+Z3c56mn7IQ0xNjI0',
         'filter' => ['_' => 'channelParticipantsRecent'], // or 'channelParticipantsAdmins', etc.
         'offset' => 0,
         'limit' => 200,
@@ -41,19 +41,19 @@ try {
     saveContacts($contacts['users'], USER_ID);
     header("Location: groupContacts.php?success=1");
 } catch (\Throwable $th) {
-    //throw $th;
+    throw $th;
 }
 
 function saveContacts($contacts, $userId)
 {
-    $checkStmt = DB->prepare("SELECT 1 FROM contacts WHERE api_bot_id = ?");
+    $checkStmt = DB->prepare("SELECT 1 FROM contacts WHERE api_bot_id = ? AND user_id= ?");
     $insertStmt = DB->prepare("INSERT INTO contacts (user_id, phone, name, username, api_bot_id) VALUES (?, ?, ?, ?, ?)");
 
     foreach ($contacts as $contact) {
         $apiBotId = $contact['id'] ?? null;
         if (!$apiBotId) continue;
 
-        $checkStmt->execute([$apiBotId]);
+        $checkStmt->execute([$apiBotId, $userId]);
         if ($checkStmt->fetch()) {
             continue; // Skip if already exists
         }
