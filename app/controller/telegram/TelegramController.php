@@ -71,7 +71,7 @@ function saveTelegramCredentials($apiId, $apiHash, $sessionName, $phone)
     try {
         $sql = "INSERT INTO telegram_credentials (user_id, api_id, api_hash, session_name, phone) VALUES (:user_id, :api_id, :api_hash, :session_name, :phone_number)";
         $stmt = DB->prepare($sql);
-        $userId = USER_ID;
+        $userId = USER['user_id'];
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
         $stmt->bindParam(':api_id', $apiId, PDO::PARAM_INT);
         $stmt->bindParam(':api_hash', $apiHash, PDO::PARAM_STR);
@@ -89,7 +89,7 @@ function updateTelegramCredentials($apiId, $apiHash, $sessionName, $phone)
     try {
         $sql = "UPDATE telegram_credentials SET api_id = :api_id, api_hash = :api_hash, session_name = :session_name, phone_number = :phone_number WHERE user_id = :user_id";
         $stmt = DB->prepare($sql);
-        $userId = USER_ID;
+        $userId = USER['user_id'];
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
         $stmt->bindParam(':api_id', $apiId, PDO::PARAM_INT);
         $stmt->bindParam(':api_hash', $apiHash, PDO::PARAM_STR);

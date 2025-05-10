@@ -13,7 +13,7 @@ use danog\MadelineProto\Exception;
 $sessionName = getAccountSession(USER_ID);
 
 if (!isAccountConnected(USER_ID)) {
-    header("Location: ../telegram/account_status.php");
+    header("Location: ../telegram/connect.php");
     exit;
 }
 
@@ -39,7 +39,7 @@ try {
         'limit' => 200,
         'hash' => 0
     ]);
-    saveContacts($contacts['users'], USER_ID);
+    saveContacts($contacts['users'], USER['user_id']);
     header("Location: groupContacts.php?success=1");
 } catch (\Throwable $th) {
     throw $th;

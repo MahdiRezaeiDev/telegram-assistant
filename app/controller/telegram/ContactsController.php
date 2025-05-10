@@ -5,7 +5,7 @@ if (!isset($DB_NAME)) {
 }
 
 
-$contacts = getContacts(USER_ID);
+$contacts = getContacts(USER['user_id']);
 
 function getContacts($userId)
 {

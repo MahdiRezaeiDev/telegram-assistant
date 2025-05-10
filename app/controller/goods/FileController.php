@@ -77,7 +77,7 @@ function createPattern($name, $price, $is_bot_allowed, $with_price, $without_pri
             VALUES (:user_id, :name, :price, :is_bot_allowed, :with_price, :without_price, :description)";
 
     $stmt = DB->prepare($sql);
-    $user_id = USER['id'];
+    $user_id = USER['user_id'];
 
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->bindParam(':name', $name, PDO::PARAM_STR);
@@ -172,9 +172,8 @@ function getAllGoods()
             ORDER BY patterns.id ASC";
 
     $stmt = DB->prepare($sql);
-    $user_id = USER['id'];
+    $user_id = USER['user_id'];
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
