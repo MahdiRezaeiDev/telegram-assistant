@@ -21,9 +21,10 @@ if (!is_dir($sessionDir)) {
     mkdir($sessionDir, 0777, true);
 }
 
-$sessionFile = 'sessions/' . getAccountSession(USER_ID) . '.madeline';
+$sessionFile = 'sessions/' . getAccountSession(USER_ID);
+$sessionConnectionFile = 'sessions/' . getAccountSession(USER_ID) . '/safe.php';
 
-if (!file_exists($sessionFile)) {
+if (!file_exists($sessionConnectionFile)) {
     // No session file — redirect to login/connect
     header("Location: ../telegram/connect.php");
     exit;

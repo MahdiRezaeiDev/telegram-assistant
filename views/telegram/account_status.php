@@ -18,14 +18,16 @@ require_once "../../layouts/sidebar.php";
                     <p class="text-sm text-gray-500">اطلاعات مربوط به اتصال و وضعیت حساب</p>
                 </div>
             </div>
-            <?php if (isAccountConnected(USER['id'])): ?>
+            <?php if (isAccountConnected(USER['user_id'])): ?>
                 <span class="inline-block px-3 py-1 text-sm font-medium rounded-full 
                          bg-green-100 text-green-700">
+                    ارسال پیام :
                     فعال
                 </span>
             <?php else: ?>
                 <span class="inline-block px-3 py-1 text-sm font-medium rounded-full 
                          bg-red-100 text-red-700">
+                    ارسال پیام :‌
                     غیرفعال
                 </span>
             <?php endif; ?>

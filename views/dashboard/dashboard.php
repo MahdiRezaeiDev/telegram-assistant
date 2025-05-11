@@ -20,7 +20,7 @@ require_once "../../layouts/sidebar.php";
                         <div class="flex flex-col space-y-2">
                             <span class="text-white font-semibold">وضعیت حساب تلگرام</span>
                             <span class="text-xs text-white font-semibold">
-                                حساب تلگرام شما به سامانه متصل شده است
+                                ارسال پیام خودکار فعال است.
                             </span>
                         </div>
                         <img onclick="toggleContactStatus(1)" title="توقف ارسال پیام خودکار" class="cursor-pointer" src="../../public/icons/power_on.svg" alt="power off icon">
@@ -36,7 +36,7 @@ require_once "../../layouts/sidebar.php";
                         <div class="flex flex-col space-y-2">
                             <span class="text-white font-semibold">وضعیت حساب تلگرام</span>
                             <span class="text-xs text-white font-semibold">
-                                حساب تلگرام شما به سامانه متصل نشده است
+                                ارسال پیام خودکار غیرفعال است.
                             </span>
                         </div>
                         <img onclick="toggleContactStatus()" title="توقف ارسال پیام خودکار" class="cursor-pointer" src="../../public/icons/power_off.svg" alt="power off icon">
