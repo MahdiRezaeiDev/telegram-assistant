@@ -8,30 +8,17 @@ if (!isset($DB_NAME)) {
     header("Location: ../../../views/auth/403.php");
 }
 
-$sessionFile = 'sessions/' . getAccountSession(USER_ID) . '.madeline';
-
-if (file_exists($sessionFile)) {
-    // No session file — redirect to login/connect
-    header("Location: ../telegram/account_status.php");
-    exit;
+// Ensure the sessions directory exists
+$sessionDir = 'sessions';
+$error = null;
+if (!is_dir($sessionDir)) {
+    mkdir($sessionDir, 0777, true);
 }
 
-try {
-    $MadelineProto = new API($sessionFile);
-    $MadelineProto->start();
-
-    $user = $MadelineProto->getSelf(); // This throws if not logged in
-
-    if (isset($user['_']) && $user['_'] === 'user') {
-        // Not a valid user session
-        header("Location: ../telegram/account_status.php");
-        exit;
-    }
-} catch (Exception $e) {
-    // Invalid or expired session
-    error_log("MadelineProto Error: " . $e->getMessage());
-    header("Location: ../telegram/connect.php");
-    exit;
+// Check if the user is logged in (based on session)
+if (isAccountExists(USER_ID)) {
+    header('Location: account_status.php');
+    exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
