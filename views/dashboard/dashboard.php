@@ -274,12 +274,13 @@ require_once "../../layouts/sidebar.php";
             .post(contactApi, params)
             .then(function(response) {
                 const data = response.data;
+                console.log(data);
 
-                if (data.status === 'success') {
-                    window.location.reload();
-                } else {
-                    console.error(data.message);
-                }
+                // if (data.status === 'success') {
+                //     window.location.reload();
+                // } else {
+                //     console.error(data.message);
+                // }
             })
             .catch(function(error) {
                 console.log(error);

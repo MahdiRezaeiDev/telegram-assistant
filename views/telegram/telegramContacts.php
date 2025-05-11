@@ -21,27 +21,28 @@ if (!is_dir($sessionDir)) {
     mkdir($sessionDir, 0777, true);
 }
 
-$sessionPath = 'sessions/' . $sessionName;
-if (!is_dir($sessionPath)) {
-    header('Location: connect.php');
-} else {
+$sessionFile = 'sessions/' . getAccountSession(USER_ID) . '.madeline';
+
+if (!file_exists($sessionFile)) {
+    // No session file — redirect to login/connect
+    header("Location: ../telegram/connect.php");
+    exit;
 }
 
 try {
-    $MadelineProto = new API($sessionPath);
+    $MadelineProto = new API($sessionFile);
     $MadelineProto->start();
 
-    // This call will throw if not logged in
-    $userInfo = $MadelineProto->getSelf();
+    $user = $MadelineProto->getSelf(); // This throws if not logged in
 
-    if ($userInfo['_'] !== 'user') {
-        // Not logged in or invalid session
+    if (!isset($user['_']) || $user['_'] !== 'user') {
+        // Not a valid user session
         header("Location: ../telegram/connect.php");
         exit;
     }
 } catch (Exception $e) {
-    // Session corrupted or not logged in
-    error_log("MadelineProto error: " . $e->getMessage());
+    // Invalid or expired session
+    error_log("MadelineProto Error: " . $e->getMessage());
     header("Location: ../telegram/connect.php");
     exit;
 }
