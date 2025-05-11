@@ -13,24 +13,43 @@ require_once "../../layouts/sidebar.php";
 <section class="mx-auto px-5 pb-5 bg-gray-100">
     <div class="grid grid-cols-1 gap-5 mt-6 sm:grid-cols-2 lg:grid-cols-4">
         <?php
-        if (isConnectedToTelegram()): ?>
-            <div class="p-4 transition-shadow bg-green-600 rounded-lg shadow-sm hover:shadow-lg">
-                <div class="flex items-start justify-between">
-                    <div class="flex flex-col space-y-2">
-                        <span class="text-white font-semibold">وضعیت حساب تلگرام</span>
-                        <span class="text-xs text-white font-semibold">
-                            حساب تلگرام شما به سامانه متصل شده است
-                        </span>
+        if (isAccountExists(USER_ID)):
+            if (isConnectedToTelegram()): ?>
+                <div class="p-4 transition-shadow bg-green-600 rounded-lg shadow-sm hover:shadow-lg">
+                    <div class="flex items-start justify-between">
+                        <div class="flex flex-col space-y-2">
+                            <span class="text-white font-semibold">وضعیت حساب تلگرام</span>
+                            <span class="text-xs text-white font-semibold">
+                                حساب تلگرام شما به سامانه متصل شده است
+                            </span>
+                        </div>
+                        <img onclick="toggleContactStatus(1)" title="توقف ارسال پیام خودکار" class="cursor-pointer" src="../../public/icons/power_on.svg" alt="power off icon">
                     </div>
-                    <img onclick="toggleContactStatus(1)" title="توقف ارسال پیام خودکار" class="cursor-pointer" src="../../public/icons/power_on.svg" alt="power off icon">
+                    <div>
+                        <span class="text-xs text-gray-100">برای توقف و از سر گیری ارسال پیام خودکار
+                            روی آیکن کلیک کنید.</span>
+                    </div>
                 </div>
-                <div>
-                    <span class="text-xs text-gray-100">برای توقف و از سر گیری ارسال پیام خودکار
-                        روی آیکن کلیک کنید.</span>
+            <?php else: ?>
+                <div class="p-4 transition-shadow bg-rose-700 rounded-lg shadow-sm hover:shadow-lg">
+                    <div class="flex items-start justify-between">
+                        <div class="flex flex-col space-y-2">
+                            <span class="text-white font-semibold">وضعیت حساب تلگرام</span>
+                            <span class="text-xs text-white font-semibold">
+                                حساب تلگرام شما به سامانه متصل نشده است
+                            </span>
+                        </div>
+                        <img onclick="toggleContactStatus()" title="توقف ارسال پیام خودکار" class="cursor-pointer" src="../../public/icons/power_off.svg" alt="power off icon">
+                    </div>
+                    <div>
+                        <span class="text-xs text-gray-100">برای توقف و از سر گیری ارسال پیام خودکار
+                            روی آیکن کلیک کنید.</span>
+                    </div>
                 </div>
-            </div>
-        <?php else: ?>
-            <div class="p-4 transition-shadow bg-rose-700 rounded-lg shadow-sm hover:shadow-lg">
+            <?php endif;
+        else:
+            ?>
+            <div class="p-4 transition-shadow bg-red-600 rounded-lg shadow-sm hover:shadow-lg">
                 <div class="flex items-start justify-between">
                     <div class="flex flex-col space-y-2">
                         <span class="text-white font-semibold">وضعیت حساب تلگرام</span>
@@ -38,14 +57,15 @@ require_once "../../layouts/sidebar.php";
                             حساب تلگرام شما به سامانه متصل نشده است
                         </span>
                     </div>
-                    <img onclick="toggleContactStatus()" title="توقف ارسال پیام خودکار" class="cursor-pointer" src="../../public/icons/power_off.svg" alt="power off icon">
                 </div>
                 <div>
-                    <span class="text-xs text-gray-100">برای توقف و از سر گیری ارسال پیام خودکار
-                        روی آیکن کلیک کنید.</span>
+                    <a href="../telegram/connect.php" class="text-xs text-blue-100 underline">
+                        برای اتصال حساب خود اینجا کلیک نمایید.
+                    </a>
                 </div>
             </div>
-        <?php endif; ?>
+        <?php
+        endif; ?>
         <div class="p-4 transition-shadow bg-white rounded-lg shadow-sm hover:shadow-lg">
             <div class="flex items-start justify-between">
                 <div class="flex flex-col space-y-2">
