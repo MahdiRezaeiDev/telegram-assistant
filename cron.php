@@ -18,8 +18,15 @@ foreach ($accounts as $account) {
     $sessionPath = DIR . '/views/telegram/sessions/' . $sessionName;
     $MadelineProto = new API($sessionPath);
     $MadelineProto->start();
+    $self = $this->getSelf();
+    $myId = $self['id'];
 
     foreach ($messages as $message) {
+
+        if ($message['sender'] == $myId) {
+            return;
+        }
+
         if (!isValidContact($message['sender'], $account['user_id'])) {
             continue;
         }
