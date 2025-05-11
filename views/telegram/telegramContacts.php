@@ -8,7 +8,6 @@ require_once '../../utilities/assets/jdf.php';
 require_once '../../utilities/helper.php';
 
 use danog\MadelineProto\API;
-use danog\MadelineProto\Exception;
 
 $sessionName = getAccountSession(USER_ID);
 
@@ -17,8 +16,35 @@ if (!isAccountConnected(USER_ID)) {
     exit;
 }
 
-$MadelineProto = new API($sessionName);
-$MadelineProto->start();
+$sessionDir = 'sessions';
+if (!is_dir($sessionDir)) {
+    mkdir($sessionDir, 0777, true);
+}
+
+$sessionPath = 'sessions/' . $sessionName;
+if (!is_dir($sessionPath)) {
+    header('Location: connect.php');
+} else {
+}
+
+try {
+    $MadelineProto = new API($sessionPath);
+    $MadelineProto->start();
+
+    // This call will throw if not logged in
+    $userInfo = $MadelineProto->getSelf();
+
+    if ($userInfo['_'] !== 'user') {
+        // Not logged in or invalid session
+        header("Location: ../telegram/connect.php");
+        exit;
+    }
+} catch (Exception $e) {
+    // Session corrupted or not logged in
+    error_log("MadelineProto error: " . $e->getMessage());
+    header("Location: ../telegram/connect.php");
+    exit;
+}
 
 // GETTING ALL THE CONTACTS OF ACCOUNT
 // try {
