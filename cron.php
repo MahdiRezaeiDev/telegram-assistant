@@ -13,7 +13,16 @@ require_once(DIR . '/utilities/helper.php');
 $messages = getMessages();
 $accounts = getAccounts();
 
-foreach($accounts as $accounts)
+foreach ($accounts as $account) {
+    $sessionName = DIR . '/views/telegram/' . $account['session_name'];
+    $MadelineProto = new API($sessionName);
+    $MadelineProto->start();
+
+    $MadelineProto->messages->sendMessage([
+        'peer' => $MadelineProto->getSelf(),
+        'message' => 'HI',
+    ]);
+}
 
 
 function getMessages()
