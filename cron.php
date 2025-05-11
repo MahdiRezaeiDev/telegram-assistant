@@ -24,7 +24,7 @@ foreach ($accounts as $account) {
     foreach ($messages as $message) {
 
         if ($message['sender'] == $myId) {
-            return;
+            continue;
         }
 
         if (!isValidContact($message['sender'], $account['user_id'])) {
