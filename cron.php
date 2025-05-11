@@ -18,7 +18,7 @@ foreach ($accounts as $account) {
     $sessionPath = DIR . '/views/telegram/sessions/' . $sessionName;
     $MadelineProto = new API($sessionPath);
     $MadelineProto->start();
-    $self = $this->getSelf();
+    $self = $MadelineProto->getSelf();
     $myId = $self['id'];
 
     foreach ($messages as $message) {
