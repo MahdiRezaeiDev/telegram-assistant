@@ -14,14 +14,17 @@ $messages = getMessages();
 $accounts = getAccounts();
 
 foreach ($accounts as $account) {
-    $sessionName = DIR . '/views/telegram/' . $account['session_name'];
-    $MadelineProto = new API($sessionName);
+    $sessionName = getAccountSession($account['user_id']);
+    $sessionPath = DIR . '/views/telegram/sessions/' . $sessionName;
+    $MadelineProto = new API($sessionPath);
     $MadelineProto->start();
 
-    $MadelineProto->messages->sendMessage([
-        'peer' => $MadelineProto->getSelf(),
-        'message' => 'HI',
-    ]);
+    print_r($MadelineProto->getSelf());
+
+    // $MadelineProto->messages->sendMessage([
+    //     'peer' => $MadelineProto->getSelf(),
+    //     'message' => 'HI',
+    // ]);
 }
 
 
