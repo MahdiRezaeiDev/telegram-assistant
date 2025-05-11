@@ -19,12 +19,60 @@ foreach ($accounts as $account) {
     $MadelineProto = new API($sessionPath);
     $MadelineProto->start();
 
-    print_r($MadelineProto->getSelf());
+    foreach ($messages as $message) {
+        if (!isValidContact($message['sender'], $account['user_id'])) {
+            continue;
+        }
 
-    // $MadelineProto->messages->sendMessage([
-    //     'peer' => $MadelineProto->getSelf(),
-    //     'message' => 'HI',
-    // ]);
+        $codes = filterCode($message['message']);
+
+        if (empty($codes)) {
+            continue;
+        }
+
+        $template = '';
+        foreach ($codes as $code) {
+
+            $code = strtoupper($code);
+
+            $goodSpecification = isCodeExist($code, $account['user_id']);
+
+            if (empty($goodSpecification)) {
+                continue;
+            }
+
+            $template .= "$code : " . $goodSpecification['price'] . " " . $goodSpecification['brand'] . "\n";
+        }
+
+        $MadelineProto->messages->sendMessage(peer: $message['sender'], message: "$template");
+        markAsResolved($message['id']);
+    }
+}
+
+function isCodeExist($code, $user_id)
+{
+    $stmt = DB->prepare("SELECT goods.part_number, goods.brand, patterns.* FROM goods 
+    INNER JOIN patterns ON patterns.id = goods.pattern_id
+    WHERE 
+    goods.part_number LIKE :part_number 
+    AND is_deleted = 0 
+    AND patterns.is_bot_allowed = 1
+    AND patterns.user_id = :user_id ORDER BY patterns.id DESC");
+
+    $pattern = "%" . $code . "%";
+
+    $stmt->bindParam(":part_number", $pattern);
+    $stmt->bindParam(":user_id", $user_id);
+
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC)[0];
+}
+
+function markAsResolved($id)
+{
+    $stmt = DB->prepare("UPDATE incoming SET is_resolved = 1 WHERE id = :id");
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
 }
 
 
@@ -35,9 +83,29 @@ function getMessages()
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function isValidContact($contact_id, $user_id)
+{
+    $stmt = DB->prepare("SELECT 1 FROM contacts WHERE api_bot_id = :account_id AND user_id = :user_id AND is_blocked = 0");
+    $stmt->execute([
+        ':account_id' => $contact_id,
+        ':user_id' => $user_id
+    ]);
+    return $stmt->fetchColumn() !== false;
+}
+
+
 function getAccounts()
 {
     $stmt = DB->prepare("SELECT * FROM telegram_credentials WHERE is_connected = 1;");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+function getUserContacts($user_id)
+{
+    $stmt = DB->prepare("SELECT * FROM contacts WHERE user_id = :user_id AND is_blocked = 0");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
