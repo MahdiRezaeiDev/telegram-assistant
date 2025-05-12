@@ -30,7 +30,7 @@ $fileName = basename($_SERVER['PHP_SELF']);
             </a>
         </li>
         <li class="mx-1 <?= $category == 'telegramGroupContacts' ? 'bg-gray-300' : 'bg-gray-50' ?> hover:bg-gray-400 text-sm font-bold">
-            <a class="p-3 mb-1 menu_item flex items-center gap-2" href="../telegram/GroupContacts.php">
+            <a class="p-3 mb-1 menu_item flex items-center gap-2" href="../telegram/groupContacts.php">
                 <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
                 لیست مخاطبین چراغ برق
             </a>
