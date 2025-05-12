@@ -125,13 +125,7 @@ require_once "../../layouts/sidebar.php";
                                 مشتری
                             </th>
                             <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                کدفنی
-                            </th>
-                            <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                برند
-                            </th>
-                            <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                قیمت
+                                پیام
                             </th>
                         </tr>
                     </thead>
@@ -146,13 +140,7 @@ require_once "../../layouts/sidebar.php";
                                     <?= $request['name'] ?>
                                 </th>
                                 <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['part_number'] ?>
-                                </td>
-                                <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['brand'] ?>
-                                </td>
-                                <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['price'] ?>
+                                    <?= $request['message'] ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -177,13 +165,7 @@ require_once "../../layouts/sidebar.php";
                                 مشتری
                             </th>
                             <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                کدفنی
-                            </th>
-                            <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                برند
-                            </th>
-                            <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                قیمت
+                                پیام
                             </th>
                         </tr>
                     </thead>
@@ -198,13 +180,7 @@ require_once "../../layouts/sidebar.php";
                                     <?= $request['name'] ?>
                                 </th>
                                 <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['part_number'] ?>
-                                </td>
-                                <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['brand'] ?>
-                                </td>
-                                <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['price'] ?>
+                                    <?= $request['message'] ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -228,13 +204,7 @@ require_once "../../layouts/sidebar.php";
                                 مشتری
                             </th>
                             <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                کدفنی
-                            </th>
-                            <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                برند
-                            </th>
-                            <th scope="col" class="font-semibold text-sm text-center text-gray-800 px-6 py-3">
-                                قیمت
+                                پیام
                             </th>
                         </tr>
                     </thead>
@@ -249,13 +219,7 @@ require_once "../../layouts/sidebar.php";
                                     <?= $request['name'] ?>
                                 </th>
                                 <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['part_number'] ?>
-                                </td>
-                                <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['brand'] ?>
-                                </td>
-                                <td class="px-6 py-3  font-semibold text-center text-gray-800">
-                                    <?= $request['price'] ?>
+                                    <?= $request['message'] ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
