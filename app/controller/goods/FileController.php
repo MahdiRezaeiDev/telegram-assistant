@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $file_error = "اطلاعات ناقص است. لطفا تمام ستون‌ها را پر کنید.";
                     }
 
-                    $pattern_id = createPattern($partNumber, $price, $is_bot_allowed, $with_price, $without_price, $description);
+                    $pattern_id = createPattern($partNumber, $price, $brand_name, $is_bot_allowed, $with_price, $without_price, $description);
                     $similar_codes = [$partNumber, ...extractSimilarCodes($similar_codes)];
                     $similar_codes = array_unique($similar_codes); // Remove duplicates
                     $brand_id = storeBrand($brand_name);
@@ -71,10 +71,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-function createPattern($name, $price, $is_bot_allowed, $with_price, $without_price, $description)
+function createPattern($name, $price, $brand_name, $is_bot_allowed, $with_price, $without_price, $description)
 {
-    $sql = "INSERT INTO patterns (user_id, name, price, is_bot_allowed, with_price, without_price, description)
-            VALUES (:user_id, :name, :price, :is_bot_allowed, :with_price, :without_price, :description)";
+    $sql = "INSERT INTO patterns (user_id, name, price, brand, is_bot_allowed, with_price, without_price, description)
+            VALUES (:user_id, :name, :price, :brand, :is_bot_allowed, :with_price, :without_price, :description)";
 
     $stmt = DB->prepare($sql);
     $user_id = USER['user_id'];
@@ -82,6 +82,7 @@ function createPattern($name, $price, $is_bot_allowed, $with_price, $without_pri
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->bindParam(':name', $name, PDO::PARAM_STR);
     $stmt->bindParam(':price', $price); // You can use PARAM_INT or PARAM_STR based on your DB column
+    $stmt->bindParam(':brand', $brand_name); // You can use PARAM_INT or PARAM_STR based on your DB column
     $stmt->bindParam(':is_bot_allowed', $is_bot_allowed, PDO::PARAM_INT);
     $stmt->bindParam(':with_price', $with_price, PDO::PARAM_INT);
     $stmt->bindParam(':without_price', $without_price, PDO::PARAM_INT);
