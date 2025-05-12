@@ -12,7 +12,7 @@ require_once '../../../database/DB_connect.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['action']) && $_POST['action'] === 'updateGoodStatus') {
         $status = $_POST['status'] ?? null;
-        $patternId = $_POST['pattern_id'] ?? null;
+        $patternId = $_POST['id'] ?? null;
         $is_checked = $_POST['is_checked'] == 'true' ? 1 : 0;
 
         updatePatternStatus($status, $patternId, $is_checked);
@@ -98,10 +98,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'updateGoodField') {
 
     try {
         $stmt = DB->prepare("UPDATE patterns SET $field = :value WHERE id = :id");
-
-        if ($field == 'brand') {
-            $stmt = DB->prepare("UPDATE goods SET brand = :value WHERE id = :id");
-        }
         $stmt->execute(['value' => $value, 'id' => $id]);
         echo json_encode(['status' => 'success']);
     } catch (PDOException $e) {

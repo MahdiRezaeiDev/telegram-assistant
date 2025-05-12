@@ -72,45 +72,52 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
                     </tr>
                     <?php
                 else:
-                    foreach ($goods as $index => $good): ?>
+                    foreach ($goods as $index => $good):
+                        $similarCodes = array_column(getSimilarGoods($good['id']), 'part_number') ?? [];
+                    ?>
                         <tr class="even:bg-gray-100 odd:bg-white hover:bg-gray-200 transition duration-300">
                             <td class="p-3 text-center"><?= $index + 1 ?></td>
-                            <td class="p-3 text-center"><?= htmlspecialchars($good['part_number']) ?></td>
-                            <td class="p-3 text-center"><?= htmlspecialchars($good['name']) ?></td>
+                            <td class="p-3 text-center"><?= ($good['name']) ?></td>
+                            <td class="p-3 text-center"><?php
+                                                        foreach ($similarCodes as $code) {
+                                                            echo $code;
+                                                            echo "<br>";
+                                                        }
+                                                        ?></td>
                             <td class="p-3 text-center"
                                 ondblclick="enableEdit(this)"
                                 onblur="updateGoodField(<?= $good['id'] ?>, 'brand', this.innerText)">
-                                <?= htmlspecialchars($good['brand']) ?>
+                                <?= ($good['brand']) ?>
                             </td>
                             <td class="p-3 text-center"
                                 ondblclick="enableEdit(this)"
-                                onblur="updateGoodField(<?= $good['pattern_id'] ?>, 'price', this.innerText)">
-                                <?= htmlspecialchars($good['price']) ?>
+                                onblur="updateGoodField(<?= $good['id'] ?>, 'price', this.innerText)">
+                                <?= ($good['price']) ?>
                             </td>
                             <td class="p-3 text-center"
                                 ondblclick="enableEdit(this)"
-                                onblur="updateGoodField(<?= $good['pattern_id'] ?>, 'description', this.innerText)">
+                                onblur="updateGoodField(<?= $good['id'] ?>, 'description', this.innerText)">
                                 <?= htmlspecialchars($good['description']) ?>
                             </td>
 
                             <td class="p-3 text-center">
                                 <input
-                                    onclick="updateGoodStatus('is_bot_allowed',<?= $good['pattern_id'] ?>, this.checked)"
-                                    type="checkbox" name="blocked" id="blocked"
+                                    onclick="updateGoodStatus('is_bot_allowed',<?= $good['id'] ?>, this.checked)"
+                                    type="checkbox" name="is_bot_allowed"
                                     class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
                                     <?= $good['is_bot_allowed'] ? 'checked' : '' ?>>
                             </td>
                             <td class="p-3 text-center">
                                 <input
-                                    onclick="updateGoodStatus('with_price',<?= $good['pattern_id'] ?>, this.checked)"
-                                    type="checkbox" name="blocked" id="blocked"
+                                    onclick="updateGoodStatus('with_price',<?= $good['id'] ?>, this.checked)"
+                                    type="checkbox" name="with_price"
                                     class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
                                     <?= $good['with_price'] ? 'checked' : '' ?>>
                             </td>
                             <td class="p-3 text-center">
                                 <input
-                                    onclick="updateGoodStatus('without_price',<?= $good['pattern_id'] ?>, this.checked)"
-                                    type="checkbox" name="blocked" id="blocked"
+                                    onclick="updateGoodStatus('without_price',<?= $good['id'] ?>, this.checked)"
+                                    type="checkbox" name="without_price"
                                     class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
                                     <?= $good['without_price'] ? 'checked' : '' ?>>
                             </td>
@@ -132,13 +139,12 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
         const params = new URLSearchParams({
             action: 'updateGoodStatus',
             status: type,
-            pattern_id: id,
+            id: id,
             is_checked: value
         });
 
         axios.post('../../app/api/goods/GoodsApi.php', params)
             .then(response => {
-                console.log(response.data);
                 if (response.data.status === 'success') {
                     console.log('Status updated successfully!');
                 } else {
@@ -180,7 +186,7 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
             if (result.isConfirmed) {
                 const params = new URLSearchParams({
                     action: 'deleteGood',
-                    pattern_id: id
+                    id: id
                 });
 
                 axios.post('../../app/api/goods/GoodsApi.php', params)

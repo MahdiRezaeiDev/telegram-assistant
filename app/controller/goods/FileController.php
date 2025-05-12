@@ -165,15 +165,22 @@ function storeGoods($partNumber, $brand, $pattern_id)
 
 function getAllGoods()
 {
-    $sql = "SELECT patterns.id AS pattern_id ,patterns.*, goods.*
+    $sql = "SELECT patterns.*
             FROM patterns
-            INNER JOIN goods ON patterns.id = goods.pattern_id
-            WHERE patterns.user_id = :user_id AND goods.is_deleted = 0
+            WHERE patterns.user_id = :user_id
             ORDER BY patterns.id ASC";
 
     $stmt = DB->prepare($sql);
     $user_id = USER['user_id'];
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getSimilarGoods($pattern_id)
+{
+    $stmt = DB->prepare("SELECT * FROM goods WHERE pattern_id = :pattern_id AND is_deleted = 0");
+    $stmt->bindParam(':pattern_id', $pattern_id);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
