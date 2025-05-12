@@ -53,6 +53,7 @@ foreach ($accounts as $account) {
 
         $MadelineProto->messages->sendMessage(peer: $message['sender'], message: "$template");
         markAsResolved($message['id']);
+        saveGivenPrice($message['sender'], $template, $account['user_id'])
     }
 }
 
@@ -82,6 +83,14 @@ function markAsResolved($id)
     $stmt->execute();
 }
 
+function saveGivenPrice($receiver, $message, $account)
+{
+    $stmt = DB->prepare("INSERT INTO outgoing SET receiver = :receiver , message = :message, user_id = :account;");
+    $stmt->bindParam(':receiver', $receiver);
+    $stmt->bindParam(':message', $message);
+    $stmt->bindParam(':account', $account);
+    $stmt->execute();
+}
 
 function getMessages()
 {
@@ -100,14 +109,12 @@ function isValidContact($contact_id, $user_id)
     return $stmt->fetchColumn() !== false;
 }
 
-
 function getAccounts()
 {
     $stmt = DB->prepare("SELECT * FROM telegram_credentials WHERE is_connected = 1;");
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
 
 function getUserContacts($user_id)
 {
@@ -116,7 +123,6 @@ function getUserContacts($user_id)
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
 
 function filterCode($message)
 {
