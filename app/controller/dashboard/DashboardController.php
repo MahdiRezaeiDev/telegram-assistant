@@ -39,10 +39,12 @@ function getLastHourMostRequested()
     $sql = "SELECT outgoing.*, contacts.name
             FROM outgoing
             INNER JOIN contacts ON outgoing.receiver = contacts.api_bot_id
-            WHERE outgoing.created_at >= NOW() - INTERVAL 1 HOUR
+            WHERE outgoing.created_at >= NOW() - INTERVAL 1 HOUR AND user_id = :user_id
             LIMIT 10";
 
     $stmt = DB->prepare($sql);
+    $user_id = USER_ID; // Assuming USER_ID is defined and accessible
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -52,10 +54,12 @@ function getTodayMostRequested()
     $sql = "SELECT outgoing.*, contacts.name
             FROM outgoing
             INNER JOIN contacts ON outgoing.receiver = contacts.api_bot_id
-            WHERE DATE(outgoing.created_at) = CURDATE()
+            WHERE DATE(outgoing.created_at) = CURDATE() AND user_id = :user_id
             LIMIT 10";
 
     $stmt = DB->prepare($sql);
+    $user_id = USER_ID; // Assuming USER_ID is defined and accessible
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -65,9 +69,12 @@ function getAllTimeMostRequested()
     $sql = "SELECT outgoing.*, contacts.name
             FROM outgoing
             INNER JOIN contacts ON outgoing.receiver = contacts.api_bot_id
+            WHERE user_id = :user_id
             LIMIT 10";
 
     $stmt = DB->prepare($sql);
+    $user_id = USER_ID; // Assuming USER_ID is defined and accessible
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
