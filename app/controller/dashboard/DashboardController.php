@@ -39,7 +39,7 @@ function getLastHourMostRequested()
     $sql = "SELECT outgoing.*, contacts.name
             FROM outgoing
             INNER JOIN contacts ON outgoing.receiver = contacts.api_bot_id
-            WHERE outgoing.created_at >= NOW() - INTERVAL 1 HOUR AND user_id = :user_id
+            WHERE outgoing.created_at >= NOW() - INTERVAL 1 HOUR AND outgoing.user_id = :user_id
             LIMIT 10";
 
     $stmt = DB->prepare($sql);
@@ -54,7 +54,7 @@ function getTodayMostRequested()
     $sql = "SELECT outgoing.*, contacts.name
             FROM outgoing
             INNER JOIN contacts ON outgoing.receiver = contacts.api_bot_id
-            WHERE DATE(outgoing.created_at) = CURDATE() AND user_id = :user_id
+            WHERE DATE(outgoing.created_at) = CURDATE() AND outgoing.user_id = :user_id
             LIMIT 10";
 
     $stmt = DB->prepare($sql);
@@ -69,7 +69,7 @@ function getAllTimeMostRequested()
     $sql = "SELECT outgoing.*, contacts.name
             FROM outgoing
             INNER JOIN contacts ON outgoing.receiver = contacts.api_bot_id
-            WHERE user_id = :user_id
+            WHERE outgoing.user_id = :user_id
             LIMIT 10";
 
     $stmt = DB->prepare($sql);
