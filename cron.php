@@ -53,7 +53,7 @@ foreach ($accounts as $account) {
 
         $MadelineProto->messages->sendMessage(peer: $message['sender'], message: "$template");
         markAsResolved($message['id']);
-        saveGivenPrice($message['sender'], $template, $account['user_id'])
+        saveGivenPrice($message['sender'], $template, $account['user_id']);
     }
 }
 

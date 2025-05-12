@@ -36,11 +36,10 @@ function getTotalContactsCount()
 
 function getLastHourMostRequested()
 {
-    $sql = "SELECT prices.*, contacts.name, goods.part_number,goods.brand
-            FROM prices
-            INNER JOIN contacts ON prices.contact_id = contacts.id
-            INNER JOIN goods ON prices.good_id = goods.id
-            WHERE prices.created_at >= NOW() - INTERVAL 1 HOUR
+    $sql = "SELECT outgoing.*, contacts.name
+            FROM outgoing
+            INNER JOIN contacts ON outgoing.receiver = contacts.api_bot_id
+            WHERE outgoing.created_at >= NOW() - INTERVAL 1 HOUR
             LIMIT 10";
 
     $stmt = DB->prepare($sql);
@@ -50,11 +49,10 @@ function getLastHourMostRequested()
 
 function getTodayMostRequested()
 {
-    $sql = "SELECT prices.*, contacts.name, goods.part_number,goods.brand
-            FROM prices
-            INNER JOIN contacts ON prices.contact_id = contacts.id
-            INNER JOIN goods ON prices.good_id = goods.id
-            WHERE DATE(prices.created_at) = CURDATE()
+    $sql = "SELECT outgoing.*, contacts.name
+            FROM outgoing
+            INNER JOIN contacts ON outgoing.receiver = contacts.api_bot_id
+            WHERE DATE(outgoing.created_at) = CURDATE()
             LIMIT 10";
 
     $stmt = DB->prepare($sql);
@@ -64,10 +62,9 @@ function getTodayMostRequested()
 
 function getAllTimeMostRequested()
 {
-    $sql = "SELECT prices.*, contacts.name, goods.part_number,goods.brand
-            FROM prices
-            INNER JOIN contacts ON prices.contact_id = contacts.id
-            INNER JOIN goods ON prices.good_id = goods.id
+    $sql = "SELECT outgoing.*, contacts.name
+            FROM outgoing
+            INNER JOIN contacts ON outgoing.receiver = contacts.api_bot_id
             LIMIT 10";
 
     $stmt = DB->prepare($sql);
