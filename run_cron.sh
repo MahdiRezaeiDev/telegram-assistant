@@ -2,6 +2,6 @@
 
 while true
 do
-    php cron.php
+    php sendMessage.php
     sleep 180  # 300 seconds = 5 minutes
 done

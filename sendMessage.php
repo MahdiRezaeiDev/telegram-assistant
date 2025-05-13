@@ -9,6 +9,8 @@ require_once(DIR . '/config/constants.php');
 require_once(DIR . '/database/DB_connect.php');
 require_once(DIR . '/utilities/helper.php');
 
+echo ("Started");
+
 $messages = getMessages();
 $accounts = getAccounts();
 
@@ -50,10 +52,6 @@ foreach ($accounts as $account) {
             $template .= "$code : " . $goodSpecification['price'] . " " . $goodSpecification['brand'] . "\n";
         }
 
-        if (strlen($template) < 1) {
-            continue;
-        }
-
         $MadelineProto->messages->sendMessage(peer: $message['sender'], message: "$template");
         markAsResolved($message['id']);
         saveGivenPrice($message['sender'], $template, $account['user_id']);
@@ -62,7 +60,7 @@ foreach ($accounts as $account) {
 
 function isCodeExist($code, $user_id)
 {
-    $stmt = DB->prepare("SELECT goods.part_number, goods.brand, patterns.* FROM goods 
+    $stmt = DB->prepare("SELECT goods.part_number, patterns.* FROM goods 
     INNER JOIN patterns ON patterns.id = goods.pattern_id
     WHERE 
     goods.part_number LIKE :part_number 
