@@ -41,6 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $without_price = $row['H'];
                 $is_bot_allowed = $row['I'];
 
+                if ($partNumber == null) {
+                    continue;
+                }
 
                 try {
                     // Validate data (you can add more validation as needed)
@@ -64,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             }
         } catch (Exception $e) {
-            echo "خطا در بارگذاری فایل: " . $e->getMessage();
+            // echo "خطا در بارگذاری فایل: " . $e->getMessage();
         }
     } else {
         echo "خطا در بارگذاری فایل.";
@@ -97,6 +100,9 @@ function createPattern($name, $price, $brand_name, $is_bot_allowed, $with_price,
 
 function sanitizeInput($data)
 {
+    if (empty($data)) {
+        return;
+    }
     // Trim, strip slashes, escape HTML
     $data = htmlspecialchars(stripslashes(trim($data)));
 
