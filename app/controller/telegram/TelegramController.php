@@ -15,10 +15,18 @@ if (!is_dir($sessionDir)) {
     mkdir($sessionDir, 0777, true);
 }
 
-// Check if the user is logged in (based on session)
-if (isAccountExists(USER_ID)) {
-    header('Location: account_status.php');
-    exit();
+$sessionDir = 'sessions';
+if (!is_dir($sessionDir)) {
+    mkdir($sessionDir, 0777, true);
+}
+
+$sessionFile = 'sessions/' . getAccountSession(USER_ID);
+$sessionConnectionFile = 'sessions/' . getAccountSession(USER_ID) . '/safe.php';
+
+if (file_exists($sessionConnectionFile)) {
+    // No session file — redirect to login/connect
+    header("Location: ../telegram/account_status.php");
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

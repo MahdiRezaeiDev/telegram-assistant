@@ -22,6 +22,7 @@ if (isConnectedToTelegram()) {
         header("Location: ../telegram/connect.php");
         exit;
     }
+    
     $MadelineProto = new API($sessionFile);
     // Logout from Telegram
     $MadelineProto->logOut();
