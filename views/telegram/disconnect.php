@@ -9,20 +9,25 @@ require_once '../../utilities/helper.php';
 use danog\MadelineProto\API;
 
 if (isConnectedToTelegram()) {
-    $sessionName = getAccountSession(USER_ID);
-
-    if (isDirExists($sessionName)) {
-        $MadelineProto = new API($sessionName);
-        // Logout from Telegram
-        $MadelineProto->logOut();
-
-        markAccountAsDisconnected(USER_ID);
-        deleteFolder($sessionName);
-        header('Location: account_status.php');
-        exit();
-    } else {
-        header('Location: connect.php');
+    $sessionDir = 'sessions';
+    if (!is_dir($sessionDir)) {
+        mkdir($sessionDir, 0777, true);
     }
+
+    $sessionFile = 'sessions/' . getAccountSession(USER_ID);
+    $sessionConnectionFile = 'sessions/' . getAccountSession(USER_ID) . '/safe.php';
+
+    if (!file_exists($sessionConnectionFile)) {
+        // No session file — redirect to login/connect
+        header("Location: ../telegram/connect.php");
+        exit;
+    }
+    $MadelineProto = new API($sessionFile);
+    // Logout from Telegram
+    $MadelineProto->logOut();
+    markAccountAsDisconnected(USER_ID);
+    deleteFolder($sessionFile);
+    exit();
 }
 
 function deleteFolder($folderPath)

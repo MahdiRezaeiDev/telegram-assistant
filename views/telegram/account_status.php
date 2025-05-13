@@ -39,7 +39,7 @@ require_once "../../layouts/sidebar.php";
             <p><strong>زمان اتصال:</strong> <span style="direction: ltr !important;"><?= date('Y-m-d', strtotime(USER['created_at'])) ?></span></p>
         </div>
 
-        <!-- <div class="mt-6 text-right">
+        <div class="mt-6 text-right">
             <?php if (isAccountConnected(USER['id'])): ?>
                 <a href="javascript:void(0)" onclick="confirmDisconnect()" class="inline-block px-3 py-1 text-sm font-medium rounded-full 
                     bg-red-100 hover:bg-red-200 text-red-600 hover:underline">قطع اتصال دائمی</a>
@@ -47,7 +47,7 @@ require_once "../../layouts/sidebar.php";
                 <a href="../telegram/connect.php" class="inline-block px-3 py-1 text-sm font-medium rounded-full 
                 bg-green-100 hover:bg-green-200 text-green-600 hover:underline">اتصال مجدد</a>
             <?php endif; ?>
-        </div> -->
+        </div>
     </div>
 </div>
 <script>
@@ -62,6 +62,8 @@ require_once "../../layouts/sidebar.php";
             confirmButtonText: 'بله، قطع کن!',
             cancelButtonText: 'خیر، انصراف'
         }).then((result) => {
+            console.log(result);
+
             if (result.isConfirmed) {
                 window.location.href = '../telegram/disconnect.php';
             }
