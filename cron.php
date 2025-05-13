@@ -50,6 +50,10 @@ foreach ($accounts as $account) {
             $template .= "$code : " . $goodSpecification['price'] . " " . $goodSpecification['brand'] . "\n";
         }
 
+        if (strlen($template) < 1) {
+            continue;
+        }
+
         $MadelineProto->messages->sendMessage(peer: $message['sender'], message: "$template");
         markAsResolved($message['id']);
         saveGivenPrice($message['sender'], $template, $account['user_id']);
@@ -72,7 +76,9 @@ function isCodeExist($code, $user_id)
     $stmt->bindParam(":user_id", $user_id);
 
     $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC)[0];
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    return $results[0] ?? []; // returns null if nothing found
 }
 
 function markAsResolved($id)
