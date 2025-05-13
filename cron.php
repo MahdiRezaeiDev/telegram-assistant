@@ -1,7 +1,6 @@
 <?php
 
 use danog\MadelineProto\API;
-use danog\MadelineProto\Exception;
 
 define('DIR', __DIR__);
 
