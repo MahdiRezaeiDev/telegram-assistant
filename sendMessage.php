@@ -9,8 +9,6 @@ require_once(DIR . '/config/constants.php');
 require_once(DIR . '/database/DB_connect.php');
 require_once(DIR . '/utilities/helper.php');
 
-echo ("Started");
-
 $messages = getMessages();
 $accounts = getAccounts();
 
