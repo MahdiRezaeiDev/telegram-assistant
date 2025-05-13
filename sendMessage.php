@@ -15,13 +15,20 @@ $accounts = getAccounts();
 foreach ($accounts as $account) {
     $sessionName = getAccountSession($account['user_id']);
     $sessionPath = DIR . '/views/telegram/sessions/' . $sessionName;
-    $MadelineProto = new API($sessionPath);
-    $MadelineProto->start();
+
+    try {
+        // ✅ Correctly use the session for this account
+        $MadelineProto = new API($sessionPath);
+        $MadelineProto->start();
+    } catch (\Throwable $th) {
+        echo "❌ Failed to start session for user_id {$account['user_id']}: " . $th->getMessage();
+        continue;
+    }
+
     $self = $MadelineProto->getSelf();
     $myId = $self['id'];
 
     foreach ($messages as $message) {
-
         if ($message['sender'] == $myId) {
             continue;
         }
@@ -31,30 +38,53 @@ foreach ($accounts as $account) {
         }
 
         $codes = filterCode($message['message']);
-
         if (empty($codes)) {
             continue;
         }
 
         $template = '';
         foreach ($codes as $code) {
-
             $code = strtoupper($code);
-
             $goodSpecification = isCodeExist($code, $account['user_id']);
-
             if (empty($goodSpecification)) {
                 continue;
             }
-
             $template .= "$code : " . $goodSpecification['price'] . " " . $goodSpecification['brand'] . "\n";
         }
 
-        $MadelineProto->messages->sendMessage(peer: $message['sender'], message: "$template");
-        markAsResolved($message['id']);
-        saveGivenPrice($message['sender'], $template, $account['user_id']);
+        if (!empty($template)) {
+            try {
+                $MadelineProto->messages->sendMessage(peer: $message['sender'], message: $template);
+                markAsResolved($message['id']);
+                saveGivenPrice($message['sender'], $template, $account['user_id']);
+            } catch (\Throwable $th) {
+                $phone = getPhoneNumber($message['sender'], $account['user_id']);
+
+                if ($phone) {
+                    $MadelineProto->contacts->importContacts([
+                        'contacts' => [
+                            [
+                                '_' => 'inputPhoneContact',
+                                'client_id' => 0,
+                                'phone' => $phone,
+                                'first_name' => 'Unknown',
+                                'last_name' => ''
+                            ]
+                        ]
+                    ]);
+                }
+                try {
+                    $MadelineProto->messages->sendMessage(peer: $message['sender'], message: $template);
+                    markAsResolved($message['id']);
+                    saveGivenPrice($message['sender'], $template, $account['user_id']);
+                } catch (\Throwable $th) {
+                    throw $th;
+                }
+            }
+        }
     }
 }
+
 
 function isCodeExist($code, $user_id)
 {
@@ -152,4 +182,15 @@ function filterCode($message)
         return strlen($data[0]) > 4;
     });
     return $finalCodes;
+}
+
+function getPhoneNumber($sender, $user_id)
+{
+    $stmt = DB->prepare("SELECT phone FROM contacts WHERE api_bot_id = :api_bot_id AND user_id = :user_id ORDER BY id DESC LIMIT 1");
+    $stmt->bindParam(':api_bot_id', $sender);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->execute();
+
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result['phone'] ?? null;
 }
