@@ -9,13 +9,6 @@ require_once '../../utilities/helper.php';
 
 use danog\MadelineProto\API;
 
-$sessionName = getAccountSession(USER_ID);
-
-if (!isAccountConnected(USER_ID)) {
-    header("Location: ../telegram/connect.php");
-    exit;
-}
-
 $sessionDir = 'sessions';
 if (!is_dir($sessionDir)) {
     mkdir($sessionDir, 0777, true);
@@ -44,7 +37,7 @@ try {
 } catch (Exception $e) {
     // Invalid or expired session
     error_log("MadelineProto Error: " . $e->getMessage());
-    header("Location: ../telegram/connect.php");
+    // header("Location: ../telegram/connect.php");
     exit;
 }
 

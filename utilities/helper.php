@@ -82,7 +82,7 @@ function getAccountSession($userId)
     $stmt->execute();
     $session = explode('\\', $stmt->fetchColumn());
 
-    return $session[1];
+    return $session[1] ?? null;
 }
 
 function sanitizeDataInput($data)

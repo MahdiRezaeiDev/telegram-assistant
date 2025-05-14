@@ -19,8 +19,7 @@ require_once "../../layouts/sidebar.php";
             onkeyup="searchContacts(this.value)"
             class="rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
         <div class="flex justify-end">
-            <a class="rounded bg-sky-600 text-white text-xs text-center p-3 w-full md:w-40" href="../telegram/telegramContacts.php">بارگیری مخاطبین تلگرام</a>
-
+            <a id="uploadContacts" class="rounded bg-sky-600 text-white text-xs text-center p-3 w-full md:w-40" href="../telegram/telegramContacts.php">بارگیری مخاطبین تلگرام</a>
         </div>
     </div>
     <table class="w-full">
@@ -126,6 +125,12 @@ require_once "../../layouts/sidebar.php";
             rows[i].style.display = found ? '' : 'none';
         }
     }
+
+    const uploadContacts = document.getElementById("uploadContacts");
+
+    uploadContacts.addEventListener('click', (event) => {
+        event.target.innerText = "لطفا صبور باشید..."
+    })
 </script>
 
 <?php require_once '../components/footer.php'; ?>
