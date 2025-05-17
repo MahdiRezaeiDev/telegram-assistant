@@ -34,9 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Assuming the columns are in the order: Name, Price, Quantity
                 $partNumber = sanitizeInput($row['B']);
                 $similar_codes = $row['C'];
-                $brand_name = $row['D'];
+                $brand_name = $row['D'] ?? null;
                 $price = $row['E'] ?? 0;
-                $description = $row['F'];
+                $description = $row['F'] ?? null;
                 $with_price = $row['G'];
                 $without_price = $row['H'];
                 $is_bot_allowed = $row['I'];
@@ -46,18 +46,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
 
                 try {
-                    // Validate data (you can add more validation as needed)
-                    if (empty($partNumber) || empty($brand_name) || $price === null || $price === '') {
-                        $file_error = "اطلاعات ناقص است. لطفا تمام ستون‌ها را پر کنید.";
-                    }
+                    // // Validate data (you can add more validation as needed)
+                    // if (empty($partNumber) || empty($brand_name) || $price === null || $price === '') {
+                    //     $file_error = "اطلاعات ناقص است. لطفا تمام ستون‌ها را پر کنید.";
+                    // }
 
                     $pattern_id = createPattern($partNumber, $price, $brand_name, $is_bot_allowed, $with_price, $without_price, $description);
                     $similar_codes = [$partNumber, ...extractSimilarCodes($similar_codes)];
                     $similar_codes = array_unique($similar_codes); // Remove duplicates
-                    $brand_id = storeBrand($brand_name);
+                    // $brand_id = storeBrand($brand_name);
+
 
                     foreach ($similar_codes as $code) {
                         if (!empty($code)) {
+                            print_r($code);
+                            echo "\n";
                             storeGoods($code, $brand_name, $pattern_id);
                         }
                     }

@@ -94,12 +94,12 @@ require_once "../../layouts/sidebar.php";
             <div class="flex items-start justify-between">
                 <div class="flex flex-col space-y-2">
                     <span class="text-gray-800 font-semibold">اقلام درخواستی امروز</span>
-                    <span class="text-lg font-semibold"> 100</span>
+                    <span class="text-lg font-semibold"><?= count($todayMostRequested); ?></span>
                 </div>
                 <img class="rounded-md w-16 h-16" src="../../public/icons/checked.svg" alt="">
             </div>
             <div>
-                <a href="../prices/index.php" class="text-blue-500 underline">مشاهده همه</a>
+                <!-- <a href="../prices/index.php" class="text-blue-500 underline">مشاهده همه</a> -->
             </div>
         </div>
     </div>
