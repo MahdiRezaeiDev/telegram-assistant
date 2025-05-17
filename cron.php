@@ -49,7 +49,11 @@ foreach ($accounts as $account) {
             if (empty($goodSpecification)) {
                 continue;
             }
-            $template .= "$code : " . $goodSpecification['price'] . " " . $goodSpecification['brand'] . "\n";
+
+            if ($goodSpecification['without_price'])
+                $template .= "$code :  برای قیمت تماس بگیرید\n";
+            else
+                $template .= "$code : " . $goodSpecification['price'] . " " . $goodSpecification['brand'] . "\n";
         }
 
         if (!empty($template)) {
