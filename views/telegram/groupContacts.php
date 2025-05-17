@@ -32,16 +32,16 @@ require_once "../../layouts/sidebar.php";
                     نام نام خانوادگی
                 </th>
                 <th scope="col" class="text-white font-semibold p-3 text-center">
-                    نام کاربری
+                    شماره تماس
                 </th>
                 <th scope="col" class="text-white font-semibold p-3 text-center">
-                    شماره تماس
+                    نام کاربری
                 </th>
                 <th scope="col" class="text-white font-semibold p-3 text-center">
                     شناسه یکتا
                 </th>
                 <th scope="col" class="text-white font-semibold p-3 text-center">
-                    انسداد شماره
+                    جلوگیری از ارسال پیام
                 </th>
             </tr>
         </thead>
@@ -55,10 +55,10 @@ require_once "../../layouts/sidebar.php";
                 foreach ($contacts as $index => $contact): ?>
                     <tr class="even:bg-gray-100 odd:bg-white hover:bg-gray-200 transition duration-300">
                         <td class="p-3 text-center"><?= $index + 1 ?></td>
-                        <td class="p-3 text-center"><?= htmlspecialchars($contact['name']) ?></td>
-                        <td class="p-3 text-center"><?= htmlspecialchars($contact['phone']) ?></td>
-                        <td class="p-3 text-center"><?= htmlspecialchars($contact['username']) ?></td>
-                        <td class="p-3 text-center"><?= htmlspecialchars($contact['api_bot_id']) ?></td>
+                        <td class="p-3 text-center"><?= ($contact['name']) ?></td>
+                        <td class="p-3 text-center"><?= ($contact['phone']) ?></td>
+                        <td class="p-3 text-center"><?= ($contact['username']) ?></td>
+                        <td class="p-3 text-center"><?= ($contact['api_bot_id']) ?></td>
                         <td class="p-3 text-center">
                             <input
                                 onclick="updateContactStatus(<?= $contact['id'] ?>, this.checked)"

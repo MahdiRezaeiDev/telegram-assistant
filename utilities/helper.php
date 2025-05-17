@@ -80,7 +80,7 @@ function getAccountSession($userId)
     $stmt = DB->prepare($sql);
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->execute();
-    $session = explode('\\', $stmt->fetchColumn());
+    $session = explode('/', $stmt->fetchColumn());
 
     return $session[1] ?? null;
 }

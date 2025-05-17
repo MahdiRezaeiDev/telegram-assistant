@@ -35,12 +35,11 @@ if (!isset($DB_NAME)) {
                     لیست مخاطبین چراغ برق
                 </a>
             </li>
-            <li class="mx-1 <?= $category == 'contacts' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
+            <!-- <li class="mx-1 <?= $category == 'contacts' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
                 <a class="p-2 menu_item flex items-center gap-2" href="../telegram/contacts.php">
-                    <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
                     همه مخاطبین
                 </a>
-            </li>
+            </li> -->
             <li class="mx-1 <?= $category == 'goods' ? 'bg-gray-400' : 'bg-gray-200' ?> hover:bg-gray-400 text-sm font-bold">
                 <a class="p-2 menu_item flex items-center gap-2" href="../goods/index.php">
                     <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->

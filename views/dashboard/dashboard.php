@@ -81,13 +81,13 @@ require_once "../../layouts/sidebar.php";
         <div class="p-4 transition-shadow bg-white rounded-lg shadow-sm hover:shadow-lg">
             <div class="flex items-start justify-between">
                 <div class="flex flex-col space-y-2">
-                    <span class="text-gray-800 font-semibold">مخاطبین</span>
+                    <span class="text-gray-800 font-semibold">مخاطبین گروه چراغ برق</span>
                     <span class="text-lg font-semibold"><?= $totalContacts ?></span>
                 </div>
                 <img class="rounded-md w-16 h-16" src="../../public/icons/contacts.svg" alt="">
             </div>
             <div>
-                <a href="../telegram/contacts.php" class="text-blue-500 underline">مشاهده همه</a>
+                <a href="../telegram/groupContacts.php" class="text-blue-500 underline">مشاهده همه</a>
             </div>
         </div>
         <div class="p-4 transition-shadow bg-white rounded-lg shadow-sm hover:shadow-lg">
