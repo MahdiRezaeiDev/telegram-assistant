@@ -1,4 +1,3 @@
-
 # Telegram Auto-Responder Bot
 
 This project allows users to connect their **Telegram accounts** to an automated system that reads and responds to incoming messages based on specified patterns.
@@ -47,8 +46,8 @@ telegram-auto-responder/
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/yourusername/telegram-auto-responder.git
-cd telegram-auto-responder
+git clone https://github.com/MahdiRezaeiDev/telegram-assistant.git
+cd telegram-assistant
 ```
 
 2. **Install dependencies**
