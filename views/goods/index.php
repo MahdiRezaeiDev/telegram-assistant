@@ -57,9 +57,9 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
                     <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
                         ارسال بدون قیمت
                     </th>
-                    <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
+                    <!-- <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
                         ارسال با قیمت
-                    </th>
+                    </th> -->
                     <th scope="col" class="text-white text-xs font-semibold p-3 text-center">
                         عملیات
                     </th>
@@ -97,7 +97,7 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
                             <td class="p-3 text-center"
                                 ondblclick="enableEdit(this)"
                                 onblur="updateGoodField(<?= $good['id'] ?>, 'description', this.innerText)">
-                                <?= htmlspecialchars($good['description']) ?>
+                                <?= ($good['description']) ?>
                             </td>
 
                             <td class="p-3 text-center">
@@ -109,18 +109,18 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
                             </td>
                             <td class="p-3 text-center">
                                 <input
-                                    onclick="updateGoodStatus('with_price',<?= $good['id'] ?>, this.checked)"
-                                    type="checkbox" name="with_price"
-                                    class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
-                                    <?= $good['with_price'] ? 'checked' : '' ?>>
-                            </td>
-                            <td class="p-3 text-center">
-                                <input
                                     onclick="updateGoodStatus('without_price',<?= $good['id'] ?>, this.checked)"
                                     type="checkbox" name="without_price"
                                     class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
                                     <?= $good['without_price'] ? 'checked' : '' ?>>
                             </td>
+                            <!-- <td class="p-3 text-center">
+                                <input
+                                    onclick="updateGoodStatus('with_price',<?= $good['id'] ?>, this.checked)"
+                                    type="checkbox" name="with_price"
+                                    class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2"
+                                    <?= $good['with_price'] ? 'checked' : '' ?>>
+                            </td> -->
                             <td class="p-3 text-center">
                                 <img src="../../public/icons/delete.svg" alt="delete icon"
                                     class="w-5 h-5 cursor-pointer hover:scale-110 transition duration-300 mx-auto"
