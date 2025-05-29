@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $brand_name = $row['D'] ?? null;
                 $price = $row['E'] ?? 0;
                 $description = $row['F'] ?? null;
-                $with_price = $row['G'];
+                $with_price = 1;
+                $is_bot_allowed = $row['G'] ?? 0; // Assuming this is a boolean column
                 $without_price = $row['H'];
-                $is_bot_allowed = $row['I'];
 
                 if ($partNumber == null) {
                     continue;

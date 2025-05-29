@@ -41,17 +41,6 @@ try {
     exit;
 }
 
-// GETTING ALL THE CONTACTS OF ACCOUNT
-// try {
-//     $contacts = $MadelineProto->contacts->getContacts(['hash' => '0']);
-//     saveContacts($contacts['users'], USER_ID);
-//     header("Location: contacts.php?success=1");
-// } catch (Exception $e) {
-//     echo "Error: " . $e->getMessage();
-//     exit;
-// }
-
-
 try {
     $contacts = $MadelineProto->channels->getParticipants([
         'channel' => 'https://t.me/+Z3c56mn7IQ0xNjI0',
@@ -60,16 +49,18 @@ try {
         'limit' => 200,
         'hash' => 0
     ]);
-    saveContacts($contacts['users'], USER['user_id']);
+    saveContacts($contacts['users'], USER['user_id'], $MadelineProto);
     header("Location: groupContacts.php?success=1");
 } catch (\Throwable $th) {
     throw $th;
 }
 
-function saveContacts($contacts, $userId)
+function saveContacts($contacts, $userId, $MadelineProto)
 {
+    global $MadelineProto;
+
     $checkStmt = DB->prepare("SELECT 1 FROM contacts WHERE api_bot_id = ? AND user_id= ?");
-    $insertStmt = DB->prepare("INSERT INTO contacts (user_id, phone, name, username, api_bot_id) VALUES (?, ?, ?, ?, ?)");
+    $insertStmt = DB->prepare("INSERT INTO contacts (user_id, phone, name, username, api_bot_id, profile_photo_path) VALUES (?, ?, ?, ?, ?, ?)");
 
     foreach ($contacts as $contact) {
         $apiBotId = $contact['id'] ?? null;
@@ -84,12 +75,33 @@ function saveContacts($contacts, $userId)
         $lastName = $contact['last_name'] ?? '';
         $name = trim($firstName . ' ' . $lastName);
 
+        // Download profile photo if available
+        $photoPath = null;
+        if (!empty($contact['photo'])) {
+            try {
+                $path = 'profile_photos/' . $apiBotId . '.jpg';
+                if (!is_dir('profile_photos')) {
+                    mkdir('profile_photos', 0777, true);
+                }
+
+                $MadelineProto->downloadProfilePhoto([
+                    'peer' => $contact,
+                    'file' => $path
+                ]);
+                $photoPath = $path;
+            } catch (\Throwable $e) {
+                error_log("Photo download failed for user {$apiBotId}: " . $e->getMessage());
+                $photoPath = null;
+            }
+        }
+
         $insertStmt->execute([
             $userId,
             $contact['phone'] ?? 'undefined',
             $name,
             $contact['username'] ?? 'undefined',
-            $apiBotId
+            $apiBotId,
+            $photoPath
         ]);
     }
 
