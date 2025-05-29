@@ -24,10 +24,15 @@ if (!file_exists($sessionConnectionFile)) {
 }
 
 try {
-    $MadelineProto = new API($sessionFile);
-    $MadelineProto->start();
+    try {
+        // ✅ Correctly use the session for this account
+        $MadelineProto = new API($sessionFile);
+        $MadelineProto->start();
+    } catch (\Throwable $th) {
+        echo "❌ Failed to start session for user_id {$account['user_id']}: " . $th->getMessage();
+    }
 
-    $user = $MadelineProto->getSelf(); // This throws if not logged in
+    $user = $MadelineProto->getSelf();
 
     if (!isset($user['_']) || $user['_'] !== 'user') {
         // Not a valid user session
