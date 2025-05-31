@@ -47,6 +47,12 @@ $fileName = basename($_SERVER['PHP_SELF']);
                 لیست کد های فنی
             </a>
         </li>
+        <li class="mx-1 <?= $category == 'messages' ? 'bg-gray-300' : 'bg-gray-50' ?> hover:bg-gray-400 text-sm font-bold">
+            <a class="p-3 mb-1 menu_item flex items-center gap-2" href="../messages/index.php">
+                <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
+                متن پیام ربات
+            </a>
+        </li>
         <li class="mx-1 <?= $category == "telegram" ? 'bg-gray-300' : 'bg-gray-50' ?> hover:bg-gray-400 text-sm font-bold">
             <a class="p-3 mb-1 menu_item flex items-center gap-2" href="../telegram/connect.php">
                 <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
