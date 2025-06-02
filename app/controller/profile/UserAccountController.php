@@ -41,8 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['name'])) {
         $phone = sanitizeInput($_POST["phone"]);
     }
 
-    print_r($name_err . " " . $lastName_err . " " . $company_err . " " . $phone_err . " " . $address_err);
-
     // Check for errors before updating the profile
     if (empty($name_err) && empty($lastName_err) && empty($username_err) && empty($company_err) && empty($phone_err) && empty($address_err)) {
         // Update profile in the database
