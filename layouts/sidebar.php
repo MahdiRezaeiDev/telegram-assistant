@@ -35,22 +35,16 @@ $fileName = basename($_SERVER['PHP_SELF']);
                 لیست مخاطبین چراغ برق
             </a>
         </li>
-        <li class="mx-1 <?= $category == 'contacts' ? 'bg-gray-300' : 'bg-gray-50' ?> hover:bg-gray-400 text-sm font-bold">
-            <a class="p-3 mb-1 menu_item flex items-center gap-2" href="../telegram/contacts.php">
+        <!--<li class="mx-1 <?= $category == 'contacts' ? 'bg-gray-300' : 'bg-gray-50' ?> hover:bg-gray-400 text-sm font-bold">-->
+        <!--    <a class="p-3 mb-1 menu_item flex items-center gap-2" href="../telegram/contacts.php">-->
                 <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
-                همه مخاطبین
-            </a>
-        </li>
+        <!--        همه مخاطبین-->
+        <!--    </a>-->
+        <!--</li>-->
         <li class="mx-1 <?= $category == 'goods' ? 'bg-gray-300' : 'bg-gray-50' ?> hover:bg-gray-400 text-sm font-bold">
             <a class="p-3 mb-1 menu_item flex items-center gap-2" href="../goods/index.php">
                 <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
                 لیست کد های فنی
-            </a>
-        </li>
-        <li class="mx-1 <?= $category == 'messages' ? 'bg-gray-300' : 'bg-gray-50' ?> hover:bg-gray-400 text-sm font-bold">
-            <a class="p-3 mb-1 menu_item flex items-center gap-2" href="../messages/index.php">
-                <!-- <img class="hidden sm:inline-block" src="./assets/icons/add.svg" alt="add icon"> -->
-                متن پیام ربات
             </a>
         </li>
         <li class="mx-1 <?= $category == "telegram" ? 'bg-gray-300' : 'bg-gray-50' ?> hover:bg-gray-400 text-sm font-bold">

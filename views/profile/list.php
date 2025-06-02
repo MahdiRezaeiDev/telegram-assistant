@@ -63,7 +63,10 @@ require_once "../../layouts/sidebar.php";
                         <td class="p-3 text-center"><?= ($user['phone']) ?></td>
                         <td class="p-3 text-center"><?= ($user['company']) ?></td>
                         <td class="p-3 text-center"><?= sanitizeDataInput($user['address']) ?></td>
-                        <td class="p-3 text-center">
+                        <td class="p-3 text-center flex gap-2">
+                            <a href="../profile/editProfile.php?userId=<?= $user['id'] ?>">
+                                <img src="../../public/icons/edit.svg" alt="edit icon" class="w-5 h-5 cursor-pointer mx-auto" title="ویرایش کاربر" />
+                            </a>
                             <img src="../../public/icons/delete.svg" alt="delete icon" class="w-5 h-5 cursor-pointer mx-auto"
                                 onclick="deleteUser(<?= $user['id'] ?>)" title="حذف کاربر" />
                         </td>

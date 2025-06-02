@@ -1,13 +1,16 @@
 <?php
 
 use danog\MadelineProto\API;
+use danog\MadelineProto\Settings;
+use danog\MadelineProto\Exception;
 
+// Setup
 define('DIR', __DIR__);
 
-require_once(DIR . '/vendor/autoload.php');
-require_once(DIR . '/config/constants.php');
-require_once(DIR . '/database/DB_connect.php');
-require_once(DIR . '/utilities/helper.php');
+require_once DIR . '/vendor/autoload.php';
+require_once DIR . '/config/constants.php';
+require_once DIR . '/database/DB_connect.php';
+require_once DIR . '/utilities/helper.php';
 
 $messages = getMessages();
 $accounts = getAccounts();
@@ -17,75 +20,71 @@ foreach ($accounts as $account) {
     $sessionPath = DIR . '/views/telegram/sessions/' . $sessionName;
 
     try {
-        // ✅ Correctly use the session for this account
-        $MadelineProto = new API($sessionPath);
-        $MadelineProto->start();
-    } catch (\Throwable $th) {
-        echo "❌ Failed to start session for user_id {$account['user_id']}: " . $th->getMessage();
-        continue;
-    }
+        // ✅ Use Settings object instead of array
+        $settings = (new Settings)
+            ->setAppInfo((new Settings\AppInfo)
+                ->setApiId($account['api_id']) // Use the API ID from the account
+                ->setApiHash($account['api_hash']));
 
-    $self = $MadelineProto->getSelf();
-    $myId = $self['id'];
+        $MadelineProto = new API($sessionPath, $settings);
 
-    foreach ($messages as $message) {
-        if ($message['sender'] == $myId) {
+        try {
+            $MadelineProto->start(); // This will prompt login only if session doesn't exist
+        } catch (\Throwable $th) {
+            echo "⚠️ Skipping user_id {$account['user_id']} due to failed login: " . $th->getMessage() . "\n";
             continue;
         }
 
-        if (!isValidContact($message['sender'], $account['user_id'])) {
-            continue;
-        }
+        $self = $MadelineProto->getSelf();
+        $myId = $self['id'];
 
-        $codes = filterCode($message['message']);
-        if (empty($codes)) {
-            continue;
-        }
+        foreach ($messages as $message) {
+            if ($message['sender'] == $myId) continue;
+            if (!isValidContact($message['sender'], $account['user_id'])) continue;
 
-        $template = '';
-        foreach ($codes as $code) {
-            $code = strtoupper($code);
-            $goodSpecification = isCodeExist($code, $account['user_id']);
-            if (empty($goodSpecification)) {
-                continue;
+            $codes = filterCode($message['message']);
+            if (empty($codes)) continue;
+
+            $template = '';
+            foreach ($codes as $code) {
+                $code = strtoupper($code);
+                $goodSpecification = isCodeExist($code, $account['user_id']);
+                if (empty($goodSpecification)) continue;
+
+                if ($goodSpecification['without_price']) {
+                    $template .= "$code : برای قیمت تماس بگیرید\n";
+                } else {
+                    $template .= "$code : {$goodSpecification['price']} {$goodSpecification['brand']}\n";
+                }
             }
 
-            if ($goodSpecification['without_price'])
-                $template .= "$code :  برای قیمت تماس بگیرید\n";
-            else
-                $template .= "$code : " . $goodSpecification['price'] . " " . $goodSpecification['brand'] . "\n";
-        }
-
-        if (!empty($template)) {
-            try {
-                $MadelineProto->messages->sendMessage(peer: $message['sender'], message: $template);
-                markAsResolved($message['id']);
-                saveGivenPrice($message['sender'], $template, $account['user_id']);
-            } catch (\Throwable $th) {
-                $phone = getPhoneNumber($message['sender'], $account['user_id']);
-
-                if ($phone) {
-                    $MadelineProto->contacts->importContacts([
-                        'contacts' => [
-                            [
-                                '_' => 'inputPhoneContact',
-                                'client_id' => 0,
-                                'phone' => $phone,
-                                'first_name' => 'Unknown',
-                                'last_name' => ''
-                            ]
-                        ]
-                    ]);
-                }
+            if (!empty($template)) {
                 try {
                     $MadelineProto->messages->sendMessage(peer: $message['sender'], message: $template);
                     markAsResolved($message['id']);
                     saveGivenPrice($message['sender'], $template, $account['user_id']);
                 } catch (\Throwable $th) {
-                    throw $th;
+                    // Try importing contact and retry
+                    $phone = getPhoneNumber($message['sender'], $account['user_id']);
+                    if ($phone) {
+                        $MadelineProto->contacts->importContacts([[
+                            '_' => 'inputPhoneContact',
+                            'client_id' => 0,
+                            'phone' => $phone,
+                            'first_name' => 'Unknown',
+                            'last_name' => ''
+                        ]]);
+                        // Retry
+                        $MadelineProto->messages->sendMessage(peer: $message['sender'], message: $template);
+                        markAsResolved($message['id']);
+                        saveGivenPrice($message['sender'], $template, $account['user_id']);
+                    }
                 }
             }
         }
+    } catch (\Throwable $th) {
+        echo "❌ Failed to initialize for user_id {$account['user_id']}: " . $th->getMessage() . "\n";
+        continue;
     }
 }
 
@@ -101,20 +100,18 @@ function isCodeExist($code, $user_id)
     AND patterns.user_id = :user_id ORDER BY patterns.id DESC");
 
     $pattern = "%" . $code . "%";
-
     $stmt->bindParam(":part_number", $pattern);
     $stmt->bindParam(":user_id", $user_id);
-
     $stmt->execute();
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    return $results[0] ?? []; // returns null if nothing found
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $results[0] ?? [];
 }
 
 function markAsResolved($id)
 {
     $stmt = DB->prepare("UPDATE incoming SET is_resolved = 1 WHERE id = :id");
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->bindParam(':id', $id);
     $stmt->execute();
 }
 
@@ -151,36 +148,21 @@ function getAccounts()
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function getUserContacts($user_id)
-{
-    $stmt = DB->prepare("SELECT * FROM contacts WHERE user_id = :user_id AND is_blocked = 0");
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
 function filterCode($message)
 {
     if (empty($message)) {
         return "";
     }
-
     $codes = explode("\n", $message);
-
     $filteredCodes = array_map(function ($code) {
         $code = preg_replace('/\[[^\]]*\]/', '', $code);
-
         $parts = preg_split('/[:,]/', $code, 2);
-
         if (!empty($parts[1]) && strpos($parts[1], "/") !== false) {
             $parts[1] = explode("/", $parts[1])[0];
         }
-
         $rightSide = trim(preg_replace('/[^a-zA-Z0-9 ]/', '', $parts[1] ?? ''));
-
         return $rightSide ? $rightSide : trim(preg_replace('/[^a-zA-Z0-9 ]/', '', $code));
     }, $codes);
-
     $finalCodes = array_filter($filteredCodes, function ($item) {
         $data = explode(" ", $item);
         return strlen($data[0]) > 4;
