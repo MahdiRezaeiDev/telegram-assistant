@@ -46,8 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['name'])) {
     // Check for errors before updating the profile
     if (empty($name_err) && empty($lastName_err) && empty($username_err) && empty($company_err) && empty($phone_err) && empty($address_err)) {
         // Update profile in the database
-        echo "Updating profile for user ID: $userId with Name: $name, Last Name: $lastName, Company: $company, Phone: $phone, Address: $address";
-
         if (updateProfile($userId, $name, $lastName, $company, $phone, $address)) {
             header("Location: ./editProfile.php?userId=$userId" . "&success=1");
             exit;
@@ -150,8 +148,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['password'])) {
     // Check for errors before updating the password
     if (empty($password_err) && empty($confirm_password_err)) {
         // Update password in the database
-        if (updatePassword(USER['id'], password_hash($password, PASSWORD_DEFAULT), $username)) {
-            header("Location: ./edit.php?success=1");
+        if (updatePassword($userId, password_hash($password, PASSWORD_DEFAULT), $username)) {
+            header("Location: ./editProfile.php?userId=$userId" . "&success=1");
             exit;
         } else {
             echo "Error updating password. Please try again later.";

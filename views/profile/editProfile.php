@@ -52,7 +52,7 @@ $user = [
     </div>
     <div class="bg-white shadow-xl rounded-2xl p-8 max-w-md w-full">
         <h2 class="text-xl font-bold text-center text-gray-800 mb-6">ویرایش اطلاعات ورود</h2>
-        <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST" class="space-y-5">
+        <form class="space-y-5" action="<?= htmlspecialchars($_SERVER['REQUEST_URI']) ?>" method="POST" enctype="multipart/form-data">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">نام کاربری</label>
                 <input name="username" type="text" value="<?= $user['username']; ?>" required
