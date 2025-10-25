@@ -176,10 +176,6 @@ require_once "../../layouts/sidebar.php";
 
         axios.post("../../app/api/bazar/CallToBazarApi.php", params)
             .then(function(response) {
-
-                console.log(response.data);
-                return;
-
                 if (response.data) {
                     alert('قیمت ها موفقانه ثبت گردید.')
                     window.location.reload();

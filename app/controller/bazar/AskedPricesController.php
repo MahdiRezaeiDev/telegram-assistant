@@ -11,9 +11,11 @@ function getAskedPrices()
             FROM estelam
             JOIN sellers ON estelam.seller = sellers.id
             JOIN users ON estelam.user = users.id
+            WHERE sellers.user_id = :user
             ORDER BY estelam.id DESC";
 
     $stmt = DB->prepare($sql);
+    $stmt->bindParam(':user', $_SESSION['id'], PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
