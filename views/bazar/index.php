@@ -15,7 +15,10 @@ require_once "../../layouts/sidebar.php";
             onkeyup="convertToPersian(this);displaySellers(this.value)" ;
             onfocus="this.select()"
             placeholder="جستجو فروشنده ....">
-        <a href="./sellers.php" class="px-5 py-2 rounded bg-sky-700 text-white">لیست فروشنده ها</a>
+        <div class="gap-2">
+            <a href="./prices.php" class="px-5 py-2 rounded bg-sky-700 text-white">قیمت های گرفته شده</a>
+            <a href="./sellers.php" class="px-5 py-2 rounded bg-sky-700 text-white">لیست فروشنده ها</a>
+        </div>
     </div>
     <table class="w-full">
         <thead id="tableHeading" class="font-medium sticky top-12" style="z-index: 9;">
@@ -33,10 +36,6 @@ require_once "../../layouts/sidebar.php";
                 <span class="text-xs bg-black text-white rounded px-2 py-1"> CTRL + SHIFT</span>
                 استفاده نمایید.
             </li>
-            <!-- <li class="text-xs font-semibold mb-5"> برای ذخیره سازی قیمت های گرفته شده از کلید های ترکیبی
-                <span class="text-xs bg-black text-white rounded px-2 py-1"> CTRL + M</span>
-                استفاده نمایید.
-            </li> -->
         </ul>
         <button onclick="saveInquiredPrices()" class="text-sm p-2 bg-sky-600 hover:bg-sky-700 text-white rounded">ثبت قیمت ها</button>
     </article>
@@ -99,11 +98,11 @@ require_once "../../layouts/sidebar.php";
         // Loop through ALL_SELLERS and add each seller's data as a new row
         let counter = 1;
         for (const seller of ALL_SELLERS) {
-            if (isSellerNameMatching(filter, seller.name)) {
+            if (isSellerNameMatching(filter, seller.full_name)) {
                 contentRow += `
             <tr class="even:bg-sky-100">
                 <td class="p-2 font-semibold">${counter}</td>
-                <td class="p-2 font-semibold">${seller.name}</td>
+                <td class="p-2 font-semibold">${seller.full_name}</td>
             `;
                 for (let i = 0; i < INQUIRED_CODS.length; i++) {
                     contentRow += `
@@ -177,6 +176,10 @@ require_once "../../layouts/sidebar.php";
 
         axios.post("../../app/api/bazar/CallToBazarApi.php", params)
             .then(function(response) {
+
+                console.log(response.data);
+                return;
+
                 if (response.data) {
                     alert('قیمت ها موفقانه ثبت گردید.')
                     window.location.reload();
