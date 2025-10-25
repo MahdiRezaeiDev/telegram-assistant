@@ -41,6 +41,9 @@ require_once "../../layouts/sidebar.php";
                     شناسه یکتا
                 </th>
                 <th scope="col" class="text-white font-semibold p-3 text-center">
+                    پروفایل
+                </th>
+                <th scope="col" class="text-white font-semibold p-3 text-center">
                     جلوگیری از ارسال پیام
                 </th>
             </tr>
@@ -59,6 +62,9 @@ require_once "../../layouts/sidebar.php";
                         <td class="p-3 text-center"><?= ($contact['phone']) ?></td>
                         <td class="p-3 text-center"><?= ($contact['username']) ?></td>
                         <td class="p-3 text-center"><?= ($contact['api_bot_id']) ?></td>
+                        <td class="p-3 text-center">
+                            <img src="https://telegram.cheraghbargh.ir/profile_photos/user_<?= $contact['api_bot_id'] ?>.jpg" alt="" srcset="">
+                        </td>
                         <td class="p-3 text-center">
                             <input
                                 onclick="updateContactStatus(<?= $contact['id'] ?>, this.checked)"

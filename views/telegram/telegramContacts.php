@@ -62,26 +62,40 @@ try {
 }
 
 // 🧠 Download and return profile photo filename
-function getProfilePictureFromPhotoObject($MadelineProto, $photo)
+function getProfilePhoto($bot, $info, $type, $id)
 {
     try {
-        $directory = './img/telegram';
-        if (!is_dir($directory)) {
-            mkdir($directory, 0777, true);
+        if ($type === 'user') {
+            $photos = $bot->photos->getUserPhotos([
+                'user_id' => $id,
+                'limit' => 1
+            ]);
+            if (!empty($photos['photos'][0])) {
+                return downloadPhoto($bot, $photos['photos'][0], $type, $id);
+            }
+        } elseif ($type === 'chat' && isset($info['Chat']['photo'])) {
+            return downloadPhoto($bot, $info['Chat']['photo'], $type, $id);
+        } elseif ($type === 'channel' && isset($info['Channel']['photo'])) {
+            return downloadPhoto($bot, $info['Channel']['photo'], $type, $id);
         }
+    } catch (\Exception $e) {
+    }
+    return null;
+}
 
-        $fileName = $photo->fileName;
-        $filePath = $directory . '/' . $fileName;
+function downloadPhoto($bot, $photo, $type, $id)
+{
+    $dir = __DIR__ . "/profile_photos"; // folder path
+    if (!is_dir($dir)) mkdir($dir, 0755, true);
 
-        if (file_exists($filePath)) {
-            return $fileName;
-        }
+    $filePath = $dir . "/{$type}_{$id}.jpg";
 
-        $downloaded = $MadelineProto->downloadToDir($photo, $directory);
-        return basename($downloaded);
-    } catch (\Throwable $e) {
-        error_log("Failed to download profile photo: " . $e->getMessage());
-        return 'images.png';
+    try {
+        $bot->downloadToFile($photo, $filePath);
+        // Return full URL
+        return "https://telegram.cheraghbargh.ir/profile_photos/{$type}_{$id}.jpg";
+    } catch (\Exception $e) {
+        return null;
     }
 }
 
@@ -107,7 +121,7 @@ function saveContacts($contacts, $userId, $MadelineProto)
         $photo = 'images.png';
         try {
             if (!empty($contact['photo'])) {
-                $photo = getProfilePictureFromPhotoObject($MadelineProto, $contact['photo']);
+                $photo = getProfilePictureFromPhotoObject($MadelineProto, $contact['photo'], 'user', $apiBotId) ?? 'images.png';
             }
         } catch (\Throwable $e) {
             error_log("Photo fetch failed for user $apiBotId: " . $e->getMessage());
