@@ -63,7 +63,7 @@ require_once "../../layouts/sidebar.php";
                         <td class="p-3 text-center"><?= ($contact['username']) ?></td>
                         <td class="p-3 text-center"><?= ($contact['api_bot_id']) ?></td>
                         <td class="p-3 text-center">
-                            <img src="https://telegram.cheraghbargh.ir/profile_photos/user_<?= $contact['api_bot_id'] ?>.jpg" alt="" srcset="">
+                            <img class="rounded-full w-8 h-8 mx-auto" src="https://telegram.cheraghbargh.ir/views/telegram/profile_photos/user_<?= $contact['api_bot_id'] ?>.jpg" alt="" srcset="">
                         </td>
                         <td class="p-3 text-center">
                             <input
