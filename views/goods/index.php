@@ -21,6 +21,11 @@ $goods = getAllGoods(); // Assuming this function fetches the goods list from th
                 onkeyup="searchGoods(this.value)"
                 class="rounded border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 items-center" />
             <div class="flex justify-end items-center gap-2">
+                <a href="./robot.xlsx" download="ExamplePartNumbers.xlsx"
+                    class="rounded bg-green-600 text-white text-xs p-3">
+                    دانلود فایل نمونه کدهای فنی
+                </a>
+
                 <a class="rounded bg-sky-600 text-white text-xs p-3" href="../goods/upload.php">آپلود فایل کد های فنی</a>
 
                 <button class="rounded bg-red-600 text-white text-xs p-3 flex items-center gap-2"
