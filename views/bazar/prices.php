@@ -7,7 +7,7 @@ require_once '../components/header.php';
 require_once "../../layouts/navigation.php";
 require_once "../../layouts/sidebar.php";
 ?>
-<div class="container mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl border border-gray-200 max-w-5xl mx-auto">
+<div class="container mt-10 p-6 bg-white shadow-lg rounded-xl border border-gray-200 max-w-5xl mx-auto">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-800">لیست استعلام‌ها</h1>
         <a href="create_estelam.php" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm shadow">
