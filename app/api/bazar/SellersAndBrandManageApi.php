@@ -6,59 +6,30 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 require_once '../../../config/constants.php';
-require_once '../../../database/db_connect.php';
-require_once '../../../utilities/inventory/ExistingHelper.php';
+require_once '../../../database/DB_connect.php';;
 
 if (isset($_POST['mode'])) {
     $mode = $_POST['mode'];
     if ($mode === 'create') {
-        if (count($_POST) == 3) {
-            echo createBrand($_POST);
-        } else {
-            $sellers = createNewSeller($_POST);
-            echo json_encode($sellers);
-        }
-    } else if ($mode === 'update') {
-        $brands = getBrands();
-        echo json_encode($brands);
+        $sellers = createNewSeller($_POST);
+        echo json_encode($sellers);
     }
 }
 
 function createNewSeller($data)
 {
     $name = $data['name'];
-    $latinName = $data['latinName'];
     $phone = $data['phone'];
-    $address = $data['address'];
-    $kind = $data['kind'];
-    $view = $data['view'];
+    $user_id = $_SESSION['id'];
 
-    $sql = "INSERT INTO seller (name, latinName, phone, address, kind, view)
-            VALUES (:name, :latinName, :phone, :address, :kind, :view)";
+    $sql = "INSERT INTO sellers (user_id,full_name, phone)
+            VALUES (:user_id, :name, :phone)";
 
     $stmt = DB->prepare($sql);
+    $stmt->bindParam(':user_id', $user_id);
     $stmt->bindParam(':name', $name);
-    $stmt->bindParam(':latinName', $latinName);
     $stmt->bindParam(':phone', $phone);
-    $stmt->bindParam(':address', $address);
-    $stmt->bindParam(':kind', $kind);
-    $stmt->bindParam(':view', $view);
 
-    if ($stmt->execute()) {
-        return true;
-    }
-
-    return false;
-}
-function createBrand($data)
-{
-    $name = $data['name'];
-    $view = $data['view'] == "on" ? 1 : 0;
-    $sql = "INSERT INTO brand (name, views)
-            VALUES (:name, :view)";
-    $stmt = DB->prepare($sql);
-    $stmt->bindParam(":name", $name);
-    $stmt->bindParam(":view", $view);
     if ($stmt->execute()) {
         return true;
     }

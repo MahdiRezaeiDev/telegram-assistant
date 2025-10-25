@@ -7,7 +7,7 @@ require_once '../components/header.php';
 require_once "../../layouts/navigation.php";
 require_once "../../layouts/sidebar.php";
 ?>
-<div class="grid grid-cols-1 lg:grid-cols-4 gap-5">
+<div class="max-w-5xl grid grid-cols-1 lg:grid-cols-4 gap-5 mx-auto">
     <section class="p-3 col-span-4">
         <div class="py-2 flex justify-between items-center">
             <div>
@@ -21,11 +21,7 @@ require_once "../../layouts/sidebar.php";
                 <tr class="bg-gray-800 text-white text-sm">
                     <th class="p-3 text-center">#</th>
                     <th class="p-3 text-right">نام فروشنده</th>
-                    <th class="p-3 text-right">نام لاتین</th>
                     <th class="p-3 text-right">شماره تماس</th>
-                    <th class="p-3 text-right">آدرس</th>
-                    <th class="p-3 text-right">دسته بندی</th>
-                    <th class="p-3 text-right">ترتیب</th>
                     <th class="p-3 text-right">نمایش</th>
                 </tr>
             </thead>
@@ -33,14 +29,10 @@ require_once "../../layouts/sidebar.php";
                 <?php foreach ($sellers as $key => $seller) : ?>
                     <tr class="text-sm border-b border-gray-200 even:bg-gray-100">
                         <td class="p-3 text-center"><?= $key + 1 ?></td>
-                        <td class="p-3" ondblclick="makeEditable('seller',this, 'name', <?= $seller['id'] ?>)"><?= $seller['name'] ?></td>
-                        <td class="p-3" ondblclick="makeEditable('seller',this, 'latinName', <?= $seller['id'] ?>)"><?= $seller['latinName'] ?></td>
-                        <td style="direction: ltr !important;" class="p-3" ondblclick="makeEditable('seller',this, 'phone', <?= $seller['id'] ?>)"><?= htmlspecialchars($seller['phone']) ?></td>
-                        <td class="p-3" ondblclick="makeEditable('seller',this, 'address', <?= $seller['id'] ?>)"><?= $seller['address'] ?></td>
-                        <td class="p-3" ondblclick="makeEditable('seller',this, 'kind', <?= $seller['id'] ?>)"><?= $seller['kind'] ?></td>
-                        <td class="p-3" ondblclick="makeEditable('seller',this, 'sort', <?= $seller['id'] ?>)"><?= $seller['sort'] ?></td>
+                        <td class="p-3" ondblclick="makeEditable('sellers',this, 'full_name', <?= $seller['id'] ?>)"><?= $seller['full_name'] ?></td>
+                        <td class="p-3" ondblclick="makeEditable('sellers',this, 'phone', <?= $seller['id'] ?>)"><?= htmlspecialchars($seller['phone']) ?></td>
                         <td class="p-3">
-                            <input type="checkbox" name="view" onclick="updateView('seller',<?= $seller['id'] ?>)" <?= $seller['views'] ? 'checked' : '' ?>>
+                            <input type="checkbox" name="view" onclick="updateView('sellers',<?= $seller['id'] ?>)" <?= $seller['view'] ? 'checked' : '' ?>>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -50,56 +42,84 @@ require_once "../../layouts/sidebar.php";
     </section>
 </div>
 
-<div id="sellerModal" class="fixed inset-0 bg-gray-800 flex justify-center items-center hidden">
-    <div class="bg-white p-5 rounded shadow">
-        <div class="modal-box">
-            <div class="flex justify-between items-center py-5">
-                <h2 class="text-xl font-semibold">ایجاد فروشنده</h2>
-                <img onclick="toggleForm('sellerModal')" src="../../public/icons/close_red.svg" class="w-5 h-5 cursor-pointer" alt="delete items icon">
-            </div>
-            <div class="modal-body">
-                <form id="sellerForm" action="#" method="post" class="grid grid-cols-1 lg:grid-cols-3 gap-3">
-                    <input type="hidden" name="mode" value="create">
-                    <div class="form-group">
-                        <label for="name">نام فروشنده</label>
-                        <input type="text" name="name" id="name" class="border-2 border-gray-500 p-2 w-full outline-none">
-                    </div>
-                    <div class="form-group">
-                        <label for="latinName">نام لاتین</label>
-                        <input type="text" name="latinName" id="latinName" class="border-2 border-gray-500 p-2 w-full outline-none">
-                    </div>
-                    <div class="form-group
-                    ">
-                        <label for="phone">شماره تماس</label>
-                        <input type="text" name="phone" id="phone" class="border-2 border-gray-500 p-2 w-full outline-none">
-                    </div>
-                    <div class="form-group">
-                        <label for="address">آدرس</label>
-                        <input type="text" name="address" id="address" class="border-2 border-gray-500 p-2 w-full outline-none">
-                    </div>
-                    <div class="form-group">
-                        <label for="kind">دسته بندی</label>
-                        <input type="text" name="kind" id="kind" class="border-2 border-gray-500 p-2 w-full outline-none">
-                    </div>
-                    <div class="form-group">
-                        <label for="view">نمایش</label>
-                        <input type="checkbox" name="view" id="view" checked>
-                    </div>
-                    <div class="form-group flex justify-between items-center">
-                        <button type="button" onclick="submitSellerForm()" class="bg-sky-600 text-white rounded-sm py-1 px-3">ذخیره</button>
-                        <p id="operationMessage" class="text-green-600 hidden"></p>
-                    </div>
-                </form>
-            </div>
+<div id="sellerModal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex justify-center items-center hidden">
+    <div class="bg-white w-full max-w-2xl mx-3 rounded-2xl shadow-xl overflow-hidden animate-fadeIn">
+        <!-- Header -->
+        <div class="flex justify-between items-center border-b border-gray-200 px-6 py-4">
+            <h2 class="text-xl font-bold text-gray-800">ایجاد فروشنده جدید</h2>
+            <button onclick="toggleForm('sellerModal')"
+                class="text-gray-500 hover:text-red-600 text-xl leading-none font-bold">
+                ×
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="px-6 py-5">
+            <form id="sellerForm" action="#" method="post" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                <input type="hidden" name="mode" value="create">
+
+                <!-- Name -->
+                <div class="flex flex-col">
+                    <label for="name" class="text-sm font-medium text-gray-700 mb-1">نام فروشنده</label>
+                    <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        placeholder="مثلاً: علی رضایی"
+                        class="border border-gray-300 focus:border-sky-500 focus:ring-1 focus:ring-sky-400 rounded-md px-3 py-2 outline-none transition-all text-right">
+                </div>
+
+                <!-- Phone -->
+                <div class="flex flex-col">
+                    <label for="phone" class="text-sm font-medium text-gray-700 mb-1">شماره تماس</label>
+                    <input
+                        type="text"
+                        name="phone"
+                        id="phone"
+                        placeholder="مثلاً: ۰۷۸۱۲۳۴۵۶۷"
+                        class="border border-gray-300 focus:border-sky-500 focus:ring-1 focus:ring-sky-400 rounded-md px-3 py-2 outline-none transition-all text-right">
+                </div>
+
+                <!-- Buttons -->
+                <div class="lg:col-span-2 flex justify-end items-center gap-4 mt-3">
+                    <p id="operationMessage" class="text-green-600 text-sm hidden"></p>
+                    <button
+                        type="button"
+                        onclick="submitSellerForm()"
+                        class="bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-md px-5 py-2 transition-all">
+                        ذخیره
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+<!-- Optional: Fade-in animation -->
+<style>
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fadeIn {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+</style>
+
 
 <div id="updateViewMessage" class="fixed left-1/2 -translate-x-1/2 top-full transition">
     <p class="bg-green-600 text-white p-2 rounded-sm">عملیات موفقانه انجام شد.</p>
 </div>
 <script>
-    const endpoint = "../../app/api/inventory/SellersAndBrandManageApi.php";
+    const endpoint = "../../app/api/bazar/SellersAndBrandManageApi.php";
 
     function submitSellerForm() {
         const form = document.getElementById('sellerForm');
@@ -107,6 +127,7 @@ require_once "../../layouts/sidebar.php";
 
         axios.post(endpoint, formData)
             .then(response => {
+
                 if (response.data) {
                     const operationMessage = document.getElementById('operationMessage');
                     operationMessage.classList.remove('hidden');
