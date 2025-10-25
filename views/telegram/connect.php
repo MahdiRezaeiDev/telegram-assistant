@@ -11,12 +11,6 @@ require_once "../../layouts/sidebar.php";
 ?>
 <main class="flex flex-col items-center justify-center  bg-gray-100 pt-20">
     <section class="bg-white shadow-md rounded-lg p-6 max-w-md w-full">
-        
-        <?php if(isset($_GET['error'])): ?>
-            <div class=" mx-5 bg-rose-600 text-red text-xs text-center rounded bg-gray-200 p-3 mb-5">
-                اتصال قبلی شما دچار مشکل شده است، لطفا دوباره متصل شوید.
-            </div>
-        <?php endif; ?>
         <div class="mb-4">
             <h1 class="text-2xl font-bold text-gray-800">وارد کردن اطلاعات</h1>
             <span class="text-sm text-gray-600 pb-4">لطفا اطلاعات زیر را وارد کنید تا به حساب تلگرام خود متصل شوید.</span>

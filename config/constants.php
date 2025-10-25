@@ -5,7 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $HOST = 'localhost';
-$DB_NAME = 'cheraghbargh';
+$DB_NAME = 'cheraghbargh_telegram';
 $USERNAME = 'root';
 $PASSWORD = '';
 $DB_TYPE = 'mysql';

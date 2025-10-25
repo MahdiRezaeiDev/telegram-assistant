@@ -32,9 +32,6 @@ require_once "../../layouts/sidebar.php";
                     نام نام خانوادگی
                 </th>
                 <th scope="col" class="text-white font-semibold p-3 text-center">
-                    پروفایل  
-                </th>
-                <th scope="col" class="text-white font-semibold p-3 text-center">
                     شماره تماس
                 </th>
                 <th scope="col" class="text-white font-semibold p-3 text-center">
@@ -59,9 +56,6 @@ require_once "../../layouts/sidebar.php";
                     <tr class="even:bg-gray-100 odd:bg-white hover:bg-gray-200 transition duration-300">
                         <td class="p-3 text-center"><?= $index + 1 ?></td>
                         <td class="p-3 text-center"><?= ($contact['name']) ?></td>
-                        <td class="p-3 text-center">
-                            <img class="w-8 h-8 rounded-circle" src="<?= './img/telegram/'. $contact['profile_photo_path']?>" />
-                        </td>
                         <td class="p-3 text-center"><?= ($contact['phone']) ?></td>
                         <td class="p-3 text-center"><?= ($contact['username']) ?></td>
                         <td class="p-3 text-center"><?= ($contact['api_bot_id']) ?></td>

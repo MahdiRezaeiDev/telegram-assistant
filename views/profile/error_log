@@ -1,0 +1,7 @@
+[02-Jun-2025 06:17:05 UTC] PHP Warning:  Cannot modify header information - headers already sent by (output started at /home/cheraghbargh/public_html/telegram.cheraghbargh.ir/app/controller/profile/UserAccountController.php:44) in /home/cheraghbargh/public_html/telegram.cheraghbargh.ir/app/controller/profile/UserAccountController.php on line 50
+[08-Jun-2025 15:39:34 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/cheraghbargh/public_html/telegram.cheraghbargh.ir/views/profile/edit.php on line 13
+[08-Jun-2025 15:39:34 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/cheraghbargh/public_html/telegram.cheraghbargh.ir/views/profile/edit.php on line 14
+[08-Jun-2025 15:39:34 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/cheraghbargh/public_html/telegram.cheraghbargh.ir/views/profile/edit.php on line 15
+[08-Jun-2025 15:39:34 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/cheraghbargh/public_html/telegram.cheraghbargh.ir/views/profile/edit.php on line 16
+[08-Jun-2025 15:39:34 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/cheraghbargh/public_html/telegram.cheraghbargh.ir/views/profile/edit.php on line 17
+[08-Jun-2025 15:39:34 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home/cheraghbargh/public_html/telegram.cheraghbargh.ir/views/profile/edit.php on line 18

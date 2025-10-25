@@ -67,8 +67,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['code'])) {
         header('Location: ../dashboard/dashboard.php');
         exit();
     } catch (Exception $e) {
-        echo "here is the error";
-        $MadelineProto->phoneLogin($phone);
-        echo 'Error: ' . $e->getMessage();
+         $msg = $e->getMessage();
+
+        if (stripos($msg, 'PHONE_CODE_INVALID') !== false) {
+            $errorMessage = "کد وارد شده نادرست است. لطفاً کد جدید را درخواست کنید.";
+        } elseif (stripos($msg, 'PHONE_CODE_EXPIRED') !== false) {
+            $errorMessage = "کد منقضی شده است. لطفاً کد جدیدی درخواست کنید.";
+        } else {
+            $errorMessage = "خطایی رخ داده است: " . htmlspecialchars($msg);
+        }
     }
 }

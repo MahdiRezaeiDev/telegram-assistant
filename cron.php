@@ -1,10 +1,7 @@
 <?php
 
 use danog\MadelineProto\API;
-use danog\MadelineProto\Settings;
-use danog\MadelineProto\Exception;
 
-// Setup
 define('DIR', __DIR__);
 
 require_once DIR . '/vendor/autoload.php';
@@ -15,109 +12,151 @@ require_once DIR . '/utilities/helper.php';
 $messages = getMessages();
 $accounts = getAccounts();
 
+$defaultMessageCache = []; // cache for user default messages
+
 foreach ($accounts as $account) {
     $sessionName = getAccountSession($account['user_id']);
     $sessionPath = DIR . '/views/telegram/sessions/' . $sessionName;
 
     try {
-        // ✅ Use Settings object instead of array
-        $settings = (new Settings)
-            ->setAppInfo((new Settings\AppInfo)
-                ->setApiId($account['api_id']) // Use the API ID from the account
-                ->setApiHash($account['api_hash']));
+        $MadelineProto = new API($sessionPath);
+        $MadelineProto->start();
+    } catch (\Throwable $th) {
+        echo "❌ Failed to start session for user_id {$account['user_id']}: " . htmlspecialchars($th->getMessage()) . "\n";
+        continue;
+    }
 
-        $MadelineProto = new API($sessionPath, $settings);
+    $self = $MadelineProto->getSelf();
+    $myId = $self['id'];
 
-        try {
-            $MadelineProto->start(); // This will prompt login only if session doesn't exist
-        } catch (\Throwable $th) {
-            echo "⚠️ Skipping user_id {$account['user_id']} due to failed login: " . $th->getMessage() . "\n";
-            continue;
+    foreach ($messages as $message) {
+        if ($message['sender'] == $myId) {
+            continue; // skip self messages
         }
 
-        $self = $MadelineProto->getSelf();
-        $myId = $self['id'];
+        if (!isValidContact($message['sender'], $account['user_id'])) {
+            continue; // skip blocked or invalid contacts
+        }
 
-        foreach ($messages as $message) {
-            if ($message['sender'] == $myId) continue;
-            if (!isValidContact($message['sender'], $account['user_id'])) continue;
+        $codes = filterCode($message['message']);
+        if (empty($codes)) {
+            continue; // skip if no valid codes found
+        }
 
-            $codes = filterCode($message['message']);
-            if (empty($codes)) continue;
-
-            $template = '';
-            foreach ($codes as $code) {
-                $code = strtoupper($code);
-                $goodSpecification = isCodeExist($code, $account['user_id']);
-                if (empty($goodSpecification)) continue;
-
-                if ($goodSpecification['without_price']) {
-                    $template .= "$code : برای قیمت تماس بگیرید\n";
-                } else {
-                    $template .= "$code : {$goodSpecification['price']} {$goodSpecification['brand']}\n";
-                }
+        $template = '';
+        foreach ($codes as $code) {
+            $code = strtoupper(trim($code));
+            $goodSpecification = isCodeExist($code, $account['user_id']);
+            if (empty($goodSpecification)) {
+                continue;
             }
 
-            if (!empty($template)) {
-                try {
-                    $MadelineProto->messages->sendMessage(peer: $message['sender'], message: $template);
-                    markAsResolved($message['id']);
-                    saveGivenPrice($message['sender'], $template, $account['user_id']);
-                } catch (\Throwable $th) {
-                    // Try importing contact and retry
-                    $phone = getPhoneNumber($message['sender'], $account['user_id']);
-                    if ($phone) {
-                        $MadelineProto->contacts->importContacts([[
-                            '_' => 'inputPhoneContact',
-                            'client_id' => 0,
-                            'phone' => $phone,
-                            'first_name' => 'Unknown',
-                            'last_name' => ''
-                        ]]);
-                        // Retry
-                        $MadelineProto->messages->sendMessage(peer: $message['sender'], message: $template);
+            if (!empty($goodSpecification['without_price'])) {
+                $template .= "$code : " . getUserDefaultMessage($account['user_id']) . "\n";
+            } else {
+                $template .= "$code : " . $goodSpecification['price'] . " " . $goodSpecification['brand'] . "\n";
+            }
+        }
+
+        if (!empty($template)) {
+            $template = trim($template);
+
+            try {
+                $MadelineProto->messages->sendMessage([
+                    'peer' => $message['sender'],
+                    'message' => $template
+                ]);
+
+                markAsResolved($message['id']);
+                saveGivenPrice($message['sender'], $template, $account['user_id']);
+
+            } catch (\Throwable $th) {
+                $phone = getPhoneNumber($message['sender'], $account['user_id']);
+
+                if ($phone) {
+                    try {
+                        $MadelineProto->contacts->importContacts([
+                            'contacts' => [[
+                                '_' => 'inputPhoneContact',
+                                'client_id' => 0,
+                                'phone' => $phone,
+                                'first_name' => 'Unknown',
+                                'last_name' => ''
+                            ]]
+                        ]);
+
+                        // Retry after importing contact
+                        $MadelineProto->messages->sendMessage([
+                            'peer' => $message['sender'],
+                            'message' => $template
+                        ]);
+
                         markAsResolved($message['id']);
                         saveGivenPrice($message['sender'], $template, $account['user_id']);
+                    } catch (\Throwable $innerTh) {
+                        echo "❌ Failed after import for sender {$message['sender']}: " . htmlspecialchars($innerTh->getMessage()) . "\n";
+                        continue;
                     }
+                } else {
+                    echo "⚠️ No phone for sender {$message['sender']}, cannot import or send.\n";
+                    continue;
                 }
             }
         }
-    } catch (\Throwable $th) {
-        echo "❌ Failed to initialize for user_id {$account['user_id']}: " . $th->getMessage() . "\n";
-        continue;
     }
 }
 
 
+// ================== SUPPORTING FUNCTIONS ===================== //
+
 function isCodeExist($code, $user_id)
 {
-    $stmt = DB->prepare("SELECT goods.part_number, patterns.* FROM goods 
-    INNER JOIN patterns ON patterns.id = goods.pattern_id
-    WHERE 
-    goods.part_number LIKE :part_number 
-    AND is_deleted = 0 
-    AND patterns.is_bot_allowed = 1
-    AND patterns.user_id = :user_id ORDER BY patterns.id DESC");
+    $stmt = DB->prepare("
+        SELECT goods.part_number, patterns.*
+        FROM goods
+        INNER JOIN patterns ON patterns.id = goods.pattern_id
+        WHERE goods.part_number LIKE :part_number
+          AND goods.is_deleted = 0
+          AND patterns.is_bot_allowed = 1
+          AND patterns.user_id = :user_id
+        ORDER BY patterns.id DESC
+    ");
 
     $pattern = "%" . $code . "%";
     $stmt->bindParam(":part_number", $pattern);
     $stmt->bindParam(":user_id", $user_id);
     $stmt->execute();
-
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     return $results[0] ?? [];
+}
+
+function getUserDefaultMessage($user_id)
+{
+    global $defaultMessageCache;
+
+    if (isset($defaultMessageCache[$user_id])) {
+        return $defaultMessageCache[$user_id];
+    }
+
+    $stmt = DB->prepare("SELECT message FROM default_message WHERE user_id = ? LIMIT 1");
+    $stmt->execute([$user_id]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $defaultMessageCache[$user_id] = $result ? trim($result['message']) : 'برای قیمت تماس بگیرید';
+    return $defaultMessageCache[$user_id];
 }
 
 function markAsResolved($id)
 {
     $stmt = DB->prepare("UPDATE incoming SET is_resolved = 1 WHERE id = :id");
-    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
 }
 
 function saveGivenPrice($receiver, $message, $account)
 {
-    $stmt = DB->prepare("INSERT INTO outgoing SET receiver = :receiver , message = :message, user_id = :account;");
+    $stmt = DB->prepare("INSERT INTO outgoing (receiver, message, user_id) VALUES (:receiver, :message, :account)");
     $stmt->bindParam(':receiver', $receiver);
     $stmt->bindParam(':message', $message);
     $stmt->bindParam(':account', $account);
@@ -138,12 +177,20 @@ function isValidContact($contact_id, $user_id)
         ':account_id' => $contact_id,
         ':user_id' => $user_id
     ]);
-    return $stmt->fetchColumn() !== false;
+    return (bool) $stmt->fetchColumn();
 }
 
 function getAccounts()
 {
-    $stmt = DB->prepare("SELECT * FROM telegram_credentials WHERE is_connected = 1;");
+    $stmt = DB->prepare("SELECT * FROM telegram_credentials WHERE is_connected = 1");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getUserContacts($user_id)
+{
+    $stmt = DB->prepare("SELECT * FROM contacts WHERE user_id = :user_id AND is_blocked = 0");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -151,23 +198,29 @@ function getAccounts()
 function filterCode($message)
 {
     if (empty($message)) {
-        return "";
+        return [];
     }
+
     $codes = explode("\n", $message);
+
     $filteredCodes = array_map(function ($code) {
         $code = preg_replace('/\[[^\]]*\]/', '', $code);
         $parts = preg_split('/[:,]/', $code, 2);
+
         if (!empty($parts[1]) && strpos($parts[1], "/") !== false) {
             $parts[1] = explode("/", $parts[1])[0];
         }
+
         $rightSide = trim(preg_replace('/[^a-zA-Z0-9 ]/', '', $parts[1] ?? ''));
         return $rightSide ? $rightSide : trim(preg_replace('/[^a-zA-Z0-9 ]/', '', $code));
     }, $codes);
+
     $finalCodes = array_filter($filteredCodes, function ($item) {
         $data = explode(" ", $item);
         return strlen($data[0]) > 4;
     });
-    return $finalCodes;
+
+    return array_values(array_filter($finalCodes));
 }
 
 function getPhoneNumber($sender, $user_id)

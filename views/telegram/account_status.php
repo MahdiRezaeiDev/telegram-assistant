@@ -38,7 +38,6 @@ require_once "../../layouts/sidebar.php";
             <p><strong>وضعیت اتصال:</strong> متصل به API</p>
             <p><strong>زمان اتصال:</strong> <span style="direction: ltr !important;"><?= date('Y-m-d', strtotime(USER['created_at'])) ?></span></p>
         </div>
-
         <div class="mt-6 text-right">
             <?php if (isAccountConnected(USER['id'])): ?>
                 <a href="javascript:void(0)" onclick="confirmDisconnect()" class="inline-block px-3 py-1 text-sm font-medium rounded-full 
