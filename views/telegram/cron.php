@@ -19,7 +19,6 @@ foreach ($accounts as $account) {
 
     // Skip if session file doesn't exist or is not readable
     if (!isSessionValid($account['session_name'])) {
-        echo "⏭️ Skipping account {$account['user_id']} - session file not found or invalid: {$account['session_name']}\n";
         continue;
     }
 
@@ -29,15 +28,85 @@ foreach ($accounts as $account) {
 
         // Verify the account is actually logged in
         if (!isAccountLoggedIn($MadelineProto)) {
-            echo "⏭️ Skipping account {$account['user_id']} - not logged in\n\n\n\n";
             continue;
         }
 
-        // Process messages for this account
-        processMessagesForAccount($MadelineProto, $account, $messages);
-    } catch (\Throwable $th) {
-        echo "❌ Failed to start session for user_id {$account['user_id']}: " . htmlspecialchars($th->getMessage()) . "\n";
+        $self = $MadelineProto->getSelf();
+        $myId = $self['id'];
 
+        foreach ($messages as $message) {
+            if ($message['sender'] == $myId) {
+                continue; // skip self messages
+            }
+
+            if (!isValidContact($message['sender'], $account['user_id'])) {
+                continue; // skip blocked or invalid contacts
+            }
+
+            $codes = filterCode($message['message']);
+            if (empty($codes)) {
+                continue; // skip if no valid codes found
+            }
+
+            $template = '';
+            foreach ($codes as $code) {
+                $code = strtoupper(trim($code));
+                $goodSpecification = isCodeExist($code, $account['user_id']);
+                if (empty($goodSpecification)) {
+                    continue;
+                }
+
+                if (!empty($goodSpecification['without_price'])) {
+                    $template .= "$code : " . getUserDefaultMessage($account['user_id']) . "\n";
+                } else {
+                    $template .= "$code : " . $goodSpecification['price'] . " " . $goodSpecification['brand'] . "\n";
+                }
+            }
+
+            if (!empty($template)) {
+                $template = trim($template);
+
+                try {
+                    $MadelineProto->messages->sendMessage([
+                        'peer' => $message['sender'],
+                        'message' => $template
+                    ]);
+
+                    markAsResolved($message['id']);
+                    saveGivenPrice($message['sender'], $template, $account['user_id']);
+                } catch (\Throwable $th) {
+                    $phone = getPhoneNumber($message['sender'], $account['user_id']);
+
+                    if ($phone) {
+                        try {
+                            $MadelineProto->contacts->importContacts([
+                                'contacts' => [[
+                                    '_' => 'inputPhoneContact',
+                                    'client_id' => 0,
+                                    'phone' => $phone,
+                                    'first_name' => 'Unknown',
+                                    'last_name' => ''
+                                ]]
+                            ]);
+
+                            // Retry after importing contact
+                            $MadelineProto->messages->sendMessage([
+                                'peer' => $message['sender'],
+                                'message' => $template
+                            ]);
+
+                            markAsResolved($message['id']);
+                            saveGivenPrice($message['sender'], $template, $account['user_id']);
+                        } catch (\Throwable $innerTh) {
+                            continue;
+                        }
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        }
+    } catch (\Throwable $th) {
         // Update database to mark as disconnected if it's an auth issue
         if (isAuthError($th)) {
             markAccountAsDisconnected($account['user_id']);
@@ -95,113 +164,18 @@ function isAuthError($exception)
     return false;
 }
 
-function processMessagesForAccount($MadelineProto, $account, $messages)
-{
-    $user_id = $account['user_id'];
-    $processedCount = 0;
-
-    foreach ($messages as $message) {
-        // All accounts process ALL messages (no user_id filtering)
-        try {
-            $sender = $message['sender'];
-            $messageText = $message['message'];
-
-            // Check if contact is valid for THIS account
-            if (!isValidContact($sender, $user_id)) {
-                // Don't mark as resolved here - other accounts might still process it
-                continue;
-            }
-
-            // Extract codes from message
-            $codes = filterCode($messageText);
-
-            if (empty($codes)) {
-                $defaultMessage = getUserDefaultMessage($user_id);
-                sendMessage($MadelineProto, $sender, $defaultMessage, $user_id, $message['id']);
-                $processedCount++;
-                continue;
-            }
-
-            // Process each code
-            $response = processCodes($codes, $user_id);
-
-            if (!empty($response)) {
-                sendMessage($MadelineProto, $sender, $response, $user_id, $message['id']);
-            } else {
-                $defaultMessage = getUserDefaultMessage($user_id);
-                sendMessage($MadelineProto, $sender, $defaultMessage, $user_id, $message['id']);
-            }
-
-            $processedCount++;
-        } catch (\Throwable $th) {
-            echo "❌ Error processing message {$message['id']} for account $user_id: " . $th->getMessage() . "\n";
-        }
-    }
-
-    echo "✅ Account $user_id processed $processedCount messages\n";
-}
-
-function sendMessage($MadelineProto, $receiver, $message, $user_id, $incoming_id)
-{
-    try {
-        $MadelineProto->messages->sendMessage([
-            'peer' => $receiver,
-            'message' => $message,
-            'parse_mode' => 'HTML'
-        ]);
-
-        // Save to outgoing
-        saveGivenPrice($receiver, $message, $user_id);
-
-        echo "📤 Account $user_id sent message to $receiver\n";
-    } catch (\Throwable $th) {
-        echo "❌ Account $user_id failed to send message to $receiver: " . $th->getMessage() . "\n";
-
-        // If it's an auth error, mark account as disconnected
-        if (isAuthError($th)) {
-            markAccountAsDisconnected($user_id);
-            throw $th; // Re-throw to stop processing for this account
-        }
-    }
-}
-
-function processCodes($codes, $user_id)
-{
-    $results = [];
-
-    foreach ($codes as $code) {
-        $product = isCodeExist($code, $user_id);
-
-        if (!empty($product)) {
-            $price = formatProductResponse($product, $code);
-            $results[] = $price;
-        }
-    }
-
-    return implode("\n\n", $results);
-}
-
-function formatProductResponse($product, $originalCode)
-{
-    return "کد: {$originalCode}\n" .
-        "قیمت: " . ($product['price'] ?? 'تماس بگیرید') . "\n" .
-        "موجودی: " . ($product['stock'] ?? 'نامشخص');
-}
-
 // ================== YOUR EXISTING FUNCTIONS ===================== //
 
 function isCodeExist($code, $user_id)
 {
-    $stmt = DB->prepare("
-        SELECT goods.part_number, patterns.*
+    $stmt = DB->prepare("SELECT goods.part_number, patterns.*
         FROM goods
         INNER JOIN patterns ON patterns.id = goods.pattern_id
         WHERE goods.part_number LIKE :part_number
           AND goods.is_deleted = 0
           AND patterns.is_bot_allowed = 1
           AND patterns.user_id = :user_id
-        ORDER BY patterns.id DESC
-    ");
+        ORDER BY patterns.id DESC");
 
     $pattern = "%" . $code . "%";
     $stmt->bindParam(":part_number", $pattern);
@@ -253,7 +227,7 @@ function getMessages()
 
 function isValidContact($contact_id, $user_id)
 {
-    $stmt = DB->prepare("SELECT 1 FROM contacts WHERE api_bot_id = :account_id AND user_id = :user_id AND is_blocked = 0");
+    $stmt = DB->prepare("SELECT * FROM contacts WHERE api_bot_id = :account_id AND user_id = :user_id AND is_blocked = 0");
     $stmt->execute([
         ':account_id' => $contact_id,
         ':user_id' => $user_id
