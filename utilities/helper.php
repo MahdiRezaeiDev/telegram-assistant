@@ -76,7 +76,7 @@ function markAccountAsDisconnected($userId)
 
 function getAccountSession($userId)
 {
-    $sql = "SELECT session_name FROM telegram_credentials WHERE user_id = :user_id";
+    $sql = "SELECT session_name FROM telegram_credentials WHERE user_id = :user_id ORDER BY id ";
     $stmt = DB->prepare($sql);
     $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->execute();
